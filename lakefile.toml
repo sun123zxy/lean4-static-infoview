@@ -1,0 +1,11 @@
+name = "staticInfoView"
+version = "0.1.0"
+defaultTargets = ["staticInfoView"]
+
+[[lean_lib]]
+name = "Examples"
+
+[[lean_exe]]
+name = "staticInfoView"
+root = "Main"
+supportInterpreter = true
