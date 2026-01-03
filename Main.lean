@@ -36,7 +36,7 @@ def formatGoal (mvarId : MVarId) : MetaM String := do
     return result
 
 /-- Collect tactic state information from info trees and generate HTML -/
-def collectInfoFromTrees (trees : PersistentArray InfoTree) (source : String) (fileMap : FileMap) :
+def collectInfoFromTrees (trees : PersistentArray InfoTree) (source : String) :
     IO String := do
   -- Build array of (offset, goalText) pairs
   let positionsRef ← IO.mkRef #[]
@@ -87,7 +87,7 @@ def collectInfoFromTrees (trees : PersistentArray InfoTree) (source : String) (f
   for (offset, goalText) in sortedPositions do
     -- Add text before this position
     if currentPos < offset then
-      let textSegment := source.extract ⟨currentPos⟩ ⟨offset⟩
+      let textSegment := String.Pos.Raw.extract source ⟨currentPos⟩ ⟨offset⟩
       -- Escape HTML characters
       let escaped := textSegment.replace "&" "&amp;" |>.replace "<" "&lt;" |>.replace ">" "&gt;"
       html := html ++ escaped
@@ -99,7 +99,7 @@ def collectInfoFromTrees (trees : PersistentArray InfoTree) (source : String) (f
 
   -- Add remaining text
   if currentPos < source.length then
-    let textSegment := source.extract ⟨currentPos⟩ ⟨source.length⟩
+    let textSegment := String.Pos.Raw.extract source ⟨currentPos⟩ ⟨source.length⟩
     let escaped := textSegment.replace "&" "&amp;" |>.replace "<" "&lt;" |>.replace ">" "&gt;"
     html := html ++ escaped
 
@@ -135,7 +135,7 @@ def processFile (fileName : String) (outputFile : Option String := none) : IO Un
 
   -- Extract and generate HTML from trees
   let trees := s.commandState.infoState.trees.toArray
-  let html ← collectInfoFromTrees trees.toPArray' source inputCtx.fileMap
+  let html ← collectInfoFromTrees trees.toPArray' source
 
   -- Write HTML output
   IO.FS.writeFile outputPath html

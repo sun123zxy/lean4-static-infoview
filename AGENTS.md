@@ -10,12 +10,12 @@
    - Outputs plain HTML with visible goal markers: `<span class="goal-marker" data-goal="{goal}">▸</span>`
 
 2. **Frontend** - Modular HTML/CSS/JS interface (in `frontend/` directory)
-   - **index.html**: Split-panel layout (code view | info panel) with file picker
+   - **index.html**: Split-panel layout (code view | info panel) with file picker, includes highlight.js CDN dependencies
    - **css/style.css**: VS Code-inspired dark theme with goal marker styles
    - **js/main.js**: Entry point and initialization
    - **js/state.js**: Minimal state management (currentMarker)
    - **js/dataLoader.js**: HTML file loading and validation
-   - **js/codeDisplay.js**: Injects HTML and sets up click handlers
+   - **js/codeDisplay.js**: Injects HTML, applies syntax highlighting, and sets up click handlers
    - **js/navigation.js**: Marker click handling and keyboard navigation with line-aware movement
    - **js/infoPanel.js**: Info panel rendering with goal syntax highlighting
    - **js/resize.js**: Drag-to-resize functionality for info panel
@@ -26,12 +26,15 @@
 
 - **HTML Generation**: Direct HTML output from Lean instead of JSON (simpler architecture)
 - **Visible Markers**: Goal markers are inline `<span>` elements with triangle icons (▸)
-- **Click-Only Interaction**: Users can only click markers, not arbitrary text positions
-- **Resizable Info Panel**: Drag the vertical divider to adjust panel width (100px min, 95% max)
+- **Click-Only Interaction**: Users can only click markers, not arbitrary text positions- **Syntax Highlighting**: Uses [highlight.js](https://highlightjs.org/) with [highlightjs-lean](https://github.com/leanprover-community/highlightjs-lean)
+  - Code is split at goal marker boundaries
+  - Each segment is highlighted independently to preserve markers
+  - Uses vs2015 dark theme via CDN
+  - Custom styling for `sorry` keyword in red- **Resizable Info Panel**: Drag the vertical divider to adjust panel width
 - **Line-Aware Navigation**: 
   - Arrow Up/Down: Jumps to leftmost marker on previous/next line
   - Arrow Left/Right: Moves to adjacent markers
-  - Uses `offsetTop` with 5px tolerance to detect same-line markers
+  - Uses `offsetTop` with tolerance to detect same-line markers
 - **Tactic-Only Extraction**: Focuses exclusively on `TacticInfo.goalsBefore`, ignoring term type information
 - **Pretty Printing**: Uses `withLCtx` with proper local context to show actual variable names instead of internal `_fvar` identifiers
 - **UTF-8 Handling**: Uses `String.next()` for proper multi-byte character advancement
