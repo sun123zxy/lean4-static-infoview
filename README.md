@@ -11,9 +11,10 @@ It consists of a Lean program that generates HTML files with embedded tactic sta
 ### Generating static info HTML
 
 ```bash
-lake build
-lake exe staticInfoView Examples/Basic.lean -o info.html
+lake exe staticInfoView Examples/quotient.lean -o info.html
 ```
+
+If you prefer not to work with Mathlib, you may test with `Examples/logic.lean` and remove the Mathlib dependency from `lakefile.toml`.
 
 ### View in the frontend
 

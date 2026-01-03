@@ -2,8 +2,10 @@ name = "staticInfoView"
 version = "0.1.0"
 defaultTargets = ["staticInfoView"]
 
-[[lean_lib]]
-name = "Examples"
+[[require]]
+name = "mathlib"
+git = "https://github.com/leanprover-community/mathlib4"
+rev = "v4.26.0"
 
 [[lean_exe]]
 name = "staticInfoView"

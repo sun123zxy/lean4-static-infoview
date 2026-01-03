@@ -107,6 +107,9 @@ def collectInfoFromTrees (trees : PersistentArray InfoTree) (source : String) :
 
 /-- Process a Lean file and extract all info tree data -/
 def processFile (fileName : String) (outputFile : Option String := none) : IO Unit := do
+  -- Enable initializers execution, required for frontend-like projects
+  unsafe enableInitializersExecution
+
   -- Determine output filename
   let outputPath := match outputFile with
     | some path => path

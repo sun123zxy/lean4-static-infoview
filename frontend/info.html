@@ -1,736 +1,3255 @@
 /-
-## Implication `→`
+After building up the theory of groups, homorphisms, and subgroups,
+we are now ready to define quotient groups.
 
-Implication `→` is the most fundamental way of constructing new types
-in Lean's dependent type theory. It's one of the first-class citizens in Lean.
+In fact, quotients are so fundamental that
+Lean makes them a primitive way of constructing new types.
+[IGNORE] Other reasons including the foundation of `funext`,
+see [The Lean Language Manual](https://lean-lang.org/doc/reference/latest/The-Type-System/Quotients/#quotient-funext).
 
-In the universe of `Prop`, for propositions `p` and `q`,
-the implication `p → q` means "if `p` then `q`".
+We shall first illustrate the general quotient construction in Lean,
+and then specialize it to quotient groups.
+
+At the end of the journey, we show the first isomorphism theorem for groups as promised.
+-/
+import Mathlib
+
+/-
+## Quotient types
+
+We still build up the theory from types.
+
+### `Equivalence`, `Setoid`, quotient types
+
+First, we need to define equivalence relations on a type `α`.
+As you can guess, a binary relation `r` is just a `α → α → Prop`.
+-/
+section
+
+variable {α : Type*} {r : α → α → Prop} (a b c : α)
+
+/-
+`Equivalence r` is a bundled structure that packages the three properties:
+
+- reflexivity of `r`
+- symmetry of `r`
+- transitivity of `r`
+-/
+variable (r_equiv : Equivalence r)
+
+example : r a a := <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+α : Type u_1
+r : α → α → Prop
+a : α
+b : α
+c : α
+r_equiv : Equivalence r
+⊢ r a a"></span>by <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+α : Type u_1
+r : α → α → Prop
+a : α
+b : α
+c : α
+r_equiv : Equivalence r
+⊢ r a a"></span>exact r_equiv.refl _
+example : r a b → r b a := <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+α : Type u_1
+r : α → α → Prop
+a : α
+b : α
+c : α
+r_equiv : Equivalence r
+⊢ r a b → r b a"></span>by <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+α : Type u_1
+r : α → α → Prop
+a : α
+b : α
+c : α
+r_equiv : Equivalence r
+⊢ r a b → r b a"></span>exact r_equiv.symm
+example : r a b → r b c → r a c := <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+α : Type u_1
+r : α → α → Prop
+a : α
+b : α
+c : α
+r_equiv : Equivalence r
+⊢ r a b → r b c → r a c"></span>by <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+α : Type u_1
+r : α → α → Prop
+a : α
+b : α
+c : α
+r_equiv : Equivalence r
+⊢ r a b → r b c → r a c"></span>exact r_equiv.trans
+
+end
+
+/-
+As a running example, we can define an equivalence relation on `ℕ × ℕ`,
+which ultimately gives us the construction of integers from natural numbers.
+-/
+section
+
+-- tag as `simp` lemma for auto decomposition
+@[simp] def NN_r (z w : ℕ × ℕ) : Prop := z.1 + w.2 = z.2 + w.1
+def NN_equiv : Equivalence NN_r where
+  refl := <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+∀ (x : ℕ × ℕ), NN_r x x"></span>by <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+∀ (x : ℕ × ℕ), NN_r x x"></span>intro _<span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+x._@.Examples.quotient.1132322385._hygCtx._hyg.14 : ℕ × ℕ
+⊢ NN_r x✝ x✝"></span>; <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+x._@.Examples.quotient.1132322385._hygCtx._hyg.14 : ℕ × ℕ
+⊢ NN_r x✝ x✝"></span>rw [<span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+x._@.Examples.quotient.1132322385._hygCtx._hyg.14 : ℕ × ℕ
+⊢ NN_r x✝ x✝"></span>NN_r, <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+x._@.Examples.quotient.1132322385._hygCtx._hyg.14 : ℕ × ℕ
+⊢ x✝.1 + x✝.2 = x✝.2 + x✝.1"></span>add_comm<span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+x._@.Examples.quotient.1132322385._hygCtx._hyg.14 : ℕ × ℕ
+⊢ x✝.2 + x✝.1 = x✝.2 + x✝.1"></span>]
+  symm := <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+∀ {x y : ℕ × ℕ}, NN_r x y → NN_r y x"></span>by
+    <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+∀ {x y : ℕ × ℕ}, NN_r x y → NN_r y x"></span>intro <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+∀ {x y : ℕ × ℕ}, NN_r x y → NN_r y x"></span>⟨z1, z2⟩ <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z1 : ℕ
+z2 : ℕ
+⊢ ∀ {y : ℕ × ℕ}, NN_r (z1, z2) y → NN_r y (z1, z2)"></span>⟨w1, w2⟩ <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z1 : ℕ
+z2 : ℕ
+w1 : ℕ
+w2 : ℕ
+⊢ NN_r (z1, z2) (w1, w2) → NN_r (w1, w2) (z1, z2)"></span>h
+    <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z1 : ℕ
+z2 : ℕ
+w1 : ℕ
+w2 : ℕ
+h : NN_r (z1, z2) (w1, w2)
+⊢ NN_r (w1, w2) (z1, z2)"></span>simp at *
+    <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z1 : ℕ
+z2 : ℕ
+w1 : ℕ
+w2 : ℕ
+h : z1 + w2 = z2 + w1
+⊢ w1 + z2 = w2 + z1"></span>linarith only [h]
+  trans := <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+∀ {x y z : ℕ × ℕ}, NN_r x y → NN_r y z → NN_r x z"></span>by
+    <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+∀ {x y z : ℕ × ℕ}, NN_r x y → NN_r y z → NN_r x z"></span>intro <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+∀ {x y z : ℕ × ℕ}, NN_r x y → NN_r y z → NN_r x z"></span>⟨z1, z2⟩ <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z1 : ℕ
+z2 : ℕ
+⊢ ∀ {y z : ℕ × ℕ}, NN_r (z1, z2) y → NN_r y z → NN_r (z1, z2) z"></span>⟨w1, w2⟩ <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z1 : ℕ
+z2 : ℕ
+w1 : ℕ
+w2 : ℕ
+⊢ ∀ {z : ℕ × ℕ}, NN_r (z1, z2) (w1, w2) → NN_r (w1, w2) z → NN_r (z1, z2) z"></span>⟨u1, u2⟩ <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z1 : ℕ
+z2 : ℕ
+w1 : ℕ
+w2 : ℕ
+u1 : ℕ
+u2 : ℕ
+⊢ NN_r (z1, z2) (w1, w2) → NN_r (w1, w2) (u1, u2) → NN_r (z1, z2) (u1, u2)"></span>h1 <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z1 : ℕ
+z2 : ℕ
+w1 : ℕ
+w2 : ℕ
+u1 : ℕ
+u2 : ℕ
+h1 : NN_r (z1, z2) (w1, w2)
+⊢ NN_r (w1, w2) (u1, u2) → NN_r (z1, z2) (u1, u2)"></span>h2
+    <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z1 : ℕ
+z2 : ℕ
+w1 : ℕ
+w2 : ℕ
+u1 : ℕ
+u2 : ℕ
+h1 : NN_r (z1, z2) (w1, w2)
+h2 : NN_r (w1, w2) (u1, u2)
+⊢ NN_r (z1, z2) (u1, u2)"></span>simp at *
+    <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z1 : ℕ
+z2 : ℕ
+w1 : ℕ
+w2 : ℕ
+u1 : ℕ
+u2 : ℕ
+h1 : z1 + w2 = z2 + w1
+h2 : w1 + u2 = w2 + u1
+⊢ z1 + u2 = z2 + u1"></span>linarith only [h1, h2]
+
+/-
+In mathmatics we often denote equivalence relations by `~`.
+In Lean, we can also use `≈` as notation for equivalence relations,
+once we register the `Setoid` instance for `α`.
+
+The `Setoid` typeclass is a bundle of
+
+- an equivalence relation `r` on `α`
+- the proof that `r` is an equivalence relation.
+-/
+#check Setoid
+
+instance NN_setoid : Setoid (ℕ × ℕ) where
+  r := NN_r
+  iseqv := NN_equiv
+
+-- tag as `simp` lemma for auto decomposition
+@[simp] lemma NN0_r_of_equiv {z w : ℕ × ℕ} : z ≈ w ↔ NN_r z w := <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z : ℕ × ℕ
+w : ℕ × ℕ
+⊢ z ≈ w ↔ NN_r z w"></span>by <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z : ℕ × ℕ
+w : ℕ × ℕ
+⊢ z ≈ w ↔ NN_r z w"></span>rfl
+
+example : (1, 2) ≈ (2, 3) := <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+(1, 2) ≈ (2, 3)"></span>by <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+(1, 2) ≈ (2, 3)"></span>simp
+example (n m p : ℕ) : (n, m) ≈ (n + p, m + p) := <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+n : ℕ
+m : ℕ
+p : ℕ
+⊢ (n, m) ≈ (n + p, m + p)"></span>by
+  <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+n : ℕ
+m : ℕ
+p : ℕ
+⊢ (n, m) ≈ (n + p, m + p)"></span>simp<span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+n : ℕ
+m : ℕ
+p : ℕ
+⊢ n + (m + p) = m + (n + p)"></span>; <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+n : ℕ
+m : ℕ
+p : ℕ
+⊢ n + (m + p) = m + (n + p)"></span>ring
+
+/-
+From a `Setoid α` instance `s`, we can define the quotient type `Quotient s`.
+The elements of `Quotient s`, are mathematically viewed as equivalence classes of `α`.
+-/
+#check Quotient
+
+/-
+For example, the following defines the type `Z` of integers as the quotient of `ℕ × ℕ`
+by the equivalence relation `NN_r`.
+-/
+def Z := Quotient NN_setoid
+
+/-
+### The universal properties
+
+Quotient types behave similarly to inductive types.
+But there is a key difference:
+Inductive types have their internal data directly accessible
+(via pattern matching and its elimination rules),
+while the internal data of a quotient type is hidden behind the equivalence relation.
+
+The introduction rule of a Quotient type is given by `Quotient.mk`,
+essentially a map from `α → Quotient s`.
+-/
+#check Quotient.mk
+
+example : Z := Quotient.mk NN_setoid (3, 5)
+example : Z := Quotient.mk' (3, 5) -- this version detects the `Setoid` instance in the context
+example : Z := ⟦(3, 5)⟧ -- anonymous "constructor" for `Quotient`
+
+/-
+Two elements of an inductive type are equal,
+iff they are constructed from the same data using the same constructor.
+
+This is different in the case of quotient types,
+since the same equivalence class
+can be represented by different elements of `α`.
+
+So quotient types need an additional "soundness" axiom
+to clarify when two quotient elements,
+coming from two possibly different representatives in `α`, are equal.
+It is an axiom in Lean, hence the equality is not definitional.
+-/
+#check Quotient.sound
+
+example : (⟦(3, 5)⟧ : Z) = ⟦(4, 6)⟧ := <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+⟦(3, 5)⟧ = ⟦(4, 6)⟧"></span>by
+  <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+⟦(3, 5)⟧ = ⟦(4, 6)⟧"></span>apply Quotient.sound
+  <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+(3, 5) ≈ (4, 6)"></span>simp
+
+/-
+The following two self-evident rules are the elimination rules
+for quotient types in `Sort*` and `Prop` respectively.
+
+`Quotient.lift` is essentially the universal property of quotients:
+It allows us to define functions out of a quotient type `Quotient s`
+by defining them on representatives in `α`, once we verify that the function
+respects the equivalence relation `s.r`.
+
+[IGNORE]
+Note that `Quotient.lift` does not allow a motive depending on the input,
+since the well-definedness needs to be verified in the same type.
+Quotient types do have a dependent recursor, called `Quotient.rec`.
+With a more complicated type signature,
+it is more "tricky" to use and not often needed in practice.
+-/
+#check Quotient.lift
+#check Quotient.liftOn -- a variant which consumes a quotient element first
+
+/- The universal property, true by definition -/
+#check Quotient.lift_mk
+
+/- As an example, we define the negation function on integers. -/
+def Z_neg : Z → Z := <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+Z → Z"></span>by
+  <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+Z → Z"></span>apply Quotient.lift (fun ⟨z1, z2⟩ ↦ ⟦(z2, z1)⟧ : ℕ × ℕ → Z)
+  <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+∀ (a b : ℕ × ℕ),
+  a ≈ b →
+    (match a with
+      | (z1, z2) =&gt; ⟦(z2, z1)⟧) =
+      match b with
+      | (z1, z2) =&gt; ⟦(z2, z1)⟧"></span>intro <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+∀ (a b : ℕ × ℕ),
+  a ≈ b →
+    (match a with
+      | (z1, z2) =&gt; ⟦(z2, z1)⟧) =
+      match b with
+      | (z1, z2) =&gt; ⟦(z2, z1)⟧"></span>⟨z1, z2⟩ <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z1 : ℕ
+z2 : ℕ
+⊢ ∀ (b : ℕ × ℕ),
+  (z1, z2) ≈ b →
+    (match (z1, z2) with
+      | (z1, z2) =&gt; ⟦(z2, z1)⟧) =
+      match b with
+      | (z1, z2) =&gt; ⟦(z2, z1)⟧"></span>⟨w1, w2⟩ <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z1 : ℕ
+z2 : ℕ
+w1 : ℕ
+w2 : ℕ
+⊢ (z1, z2) ≈ (w1, w2) →
+  (match (z1, z2) with
+    | (z1, z2) =&gt; ⟦(z2, z1)⟧) =
+    match (w1, w2) with
+    | (z1, z2) =&gt; ⟦(z2, z1)⟧"></span>h
+  <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z1 : ℕ
+z2 : ℕ
+w1 : ℕ
+w2 : ℕ
+h : (z1, z2) ≈ (w1, w2)
+⊢ (match (z1, z2) with
+  | (z1, z2) =&gt; ⟦(z2, z1)⟧) =
+  match (w1, w2) with
+  | (z1, z2) =&gt; ⟦(z2, z1)⟧"></span>dsimp
+  <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z1 : ℕ
+z2 : ℕ
+w1 : ℕ
+w2 : ℕ
+h : (z1, z2) ≈ (w1, w2)
+⊢ ⟦(z2, z1)⟧ = ⟦(w2, w1)⟧"></span>apply Quotient.sound
+  <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z1 : ℕ
+z2 : ℕ
+w1 : ℕ
+w2 : ℕ
+h : (z1, z2) ≈ (w1, w2)
+⊢ (z2, z1) ≈ (w2, w1)"></span>simp at *
+  <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z1 : ℕ
+z2 : ℕ
+w1 : ℕ
+w2 : ℕ
+h : z1 + w2 = z2 + w1
+⊢ z2 + w1 = z1 + w2"></span>linarith only [h]
+
+/- another flavor of usage -/
+example : Z → Z := <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+Z → Z"></span>by
+  <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+Z → Z"></span>intro z
+  -- advantage: no need to specify the type of the function
+  <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z : Z
+⊢ Z"></span>apply Quotient.liftOn z fun ⟨z1, z2⟩ ↦ ⟦(z2, z1)⟧
+  <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z : Z
+⊢ ∀ (a b : ℕ × ℕ),
+  a ≈ b →
+    (match a with
+      | (z1, z2) =&gt; ⟦(z2, z1)⟧) =
+      match b with
+      | (z1, z2) =&gt; ⟦(z2, z1)⟧"></span>intro <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z : Z
+⊢ ∀ (a b : ℕ × ℕ),
+  a ≈ b →
+    (match a with
+      | (z1, z2) =&gt; ⟦(z2, z1)⟧) =
+      match b with
+      | (z1, z2) =&gt; ⟦(z2, z1)⟧"></span>⟨z1, z2⟩ <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z : Z
+z1 : ℕ
+z2 : ℕ
+⊢ ∀ (b : ℕ × ℕ),
+  (z1, z2) ≈ b →
+    (match (z1, z2) with
+      | (z1, z2) =&gt; ⟦(z2, z1)⟧) =
+      match b with
+      | (z1, z2) =&gt; ⟦(z2, z1)⟧"></span>⟨w1, w2⟩ <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z : Z
+z1 : ℕ
+z2 : ℕ
+w1 : ℕ
+w2 : ℕ
+⊢ (z1, z2) ≈ (w1, w2) →
+  (match (z1, z2) with
+    | (z1, z2) =&gt; ⟦(z2, z1)⟧) =
+    match (w1, w2) with
+    | (z1, z2) =&gt; ⟦(z2, z1)⟧"></span>h
+  <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z : Z
+z1 : ℕ
+z2 : ℕ
+w1 : ℕ
+w2 : ℕ
+h : (z1, z2) ≈ (w1, w2)
+⊢ (match (z1, z2) with
+  | (z1, z2) =&gt; ⟦(z2, z1)⟧) =
+  match (w1, w2) with
+  | (z1, z2) =&gt; ⟦(z2, z1)⟧"></span>dsimp
+  <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z : Z
+z1 : ℕ
+z2 : ℕ
+w1 : ℕ
+w2 : ℕ
+h : (z1, z2) ≈ (w1, w2)
+⊢ ⟦(z2, z1)⟧ = ⟦(w2, w1)⟧"></span>apply Quotient.sound
+  <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z : Z
+z1 : ℕ
+z2 : ℕ
+w1 : ℕ
+w2 : ℕ
+h : (z1, z2) ≈ (w1, w2)
+⊢ (z2, z1) ≈ (w2, w1)"></span>simp at *
+  <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z : Z
+z1 : ℕ
+z2 : ℕ
+w1 : ℕ
+w2 : ℕ
+h : z1 + w2 = z2 + w1
+⊢ z2 + w1 = z1 + w2"></span>linarith only [h]
+
+/- Activate the `-` notation for `Z`. -/
+instance : Neg Z := ⟨Z_neg⟩
+
+/-
+Define the multiplication on `Z`.
+It uses `Quotient.lift₂`, which is for binary operations on quotient types.
+Challenge: Define `Quotient.lift₂` yourself!
+-/
+#check Quotient.lift₂
+def Z_mul : Z → Z → Z := <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+Z → Z → Z"></span>by
+  <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+Z → Z → Z"></span>intro z <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z : Z
+⊢ Z → Z"></span>w
+  <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z : Z
+w : Z
+⊢ Z"></span>apply Quotient.liftOn₂ z w
+    (fun ⟨z1, z2⟩ ⟨w1, w2⟩ ↦ ⟦(z1 * w1 + z2 * w2, z1 * w2 + z2 * w1)⟧)
+  <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z : Z
+w : Z
+⊢ ∀ (a₁ b₁ a₂ b₂ : ℕ × ℕ),
+  a₁ ≈ a₂ →
+    b₁ ≈ b₂ →
+      (match a₁ with
+        | (z1, z2) =&gt;
+          match b₁ with
+          | (w1, w2) =&gt; ⟦(z1 * w1 + z2 * w2, z1 * w2 + z2 * w1)⟧) =
+        match a₂ with
+        | (z1, z2) =&gt;
+          match b₂ with
+          | (w1, w2) =&gt; ⟦(z1 * w1 + z2 * w2, z1 * w2 + z2 * w1)⟧"></span>intro <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z : Z
+w : Z
+⊢ ∀ (a₁ b₁ a₂ b₂ : ℕ × ℕ),
+  a₁ ≈ a₂ →
+    b₁ ≈ b₂ →
+      (match a₁ with
+        | (z1, z2) =&gt;
+          match b₁ with
+          | (w1, w2) =&gt; ⟦(z1 * w1 + z2 * w2, z1 * w2 + z2 * w1)⟧) =
+        match a₂ with
+        | (z1, z2) =&gt;
+          match b₂ with
+          | (w1, w2) =&gt; ⟦(z1 * w1 + z2 * w2, z1 * w2 + z2 * w1)⟧"></span>⟨z1, z2⟩ <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z : Z
+w : Z
+z1 : ℕ
+z2 : ℕ
+⊢ ∀ (b₁ a₂ b₂ : ℕ × ℕ),
+  (z1, z2) ≈ a₂ →
+    b₁ ≈ b₂ →
+      (match (z1, z2) with
+        | (z1, z2) =&gt;
+          match b₁ with
+          | (w1, w2) =&gt; ⟦(z1 * w1 + z2 * w2, z1 * w2 + z2 * w1)⟧) =
+        match a₂ with
+        | (z1, z2) =&gt;
+          match b₂ with
+          | (w1, w2) =&gt; ⟦(z1 * w1 + z2 * w2, z1 * w2 + z2 * w1)⟧"></span>⟨w1, w2⟩ <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z : Z
+w : Z
+z1 : ℕ
+z2 : ℕ
+w1 : ℕ
+w2 : ℕ
+⊢ ∀ (a₂ b₂ : ℕ × ℕ),
+  (z1, z2) ≈ a₂ →
+    (w1, w2) ≈ b₂ →
+      (match (z1, z2) with
+        | (z1, z2) =&gt;
+          match (w1, w2) with
+          | (w1, w2) =&gt; ⟦(z1 * w1 + z2 * w2, z1 * w2 + z2 * w1)⟧) =
+        match a₂ with
+        | (z1, z2) =&gt;
+          match b₂ with
+          | (w1, w2) =&gt; ⟦(z1 * w1 + z2 * w2, z1 * w2 + z2 * w1)⟧"></span>⟨u1, u2⟩ <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z : Z
+w : Z
+z1 : ℕ
+z2 : ℕ
+w1 : ℕ
+w2 : ℕ
+u1 : ℕ
+u2 : ℕ
+⊢ ∀ (b₂ : ℕ × ℕ),
+  (z1, z2) ≈ (u1, u2) →
+    (w1, w2) ≈ b₂ →
+      (match (z1, z2) with
+        | (z1, z2) =&gt;
+          match (w1, w2) with
+          | (w1, w2) =&gt; ⟦(z1 * w1 + z2 * w2, z1 * w2 + z2 * w1)⟧) =
+        match (u1, u2) with
+        | (z1, z2) =&gt;
+          match b₂ with
+          | (w1, w2) =&gt; ⟦(z1 * w1 + z2 * w2, z1 * w2 + z2 * w1)⟧"></span>⟨v1, v2⟩ <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z : Z
+w : Z
+z1 : ℕ
+z2 : ℕ
+w1 : ℕ
+w2 : ℕ
+u1 : ℕ
+u2 : ℕ
+v1 : ℕ
+v2 : ℕ
+⊢ (z1, z2) ≈ (u1, u2) →
+  (w1, w2) ≈ (v1, v2) →
+    (match (z1, z2) with
+      | (z1, z2) =&gt;
+        match (w1, w2) with
+        | (w1, w2) =&gt; ⟦(z1 * w1 + z2 * w2, z1 * w2 + z2 * w1)⟧) =
+      match (u1, u2) with
+      | (z1, z2) =&gt;
+        match (v1, v2) with
+        | (w1, w2) =&gt; ⟦(z1 * w1 + z2 * w2, z1 * w2 + z2 * w1)⟧"></span>h1 <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z : Z
+w : Z
+z1 : ℕ
+z2 : ℕ
+w1 : ℕ
+w2 : ℕ
+u1 : ℕ
+u2 : ℕ
+v1 : ℕ
+v2 : ℕ
+h1 : (z1, z2) ≈ (u1, u2)
+⊢ (w1, w2) ≈ (v1, v2) →
+  (match (z1, z2) with
+    | (z1, z2) =&gt;
+      match (w1, w2) with
+      | (w1, w2) =&gt; ⟦(z1 * w1 + z2 * w2, z1 * w2 + z2 * w1)⟧) =
+    match (u1, u2) with
+    | (z1, z2) =&gt;
+      match (v1, v2) with
+      | (w1, w2) =&gt; ⟦(z1 * w1 + z2 * w2, z1 * w2 + z2 * w1)⟧"></span>h2
+  <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z : Z
+w : Z
+z1 : ℕ
+z2 : ℕ
+w1 : ℕ
+w2 : ℕ
+u1 : ℕ
+u2 : ℕ
+v1 : ℕ
+v2 : ℕ
+h1 : (z1, z2) ≈ (u1, u2)
+h2 : (w1, w2) ≈ (v1, v2)
+⊢ (match (z1, z2) with
+  | (z1, z2) =&gt;
+    match (w1, w2) with
+    | (w1, w2) =&gt; ⟦(z1 * w1 + z2 * w2, z1 * w2 + z2 * w1)⟧) =
+  match (u1, u2) with
+  | (z1, z2) =&gt;
+    match (v1, v2) with
+    | (w1, w2) =&gt; ⟦(z1 * w1 + z2 * w2, z1 * w2 + z2 * w1)⟧"></span>dsimp
+  <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z : Z
+w : Z
+z1 : ℕ
+z2 : ℕ
+w1 : ℕ
+w2 : ℕ
+u1 : ℕ
+u2 : ℕ
+v1 : ℕ
+v2 : ℕ
+h1 : (z1, z2) ≈ (u1, u2)
+h2 : (w1, w2) ≈ (v1, v2)
+⊢ ⟦(z1 * w1 + z2 * w2, z1 * w2 + z2 * w1)⟧ = ⟦(u1 * v1 + u2 * v2, u1 * v2 + u2 * v1)⟧"></span>apply Quotient.sound
+  <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z : Z
+w : Z
+z1 : ℕ
+z2 : ℕ
+w1 : ℕ
+w2 : ℕ
+u1 : ℕ
+u2 : ℕ
+v1 : ℕ
+v2 : ℕ
+h1 : (z1, z2) ≈ (u1, u2)
+h2 : (w1, w2) ≈ (v1, v2)
+⊢ (z1 * w1 + z2 * w2, z1 * w2 + z2 * w1) ≈ (u1 * v1 + u2 * v2, u1 * v2 + u2 * v1)"></span>simp at *
+  <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z : Z
+w : Z
+z1 : ℕ
+z2 : ℕ
+w1 : ℕ
+w2 : ℕ
+u1 : ℕ
+u2 : ℕ
+v1 : ℕ
+v2 : ℕ
+h1 : z1 + u2 = z2 + u1
+h2 : w1 + v2 = w2 + v1
+⊢ z1 * w1 + z2 * w2 + (u1 * v2 + u2 * v1) = z1 * w2 + z2 * w1 + (u1 * v1 + u2 * v2)"></span>nlinarith only [h1, h2]
+
+/- Activate the `*` notation for `Z`. -/
+instance : Mul Z := ⟨Z_mul⟩
+
+/-
+`Quotient.ind` is also an elimination rule for quotient types,
+but it focuses on proving propositions about quotient types.
+As `Prop` is proof-irrelevant,
+a different proof for different representatives does not matter.
+Hence, the equivalence relation does not need to be verified here.
+([IGNORE] and a motive depending on the input is allowed here)
+
+In effect, `Quotient.ind` states that we may assume any quotient element
+is constructed from a representative in `α`
+when proving propositions about quotient types.
+Or, the canonical map `α → Quotient s` is surjective when used in `Prop`.
+-/
+#check Quotient.ind
+
+/- As an example, we prove that `(-z) * (-z) = z * z` for any integer `z`. -/
+example : (z : Z) → (-z) * (-z) = z * z := <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+∀ (z : Z), -z * -z = z * z"></span>by
+  <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+∀ (z : Z), -z * -z = z * z"></span>apply Quotient.ind
+  <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+∀ (a : ℕ × ℕ), -⟦a⟧ * -⟦a⟧ = ⟦a⟧ * ⟦a⟧"></span>intro <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+∀ (a : ℕ × ℕ), -⟦a⟧ * -⟦a⟧ = ⟦a⟧ * ⟦a⟧"></span>⟨z1, z2⟩
+  <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z1 : ℕ
+z2 : ℕ
+⊢ -⟦(z1, z2)⟧ * -⟦(z1, z2)⟧ = ⟦(z1, z2)⟧ * ⟦(z1, z2)⟧"></span>apply Quotient.sound
+  <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z1 : ℕ
+z2 : ℕ
+⊢ (z2 * z2 + z1 * z1, z2 * z1 + z1 * z2) ≈ (z1 * z1 + z2 * z2, z1 * z2 + z2 * z1)"></span>simp<span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z1 : ℕ
+z2 : ℕ
+⊢ z2 * z2 + z1 * z1 + (z1 * z2 + z2 * z1) = z2 * z1 + z1 * z2 + (z1 * z1 + z2 * z2)"></span>; <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z1 : ℕ
+z2 : ℕ
+⊢ z2 * z2 + z1 * z1 + (z1 * z2 + z2 * z1) = z2 * z1 + z1 * z2 + (z1 * z1 + z2 * z2)"></span>ring
+
+/-
+In tactic mode, `induction' ... using Quotient.ind with ...` is often used.
+
+You should convince yourself that this in effect act like
+an `rcases ... with ...` decomposition,
+and `using Quotient.ind` emphasizes that
+we are using the elimination rule for quotients.
+The full use of `induction'` can be touched only
+when inductive types are fully covered.
+-/
+#help tactic induction'
+example (z : Z) : (-z) * (-z) = z * z := <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z : Z
+⊢ -z * -z = z * z"></span>by
+  <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z : Z
+⊢ -z * -z = z * z"></span>induction' z using Quotient.ind with z
+  <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z : ℕ × ℕ
+⊢ -⟦z⟧ * -⟦z⟧ = ⟦z⟧ * ⟦z⟧"></span>apply Quotient.sound
+  <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z : ℕ × ℕ
+⊢ (z.2 * z.2 + z.1 * z.1, z.2 * z.1 + z.1 * z.2) ≈ (z.1 * z.1 + z.2 * z.2, z.1 * z.2 + z.2 * z.1)"></span>simp<span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z : ℕ × ℕ
+⊢ z.2 * z.2 + z.1 * z.1 + (z.1 * z.2 + z.2 * z.1) = z.2 * z.1 + z.1 * z.2 + (z.1 * z.1 + z.2 * z.2)"></span>; <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z : ℕ × ℕ
+⊢ z.2 * z.2 + z.1 * z.1 + (z.1 * z.2 + z.2 * z.1) = z.2 * z.1 + z.1 * z.2 + (z.1 * z.1 + z.2 * z.2)"></span>ring
+
+/-
+There are other ways to do induction.
+
+For example, by direct `rcases`. This is the same as
+`induction' z using Quot.ind with z`.
+-/
+example (z : Z) : (-z) * (-z) = z * z := <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z : Z
+⊢ -z * -z = z * z"></span>by
+  <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z : Z
+⊢ -z * -z = z * z"></span>rcases z with ⟨z⟩
+  <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z : Z
+z : ℕ × ℕ
+⊢ -Quot.mk (⇑NN_setoid) z * -Quot.mk (⇑NN_setoid) z = Quot.mk (⇑NN_setoid) z * Quot.mk (⇑NN_setoid) z"></span>apply Quotient.sound
+  <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z : Z
+z : ℕ × ℕ
+⊢ (z.2 * z.2 + z.1 * z.1, z.2 * z.1 + z.1 * z.2) ≈ (z.1 * z.1 + z.2 * z.2, z.1 * z.2 + z.2 * z.1)"></span>simp<span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z : Z
+z : ℕ × ℕ
+⊢ z.2 * z.2 + z.1 * z.1 + (z.1 * z.2 + z.2 * z.1) = z.2 * z.1 + z.1 * z.2 + (z.1 * z.1 + z.2 * z.2)"></span>; <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z : Z
+z : ℕ × ℕ
+⊢ z.2 * z.2 + z.1 * z.1 + (z.1 * z.2 + z.2 * z.1) = z.2 * z.1 + z.1 * z.2 + (z.1 * z.1 + z.2 * z.2)"></span>ring
+
+/-
+For example, by proving the surjectivity of `Quotient.mk` first and use it.
+-/
+example (α : Type*) [s : Setoid α] : Function.Surjective (Quotient.mk s) := <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+α : Type u_1
+s : Setoid α
+⊢ Function.Surjective (Quotient.mk s)"></span>by
+  <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+α : Type u_1
+s : Setoid α
+⊢ Function.Surjective (Quotient.mk s)"></span>rintro ⟨x⟩
+  <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+α : Type u_1
+s : Setoid α
+b._@.Examples.quotient.2021293408._hygCtx._hyg.14 : Quotient s
+x : α
+⊢ ∃ a, ⟦a⟧ = Quot.mk (⇑s) x"></span>exact ⟨x, rfl⟩
+#check Quotient.mk_surjective
+
+example (z : Z) : (-z) * (-z) = z * z := <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z : Z
+⊢ -z * -z = z * z"></span>by
+  <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z : Z
+⊢ -z * -z = z * z"></span>rcases Quotient.mk_surjective z with ⟨z, rfl⟩
+  <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z : ℕ × ℕ
+⊢ -⟦z⟧ * -⟦z⟧ = ⟦z⟧ * ⟦z⟧"></span>apply Quotient.sound
+  <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z : ℕ × ℕ
+⊢ (z.2 * z.2 + z.1 * z.1, z.2 * z.1 + z.1 * z.2) ≈ (z.1 * z.1 + z.2 * z.2, z.1 * z.2 + z.2 * z.1)"></span>simp<span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z : ℕ × ℕ
+⊢ z.2 * z.2 + z.1 * z.1 + (z.1 * z.2 + z.2 * z.1) = z.2 * z.1 + z.1 * z.2 + (z.1 * z.1 + z.2 * z.2)"></span>; <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+z : ℕ × ℕ
+⊢ z.2 * z.2 + z.1 * z.1 + (z.1 * z.2 + z.2 * z.1) = z.2 * z.1 + z.1 * z.2 + (z.1 * z.1 + z.2 * z.2)"></span>ring
+
+/-
+There is also `Quotient.ind₂` for proving propositions about two quotient elements.
+Many other variations for `Quotient.ind` and `Quotient.lift` exist as well.
+-/
+#check Quotient.ind₂
+#check Quotient.ind'
+#check Quotient.liftOn
+#check Quotient.liftOn'
+#check Quotient.inductionOn
+#check Quotient.inductionOn'
+
+end
+
+/-
+### Appendix: Quotient types under morphisms
+-/
+
+/- Lifting functions does not change its range. [TODO] -/
+#check Set.range_quotient_lift
+
+/-
+Note that even you have two `Setoid` instances `s` and `t` that are propositionally equal,
+an element of `Quotient s` cannot be directly used as a `Quotient t` in general.
+This is because `Quotient s` and `Quotient t` are not definitionally equal in general.
+You may, however, transfer between them via the canonical equivalence `Quotient.congr`.
+-/
+section
+variable {α : Type*} {s : Setoid α} {t : Setoid α}
+#check Quotient.congr
+example (heq : s = t) : Quotient s ≃ Quotient t := <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+α : Type u_1
+s : Setoid α
+t : Setoid α
+heq : s = t
+⊢ Quotient s ≃ Quotient t"></span>by
+  <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+α : Type u_1
+s : Setoid α
+t : Setoid α
+heq : s = t
+⊢ Quotient s ≃ Quotient t"></span>apply Quotient.congr (Equiv.refl α)
+  <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+α : Type u_1
+s : Setoid α
+t : Setoid α
+heq : s = t
+⊢ ∀ (a₁ a₂ : α), s a₁ a₂ ↔ t ((Equiv.refl α) a₁) ((Equiv.refl α) a₂)"></span>dsimp
+  <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+α : Type u_1
+s : Setoid α
+t : Setoid α
+heq : s = t
+⊢ ∀ (a₁ a₂ : α), s a₁ a₂ ↔ t a₁ a₂"></span>intro a <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+α : Type u_1
+s : Setoid α
+t : Setoid α
+heq : s = t
+a : α
+⊢ ∀ (a₂ : α), s a a₂ ↔ t a a₂"></span>b
+  <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+α : Type u_1
+s : Setoid α
+t : Setoid α
+heq : s = t
+a : α
+b : α
+⊢ s a b ↔ t a b"></span>rw [<span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+α : Type u_1
+s : Setoid α
+t : Setoid α
+heq : s = t
+a : α
+b : α
+⊢ s a b ↔ t a b"></span>heq<span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+α : Type u_1
+s : Setoid α
+t : Setoid α
+heq : s = t
+a : α
+b : α
+⊢ t a b ↔ t a b"></span>]
+end
+
+/-
+## Quotient groups
+
+We are now ready to define quotient groups.
+-/
+section
+variable (G : Type*) [Group G] (H : Subgroup G)
+
+/-
+### Left coset relation
+
+The notation `G ⧸ H` is, mathematically, the left cosets of `H` in `G`.
+In Lean, it is defined as the quotient type of `G`
+by the left coset equivalence relation induced by `H`.
+-/
+#check QuotientGroup.leftRel H
+
+/-
+The definition of `QuotientGroup.leftRel H` is
+hidden deep inside Mathlib for general usability.
+Practically, we only need to know its meaning (up to logical equivalence).
+[IGNORE] See the small section below for tracing down its definition.
+-/
+example (a b : G) : (QuotientGroup.leftRel H) a b ↔ a⁻¹ * b ∈ H :=
+  QuotientGroup.leftRel_apply
+
+/-
+This in turn allows us to define the left coset type `G ⧸ H`
+via quotient types.
+-/
+#synth HasQuotient G (Subgroup G)
+#check G ⧸ H
+
+/-
+The canonical map from `G` to `G ⧸ H` is given by `QuotientGroup.mk`,
+where `H` is taken as an implicit argument.
+-/
+example : QuotientGroup.mk = (show G → G ⧸ H from
+  Quotient.mk''
+) := <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293412._hygCtx._hyg.3 : Group G
+H : Subgroup G
+⊢ QuotientGroup.mk =
+  have this := Quotient.mk'';
+  this"></span>by <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293412._hygCtx._hyg.3 : Group G
+H : Subgroup G
+⊢ QuotientGroup.mk =
+  have this := Quotient.mk'';
+  this"></span>rfl
+
+/-
+#### tracing down the definition of coset relations
+
+[IGNORE]
+-/
+example (a b : G) : QuotientGroup.leftRel H a b = (∃ (h : H.op), b * (h : Gᵐᵒᵖ).unop = a) := calc
+  QuotientGroup.leftRel H a b
+    = (QuotientGroup.leftRel H).r a b := rfl
+  _ = (MulAction.orbitRel H.op G).r a b := rfl
+  _ = (a ∈ MulAction.orbit H.op b) := rfl
+  _ = (∃ (h : H.op), h • b = a) := rfl
+  _ = (∃ (h : H.op), b * (h : Gᵐᵒᵖ).unop = a) := rfl
+
+example (a b : G) : QuotientGroup.rightRel H a b = (∃ (h : H), h * b = a) := calc
+  QuotientGroup.rightRel H a b
+    = (QuotientGroup.rightRel H).r a b := rfl
+  _ = (MulAction.orbitRel H G).r a b := rfl
+  _ = (a ∈ MulAction.orbit H b) := rfl
+  _ = (∃ (h : H), h • b = a) := rfl
+  _ = (∃ (h : H), h * b = a) := rfl
+
+/-
+### The group structure
+
+With the normality of `H`, the group structure on `G ⧸ H`
+is induced from that of `G`.
+-/
+variable [H.Normal]
+
+/-
+We illustrate how to define the group structure on `G ⧸ H` manually here,
+from `Semigroup` to `Monoid` to `Group`.
+
+Note that it is just an illustration; in practice,
+to construct a group structure, you may wish to use the
+`Group.ofLeftAxioms` constructor from Mathlib instead.
+-/
+
+#synth Semigroup (G ⧸ H)
+example : (QuotientGroup.Quotient.group H).toSemigroup = show Semigroup (G ⧸ H) from {
+  mul := <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+⊢ G ⧸ H → G ⧸ H → G ⧸ H"></span>by
+    <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+⊢ G ⧸ H → G ⧸ H → G ⧸ H"></span>apply Quotient.lift₂ (fun (a b : G) ↦ ⟦a * b⟧)
+    <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+⊢ ∀ (a₁ b₁ a₂ b₂ : G), a₁ ≈ a₂ → b₁ ≈ b₂ → ⟦a₁ * b₁⟧ = ⟦a₂ * b₂⟧"></span>intro a1 <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+a1 : G
+⊢ ∀ (b₁ a₂ b₂ : G), a1 ≈ a₂ → b₁ ≈ b₂ → ⟦a1 * b₁⟧ = ⟦a₂ * b₂⟧"></span>a2 <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+a1 : G
+a2 : G
+⊢ ∀ (a₂ b₂ : G), a1 ≈ a₂ → a2 ≈ b₂ → ⟦a1 * a2⟧ = ⟦a₂ * b₂⟧"></span>b1 <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+a1 : G
+a2 : G
+b1 : G
+⊢ ∀ (b₂ : G), a1 ≈ b1 → a2 ≈ b₂ → ⟦a1 * a2⟧ = ⟦b1 * b₂⟧"></span>b2 <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+a1 : G
+a2 : G
+b1 : G
+b2 : G
+⊢ a1 ≈ b1 → a2 ≈ b2 → ⟦a1 * a2⟧ = ⟦b1 * b2⟧"></span>h1 <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+a1 : G
+a2 : G
+b1 : G
+b2 : G
+h1 : a1 ≈ b1
+⊢ a2 ≈ b2 → ⟦a1 * a2⟧ = ⟦b1 * b2⟧"></span>h2
+    <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+a1 : G
+a2 : G
+b1 : G
+b2 : G
+h1 : a1 ≈ b1
+h2 : a2 ≈ b2
+⊢ ⟦a1 * a2⟧ = ⟦b1 * b2⟧"></span>apply Quotient.sound
+    <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+a1 : G
+a2 : G
+b1 : G
+b2 : G
+h1 : a1 ≈ b1
+h2 : a2 ≈ b2
+⊢ a1 * a2 ≈ b1 * b2"></span>change QuotientGroup.leftRel H a1 b1 at h1
+    <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+a1 : G
+a2 : G
+b1 : G
+b2 : G
+h2 : a2 ≈ b2
+h1 : (QuotientGroup.leftRel H) a1 b1
+⊢ a1 * a2 ≈ b1 * b2"></span>change QuotientGroup.leftRel H a2 b2 at h2
+    <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+a1 : G
+a2 : G
+b1 : G
+b2 : G
+h1 : (QuotientGroup.leftRel H) a1 b1
+h2 : (QuotientGroup.leftRel H) a2 b2
+⊢ a1 * a2 ≈ b1 * b2"></span>change QuotientGroup.leftRel H (a1 * a2) (b1 * b2)
+    <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+a1 : G
+a2 : G
+b1 : G
+b2 : G
+h1 : (QuotientGroup.leftRel H) a1 b1
+h2 : (QuotientGroup.leftRel H) a2 b2
+⊢ (QuotientGroup.leftRel H) (a1 * a2) (b1 * b2)"></span>rw [<span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+a1 : G
+a2 : G
+b1 : G
+b2 : G
+h1 : (QuotientGroup.leftRel H) a1 b1
+h2 : (QuotientGroup.leftRel H) a2 b2
+⊢ (QuotientGroup.leftRel H) (a1 * a2) (b1 * b2)"></span>QuotientGroup.leftRel_apply<span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+a1 : G
+a2 : G
+b1 : G
+b2 : G
+h1 : a1⁻¹ * b1 ∈ H
+h2 : a2⁻¹ * b2 ∈ H
+⊢ (a1 * a2)⁻¹ * (b1 * b2) ∈ H"></span>] at h1 h2 ⊢
+
+    <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+a1 : G
+a2 : G
+b1 : G
+b2 : G
+h1 : a1⁻¹ * b1 ∈ H
+h2 : a2⁻¹ * b2 ∈ H
+⊢ (a1 * a2)⁻¹ * (b1 * b2) ∈ H"></span>have hn : H.Normal := inferInstance<span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+a1 : G
+a2 : G
+b1 : G
+b2 : G
+h1 : a1⁻¹ * b1 ∈ H
+h2 : a2⁻¹ * b2 ∈ H
+hn : H.Normal
+⊢ (a1 * a2)⁻¹ * (b1 * b2) ∈ H"></span>; <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+a1 : G
+a2 : G
+b1 : G
+b2 : G
+h1 : a1⁻¹ * b1 ∈ H
+h2 : a2⁻¹ * b2 ∈ H
+hn : H.Normal
+⊢ (a1 * a2)⁻¹ * (b1 * b2) ∈ H"></span>rcases hn with ⟨hn⟩
+    <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+a1 : G
+a2 : G
+b1 : G
+b2 : G
+h1 : a1⁻¹ * b1 ∈ H
+h2 : a2⁻¹ * b2 ∈ H
+hn : ∀ n ∈ H, ∀ (g : G), g * n * g⁻¹ ∈ H
+⊢ (a1 * a2)⁻¹ * (b1 * b2) ∈ H"></span>specialize hn (a1⁻¹ * b1) h1 a2⁻¹
+    <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+a1 : G
+a2 : G
+b1 : G
+b2 : G
+h1 : a1⁻¹ * b1 ∈ H
+h2 : a2⁻¹ * b2 ∈ H
+hn : a2⁻¹ * (a1⁻¹ * b1) * a2⁻¹⁻¹ ∈ H
+⊢ (a1 * a2)⁻¹ * (b1 * b2) ∈ H"></span>simp only [inv_inv] at hn
+
+    <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+a1 : G
+a2 : G
+b1 : G
+b2 : G
+h1 : a1⁻¹ * b1 ∈ H
+h2 : a2⁻¹ * b2 ∈ H
+hn : a2⁻¹ * (a1⁻¹ * b1) * a2 ∈ H
+⊢ (a1 * a2)⁻¹ * (b1 * b2) ∈ H"></span>haveI : (a1 * a2)⁻¹ * (b1 * b2) =
+        a2⁻¹ * (a1⁻¹ * b1) * a2 * (a2⁻¹ * b2) := <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+a1 : G
+a2 : G
+b1 : G
+b2 : G
+h1 : a1⁻¹ * b1 ∈ H
+h2 : a2⁻¹ * b2 ∈ H
+hn : a2⁻¹ * (a1⁻¹ * b1) * a2 ∈ H
+⊢ (a1 * a2)⁻¹ * (b1 * b2) = a2⁻¹ * (a1⁻¹ * b1) * a2 * (a2⁻¹ * b2)"></span>by <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+a1 : G
+a2 : G
+b1 : G
+b2 : G
+h1 : a1⁻¹ * b1 ∈ H
+h2 : a2⁻¹ * b2 ∈ H
+hn : a2⁻¹ * (a1⁻¹ * b1) * a2 ∈ H
+⊢ (a1 * a2)⁻¹ * (b1 * b2) = a2⁻¹ * (a1⁻¹ * b1) * a2 * (a2⁻¹ * b2)"></span>group
+    <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+a1 : G
+a2 : G
+b1 : G
+b2 : G
+h1 : a1⁻¹ * b1 ∈ H
+h2 : a2⁻¹ * b2 ∈ H
+hn : a2⁻¹ * (a1⁻¹ * b1) * a2 ∈ H
+this : (a1 * a2)⁻¹ * (b1 * b2) = a2⁻¹ * (a1⁻¹ * b1) * a2 * (a2⁻¹ * b2)
+⊢ (a1 * a2)⁻¹ * (b1 * b2) ∈ H"></span>rw [<span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+a1 : G
+a2 : G
+b1 : G
+b2 : G
+h1 : a1⁻¹ * b1 ∈ H
+h2 : a2⁻¹ * b2 ∈ H
+hn : a2⁻¹ * (a1⁻¹ * b1) * a2 ∈ H
+this : (a1 * a2)⁻¹ * (b1 * b2) = a2⁻¹ * (a1⁻¹ * b1) * a2 * (a2⁻¹ * b2)
+⊢ (a1 * a2)⁻¹ * (b1 * b2) ∈ H"></span>this<span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+a1 : G
+a2 : G
+b1 : G
+b2 : G
+h1 : a1⁻¹ * b1 ∈ H
+h2 : a2⁻¹ * b2 ∈ H
+hn : a2⁻¹ * (a1⁻¹ * b1) * a2 ∈ H
+this : (a1 * a2)⁻¹ * (b1 * b2) = a2⁻¹ * (a1⁻¹ * b1) * a2 * (a2⁻¹ * b2)
+⊢ a2⁻¹ * (a1⁻¹ * b1) * a2 * (a2⁻¹ * b2) ∈ H"></span>]
+
+    <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+a1 : G
+a2 : G
+b1 : G
+b2 : G
+h1 : a1⁻¹ * b1 ∈ H
+h2 : a2⁻¹ * b2 ∈ H
+hn : a2⁻¹ * (a1⁻¹ * b1) * a2 ∈ H
+this : (a1 * a2)⁻¹ * (b1 * b2) = a2⁻¹ * (a1⁻¹ * b1) * a2 * (a2⁻¹ * b2)
+⊢ a2⁻¹ * (a1⁻¹ * b1) * a2 * (a2⁻¹ * b2) ∈ H"></span>apply mul_mem hn h2
+
+  mul_assoc := <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+⊢ ∀ (a b c : G ⧸ H), a * b * c = a * (b * c)"></span>by
+    <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+⊢ ∀ (a b c : G ⧸ H), a * b * c = a * (b * c)"></span>intro a <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+a : G ⧸ H
+⊢ ∀ (b c : G ⧸ H), a * b * c = a * (b * c)"></span>b <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+a : G ⧸ H
+b : G ⧸ H
+⊢ ∀ (c : G ⧸ H), a * b * c = a * (b * c)"></span>c
+    <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+a : G ⧸ H
+b : G ⧸ H
+c : G ⧸ H
+⊢ a * b * c = a * (b * c)"></span>induction' a using Quotient.ind with a
+    <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+b : G ⧸ H
+c : G ⧸ H
+a : G
+⊢ ⟦a⟧ * b * c = ⟦a⟧ * (b * c)"></span>induction' b using Quotient.ind with b
+    <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+c : G ⧸ H
+a : G
+b : G
+⊢ ⟦a⟧ * ⟦b⟧ * c = ⟦a⟧ * (⟦b⟧ * c)"></span>induction' c using Quotient.ind with c
+    <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+a : G
+b : G
+c : G
+⊢ ⟦a⟧ * ⟦b⟧ * ⟦c⟧ = ⟦a⟧ * (⟦b⟧ * ⟦c⟧)"></span>apply Quotient.sound
+    <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+a : G
+b : G
+c : G
+⊢ a * b * c ≈ a * (b * c)"></span>rw [<span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+a : G
+b : G
+c : G
+⊢ a * b * c ≈ a * (b * c)"></span>mul_assoc<span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+a : G
+b : G
+c : G
+⊢ a * (b * c) ≈ a * (b * c)"></span>]
+    <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+a : G
+b : G
+c : G
+⊢ a * (b * c) ≈ a * (b * c)"></span>apply refl
+} := <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+⊢ (QuotientGroup.Quotient.group H).toSemigroup =
+  have this := { mul := Quotient.lift₂ (fun a b =&gt; ⟦a * b⟧) ⋯, mul_assoc := ⋯ };
+  this"></span>by <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+⊢ (QuotientGroup.Quotient.group H).toSemigroup =
+  have this := { mul := Quotient.lift₂ (fun a b =&gt; ⟦a * b⟧) ⋯, mul_assoc := ⋯ };
+  this"></span>rfl
+
+#synth Monoid (G ⧸ H)
+example : (QuotientGroup.Quotient.group H).toMonoid = show Monoid (G ⧸ H) from <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293416._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293416._hygCtx._hyg.8 : H.Normal
+⊢ ∀ (x : G ⧸ H), npowRecAuto 0 x = 1"></span>{
+  one := ⟦1⟧
+  one_mul := <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293416._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293416._hygCtx._hyg.8 : H.Normal
+⊢ ∀ (a : G ⧸ H), 1 * a = a"></span>by
+    <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293416._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293416._hygCtx._hyg.8 : H.Normal
+⊢ ∀ (a : G ⧸ H), 1 * a = a"></span>intro a
+    <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293416._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293416._hygCtx._hyg.8 : H.Normal
+a : G ⧸ H
+⊢ 1 * a = a"></span>induction' a using Quotient.ind with a
+    <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293416._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293416._hygCtx._hyg.8 : H.Normal
+a : G
+⊢ 1 * ⟦a⟧ = ⟦a⟧"></span>apply Quotient.sound<span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293416._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293416._hygCtx._hyg.8 : H.Normal
+a : G
+⊢ (fun x1 x2 =&gt; x1 * x2) 1 a ≈ a"></span>; <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293416._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293416._hygCtx._hyg.8 : H.Normal
+a : G
+⊢ (fun x1 x2 =&gt; x1 * x2) 1 a ≈ a"></span>dsimp
+    <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293416._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293416._hygCtx._hyg.8 : H.Normal
+a : G
+⊢ 1 * a ≈ a"></span>rw [<span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293416._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293416._hygCtx._hyg.8 : H.Normal
+a : G
+⊢ 1 * a ≈ a"></span>one_mul<span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293416._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293416._hygCtx._hyg.8 : H.Normal
+a : G
+⊢ a ≈ a"></span>]
+    <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293416._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293416._hygCtx._hyg.8 : H.Normal
+a : G
+⊢ a ≈ a"></span>apply refl
+  mul_one := <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293416._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293416._hygCtx._hyg.8 : H.Normal
+⊢ ∀ (a : G ⧸ H), a * 1 = a"></span>by
+    <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293416._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293416._hygCtx._hyg.8 : H.Normal
+⊢ ∀ (a : G ⧸ H), a * 1 = a"></span>intro a
+    <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293416._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293416._hygCtx._hyg.8 : H.Normal
+a : G ⧸ H
+⊢ a * 1 = a"></span>induction' a using Quotient.ind with a
+    <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293416._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293416._hygCtx._hyg.8 : H.Normal
+a : G
+⊢ ⟦a⟧ * 1 = ⟦a⟧"></span>apply Quotient.sound<span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293416._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293416._hygCtx._hyg.8 : H.Normal
+a : G
+⊢ (fun x1 x2 =&gt; x1 * x2) a 1 ≈ a"></span>; <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293416._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293416._hygCtx._hyg.8 : H.Normal
+a : G
+⊢ (fun x1 x2 =&gt; x1 * x2) a 1 ≈ a"></span>dsimp
+    <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293416._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293416._hygCtx._hyg.8 : H.Normal
+a : G
+⊢ a * 1 ≈ a"></span>rw [<span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293416._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293416._hygCtx._hyg.8 : H.Normal
+a : G
+⊢ a * 1 ≈ a"></span>mul_one<span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293416._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293416._hygCtx._hyg.8 : H.Normal
+a : G
+⊢ a ≈ a"></span>]
+    <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293416._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293416._hygCtx._hyg.8 : H.Normal
+a : G
+⊢ a ≈ a"></span>apply refl
+} := <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293416._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293416._hygCtx._hyg.8 : H.Normal
+⊢ (QuotientGroup.Quotient.group H).toMonoid =
+  have this :=
+    { toSemigroup := (QuotientGroup.Quotient.group H).toSemigroup, one := ⟦1⟧, one_mul := ⋯, mul_one := ⋯,
+      npow := npowRecAuto, npow_zero := ⋯, npow_succ := ⋯ };
+  this"></span>by <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293416._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293416._hygCtx._hyg.8 : H.Normal
+⊢ (QuotientGroup.Quotient.group H).toMonoid =
+  have this :=
+    { toSemigroup := (QuotientGroup.Quotient.group H).toSemigroup, one := ⟦1⟧, one_mul := ⋯, mul_one := ⋯,
+      npow := npowRecAuto, npow_zero := ⋯, npow_succ := ⋯ };
+  this"></span>ext<span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293416._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293416._hygCtx._hyg.8 : H.Normal
+x._@.Examples.quotient.2021293416._hygCtx._hyg.146 : G ⧸ H
+x._@.Examples.quotient.2021293416._hygCtx._hyg.147 : G ⧸ H
+⊢ x✝¹ * x✝ = x✝¹ * x✝"></span>; <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293416._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293416._hygCtx._hyg.8 : H.Normal
+x._@.Examples.quotient.2021293416._hygCtx._hyg.146 : G ⧸ H
+x._@.Examples.quotient.2021293416._hygCtx._hyg.147 : G ⧸ H
+⊢ x✝¹ * x✝ = x✝¹ * x✝"></span>rfl
+
+#synth Group (G ⧸ H)
+example : QuotientGroup.Quotient.group H = show Group (G ⧸ H) from <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+⊢ ∀ (a b : G ⧸ H), a / b = a * Quotient.lift (fun a =&gt; ⟦a⁻¹⟧) ⋯ b"></span>{
+  inv := <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+⊢ G ⧸ H → G ⧸ H"></span>by
+    <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+⊢ G ⧸ H → G ⧸ H"></span>apply Quotient.lift (fun a ↦ ⟦a⁻¹⟧)
+    <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+⊢ ∀ (a b : G), a ≈ b → ⟦a⁻¹⟧ = ⟦b⁻¹⟧"></span>intro a1 <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+a1 : G
+⊢ ∀ (b : G), a1 ≈ b → ⟦a1⁻¹⟧ = ⟦b⁻¹⟧"></span>a2 <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+a1 : G
+a2 : G
+⊢ a1 ≈ a2 → ⟦a1⁻¹⟧ = ⟦a2⁻¹⟧"></span>h
+    <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+a1 : G
+a2 : G
+h : a1 ≈ a2
+⊢ ⟦a1⁻¹⟧ = ⟦a2⁻¹⟧"></span>apply Quotient.sound
+    <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+a1 : G
+a2 : G
+h : a1 ≈ a2
+⊢ a1⁻¹ ≈ a2⁻¹"></span>change QuotientGroup.leftRel H a1 a2 at h
+    <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+a1 : G
+a2 : G
+h : (QuotientGroup.leftRel H) a1 a2
+⊢ a1⁻¹ ≈ a2⁻¹"></span>change QuotientGroup.leftRel H a1⁻¹ a2⁻¹
+    <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+a1 : G
+a2 : G
+h : (QuotientGroup.leftRel H) a1 a2
+⊢ (QuotientGroup.leftRel H) a1⁻¹ a2⁻¹"></span>rw [<span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+a1 : G
+a2 : G
+h : (QuotientGroup.leftRel H) a1 a2
+⊢ (QuotientGroup.leftRel H) a1⁻¹ a2⁻¹"></span>QuotientGroup.leftRel_apply<span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+a1 : G
+a2 : G
+h : a1⁻¹ * a2 ∈ H
+⊢ a1⁻¹⁻¹ * a2⁻¹ ∈ H"></span>] at h ⊢
+    <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+a1 : G
+a2 : G
+h : a1⁻¹ * a2 ∈ H
+⊢ a1⁻¹⁻¹ * a2⁻¹ ∈ H"></span>simp only [inv_inv]
+
+    <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+a1 : G
+a2 : G
+h : a1⁻¹ * a2 ∈ H
+⊢ a1 * a2⁻¹ ∈ H"></span>replace h := inv_mem h
+    <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+a1 : G
+a2 : G
+h : (a1⁻¹ * a2)⁻¹ ∈ H
+⊢ a1 * a2⁻¹ ∈ H"></span>simp at h ⊢
+
+    <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+a1 : G
+a2 : G
+h : a2⁻¹ * a1 ∈ H
+⊢ a1 * a2⁻¹ ∈ H"></span>have hn : H.Normal := inferInstance<span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+a1 : G
+a2 : G
+h : a2⁻¹ * a1 ∈ H
+hn : H.Normal
+⊢ a1 * a2⁻¹ ∈ H"></span>; <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+a1 : G
+a2 : G
+h : a2⁻¹ * a1 ∈ H
+hn : H.Normal
+⊢ a1 * a2⁻¹ ∈ H"></span>rcases hn with ⟨hn⟩
+    <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+a1 : G
+a2 : G
+h : a2⁻¹ * a1 ∈ H
+hn : ∀ n ∈ H, ∀ (g : G), g * n * g⁻¹ ∈ H
+⊢ a1 * a2⁻¹ ∈ H"></span>specialize hn (a2⁻¹ * a1) h a2
+    <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+a1 : G
+a2 : G
+h : a2⁻¹ * a1 ∈ H
+hn : a2 * (a2⁻¹ * a1) * a2⁻¹ ∈ H
+⊢ a1 * a2⁻¹ ∈ H"></span>simp at hn<span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+a1 : G
+a2 : G
+h : a2⁻¹ * a1 ∈ H
+hn : a1 * a2⁻¹ ∈ H
+⊢ a1 * a2⁻¹ ∈ H"></span>; <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+a1 : G
+a2 : G
+h : a2⁻¹ * a1 ∈ H
+hn : a1 * a2⁻¹ ∈ H
+⊢ a1 * a2⁻¹ ∈ H"></span>exact hn
+
+  div a b := a * b⁻¹
+
+  inv_mul_cancel := <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+⊢ ∀ (a : G ⧸ H), Quotient.lift (fun a =&gt; ⟦a⁻¹⟧) ⋯ a * a = 1"></span>by
+    <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+⊢ ∀ (a : G ⧸ H), Quotient.lift (fun a =&gt; ⟦a⁻¹⟧) ⋯ a * a = 1"></span>intro a
+    <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+a : G ⧸ H
+⊢ Quotient.lift (fun a =&gt; ⟦a⁻¹⟧) ⋯ a * a = 1"></span>induction' a using Quotient.ind with a
+    <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+a : G
+⊢ Quotient.lift (fun a =&gt; ⟦a⁻¹⟧) ⋯ ⟦a⟧ * ⟦a⟧ = 1"></span>apply Quotient.sound<span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+a : G
+⊢ (fun x1 x2 =&gt; x1 * x2) a⁻¹ a ≈ 1"></span>; <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+a : G
+⊢ (fun x1 x2 =&gt; x1 * x2) a⁻¹ a ≈ 1"></span>simp
+} := <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+⊢ QuotientGroup.Quotient.group H =
+  have this :=
+    { toMonoid := (QuotientGroup.Quotient.group H).toMonoid, inv := Quotient.lift (fun a =&gt; ⟦a⁻¹⟧) ⋯,
+      div := fun a b =&gt; a * b⁻¹, div_eq_mul_inv := ⋯, zpow := zpowRec, zpow_zero' := ⋯, zpow_succ' := ⋯, zpow_neg' := ⋯,
+      inv_mul_cancel := ⋯ };
+  this"></span>by <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+⊢ QuotientGroup.Quotient.group H =
+  have this :=
+    { toMonoid := (QuotientGroup.Quotient.group H).toMonoid, inv := Quotient.lift (fun a =&gt; ⟦a⁻¹⟧) ⋯,
+      div := fun a b =&gt; a * b⁻¹, div_eq_mul_inv := ⋯, zpow := zpowRec, zpow_zero' := ⋯, zpow_succ' := ⋯, zpow_neg' := ⋯,
+      inv_mul_cancel := ⋯ };
+  this"></span>ext<span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+x._@.Examples.quotient.2021293417._hygCtx._hyg.225 : G ⧸ H
+x._@.Examples.quotient.2021293417._hygCtx._hyg.226 : G ⧸ H
+⊢ x✝¹ * x✝ = x✝¹ * x✝"></span>; <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+x._@.Examples.quotient.2021293417._hygCtx._hyg.225 : G ⧸ H
+x._@.Examples.quotient.2021293417._hygCtx._hyg.226 : G ⧸ H
+⊢ x✝¹ * x✝ = x✝¹ * x✝"></span>rfl
+
+/-
+The bundled version of `QuotientGroup.mk`,
+the canonical group homomorphism from `G` to `G ⧸ H`.
+-/
+example : QuotientGroup.mk' H = show G →* (G ⧸ H) from
+  -- recall that for groups, it suffices to show the preservation of multiplication
+  MonoidHom.mk' QuotientGroup.mk (<span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293418._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293418._hygCtx._hyg.8 : H.Normal
+⊢ ∀ (a b : G), ↑(a * b) = ↑a * ↑b"></span>by <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293418._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293418._hygCtx._hyg.8 : H.Normal
+⊢ ∀ (a b : G), ↑(a * b) = ↑a * ↑b"></span>intros<span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293418._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293418._hygCtx._hyg.8 : H.Normal
+a._@.Examples.quotient.2021293418._hygCtx._hyg.42 : G
+b._@.Examples.quotient.2021293418._hygCtx._hyg.43 : G
+⊢ ↑(a✝ * b✝) = ↑a✝ * ↑b✝"></span>; <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293418._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293418._hygCtx._hyg.8 : H.Normal
+a._@.Examples.quotient.2021293418._hygCtx._hyg.42 : G
+b._@.Examples.quotient.2021293418._hygCtx._hyg.43 : G
+⊢ ↑(a✝ * b✝) = ↑a✝ * ↑b✝"></span>rfl)
+:= <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293418._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293418._hygCtx._hyg.8 : H.Normal
+⊢ QuotientGroup.mk' H =
+  have this := MonoidHom.mk' QuotientGroup.mk ⋯;
+  this"></span>by <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293418._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293418._hygCtx._hyg.8 : H.Normal
+⊢ QuotientGroup.mk' H =
+  have this := MonoidHom.mk' QuotientGroup.mk ⋯;
+  this"></span>rfl
+
+/-
+The canonical quotient homomorphism is surjective.
+By `rcase`ing it, we may assume every quotient element
+comes from an application of `QuotientGroup.mk'`.
+This may be viewed as the bundled upgrade of `Quotient.ind` to groups.
+-/
+example : Function.Surjective (QuotientGroup.mk' H) := <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293419._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293419._hygCtx._hyg.8 : H.Normal
+⊢ Function.Surjective ⇑(QuotientGroup.mk' H)"></span>by
+  <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293419._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293419._hygCtx._hyg.8 : H.Normal
+⊢ Function.Surjective ⇑(QuotientGroup.mk' H)"></span>rintro ⟨g⟩
+  <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+inst._@.Examples.quotient.2021293419._hygCtx._hyg.3 : Group G
+H : Subgroup G
+inst._@.Examples.quotient.2021293419._hygCtx._hyg.8 : H.Normal
+b._@.Examples.quotient.2021293419._hygCtx._hyg.20 : G ⧸ H
+g : G
+⊢ ∃ a, (QuotientGroup.mk' H) a = Quot.mk (⇑(QuotientGroup.leftRel H)) g"></span>exact ⟨g, rfl⟩
+#check QuotientGroup.mk'_surjective
+
+end
+
+/-
+### Lifting a group homomorphism
+
+We now need to upgrade `Quotient.lift` to respect the group structure,
+so that we can define morphisms between quotient groups via universal properties.
 -/
 
 section
 
-variable (p q r : Prop) -- this introduces global variables within this section
+variable {G M : Type*} [Group G] [Group M] (N : Subgroup G) [N.Normal]
+variable (ϕ : G →* M)
 
-#check p
-#check q
-#check p → q
-
-/-
-`→` is right-associative. In general, hover the mouse over the operators to see how they associate.
-so `p → q → r` means `p → (q → r)`. You may notice that this is logically equivalent to `p ∧ q → r`.
-This relationship is known as *currification*. We shall discuss this later.
--/
-
-/- modus ponens -/
-theorem mp : p → (p → q) → q := <span class="goal-marker" data-goal="Goals: 1
+/- upgrade `Quotient.lift` to respect the group structure -/
+example (HN : N ≤ ϕ.ker) : QuotientGroup.lift N ϕ HN = <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
-p : Prop
-q : Prop
-⊢ p → (p → q) → q"></span>by <span class="goal-marker" data-goal="Goals: 1
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+HN : N ≤ ϕ.ker
+⊢ G ⧸ N →* M"></span>show G ⧸ N →* M <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
-p : Prop
-q : Prop
-⊢ p → (p → q) → q"></span>sorry -- `sorry` is a placeholder for unfinished proofs
-
-/-
-By the Curry--Howard correspondence, `p → q` is also understood as
-a function that takes a proof of `p` and produces a proof of `q`.
-
-We introduce an important syntax to define functions / theorems:
-When we define a theorem `theorem name (h1 : p1) ... (hn : pn) : q := ...`,
-we are actually defining a function `name` of type `(h1 : p1) → ... → (hn : pn) → q`.
-Programmingly, `h1`, ..., `hn` are the parameters of the function and `q` is the return type.
-
-The significance of this syntax, compared to `theorem name : p1 → ... → pn → q := ...`, is that now
-`h1`, ..., `hn`, proofs of `p1`, ..., `pn`, are now introduced as hypotheses into the context,
-available for you along the way to prove `q`.
--/
-
-/- this proves a theorem of type `p → p` -/
-example (hp : p) : p := hp
-
-/- modus ponens, with a proof -/
-example (hp : p) (hpq : p → q) : q := hpq hp
-
-/-
-A function can also be defined inline, using `fun` (lambda syntax):
-`fun (h1 : p1) ... (hn : pn) ↦ (hq : q)` defines a function of type
-`(h1 : p1) → ... → (hn : pn) → q`
-
-Some of the type specifications may be omitted, as Lean can infer them.
--/
-
-example : p → p := fun (hp : p) ↦ (hp : p)
-example : p → p := fun (hp : p) ↦ hp
-example : p → (p → q) → q := fun (hp : p) (hpq : p → q) ↦ hpq hp
-example : p → (p → q) → q := fun hp hpq ↦ hpq hp
-
-/-
-## Tactic mode
-
-Construct proofs using explicit terms is called *term-style proof*.
-This can be tedious for complicated proofs.
-
-Fortunately, Lean provides the *tactic mode* to help us construct proofs interactively.
-
-`by` activates the tactic mode.
-
-The tactic mode captures the way mathematicians actually think:
-There is a goal `q` to prove, and we have several hypotheses
-`h1 : p1`, ..., `hn : pn` in the context to use.
-We apply tactics to change the goal and the context until the goal is solved.
-This produces a proof of `p1 → ... → pn → q`.
--/
-
-example (hp : p) : p := <span class="goal-marker" data-goal="Goals: 1
-
-Goal 1:
-p : Prop
-q : Prop
-r : Prop
-hp : p
-⊢ p"></span>by <span class="goal-marker" data-goal="Goals: 1
-
-Goal 1:
-p : Prop
-q : Prop
-r : Prop
-hp : p
-⊢ p"></span>exact hp
-
-/-
-tactic: `exact`
-If the goal is `p` and we have `hp : p`, then `exact hp` solves the goal.
--/
-
-/- `exact?` may help to close some trivial goals -/
-example (hp : p) (hpq : p → q) : q := <span class="goal-marker" data-goal="Goals: 1
-
-Goal 1:
-p : Prop
-q : Prop
-r : Prop
-hp : p
-hpq : p → q
-⊢ q"></span>by <span class="goal-marker" data-goal="Goals: 1
-
-Goal 1:
-p : Prop
-q : Prop
-r : Prop
-hp : p
-hpq : p → q
-⊢ q"></span>exact?
-
-/-
-tactic: `intro`
-Sometimes a hypothesis is hidden in the goal in the form of an implication.
-If the goal is `p → q`, then `intro hp` changes the goal to `q` and adds the hypothesis
-`hp : p` into the context.
--/
-
-/- modus ponens, with a hidden hypothesis -/
-example (hp : p) : (p → q) → q := <span class="goal-marker" data-goal="Goals: 1
-
-Goal 1:
-p : Prop
-q : Prop
-r : Prop
-hp : p
-⊢ (p → q) → q"></span>by
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+HN : N ≤ ϕ.ker
+⊢ G ⧸ N →* M"></span>by
   <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
-p : Prop
-q : Prop
-r : Prop
-hp : p
-⊢ (p → q) → q"></span>intro hpq
-  <span class="goal-marker" data-goal="Goals: 1
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+HN : N ≤ ϕ.ker
+⊢ G ⧸ N →* M"></span>apply MonoidHom.mk' (<span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
-p : Prop
-q : Prop
-r : Prop
-hp : p
-hpq : p → q
-⊢ q"></span>exact hpq hp
-
-example (hq : q) : p → q := <span class="goal-marker" data-goal="Goals: 1
-
-Goal 1:
-p : Prop
-q : Prop
-r : Prop
-hq : q
-⊢ p → q"></span>by
-  <span class="goal-marker" data-goal="Goals: 1
-
-Goal 1:
-p : Prop
-q : Prop
-r : Prop
-hq : q
-⊢ p → q"></span>intro _  -- use `_` as a placeholder if the introduced hypothesis is not needed
-  <span class="goal-marker" data-goal="Goals: 1
-
-Goal 1:
-p : Prop
-q : Prop
-r : Prop
-hq : q
-a._@._internal.0.Examples.Basic.2021293404._hygCtx._hyg.13 : p
-⊢ q"></span>exact hq
-
-/- modus ponens, with two hidden hypothesis -/
-example : p → (p → q) → q := <span class="goal-marker" data-goal="Goals: 1
-
-Goal 1:
-p : Prop
-q : Prop
-r : Prop
-⊢ p → (p → q) → q"></span>by
-  <span class="goal-marker" data-goal="Goals: 1
-
-Goal 1:
-p : Prop
-q : Prop
-r : Prop
-⊢ p → (p → q) → q"></span>intro hp <span class="goal-marker" data-goal="Goals: 1
-
-Goal 1:
-p : Prop
-q : Prop
-r : Prop
-hp : p
-⊢ (p → q) → q"></span>hpq -- you can `intro` multiple hypotheses at once
-  <span class="goal-marker" data-goal="Goals: 1
-
-Goal 1:
-p : Prop
-q : Prop
-r : Prop
-hp : p
-hpq : p → q
-⊢ q"></span>exact hpq hp
-
-/- [EXR] transitivity of `→` -/
-example : (p → q) → (q → r) → (p → r) := <span class="goal-marker" data-goal="Goals: 1
-
-Goal 1:
-p : Prop
-q : Prop
-r : Prop
-⊢ (p → q) → (q → r) → p → r"></span>by
-  <span class="goal-marker" data-goal="Goals: 1
-
-Goal 1:
-p : Prop
-q : Prop
-r : Prop
-⊢ (p → q) → (q → r) → p → r"></span>intro hpq <span class="goal-marker" data-goal="Goals: 1
-
-Goal 1:
-p : Prop
-q : Prop
-r : Prop
-hpq : p → q
-⊢ (q → r) → p → r"></span>hqr <span class="goal-marker" data-goal="Goals: 1
-
-Goal 1:
-p : Prop
-q : Prop
-r : Prop
-hpq : p → q
-hqr : q → r
-⊢ p → r"></span>hp
-  <span class="goal-marker" data-goal="Goals: 1
-
-Goal 1:
-p : Prop
-q : Prop
-r : Prop
-hpq : p → q
-hqr : q → r
-hp : p
-⊢ r"></span>exact hqr (hpq hp)
-
-/-
-tactic: `apply`
-If `q` is the goal and we have `hpq : p → q`, then `apply hpq` changes the goal to `p`.
--/
-
-/- modus ponens -/
-example (hp : p) (hpq : p → q) : q := <span class="goal-marker" data-goal="Goals: 1
-
-Goal 1:
-p : Prop
-q : Prop
-r : Prop
-hp : p
-hpq : p → q
-⊢ q"></span>by
-  <span class="goal-marker" data-goal="Goals: 1
-
-Goal 1:
-p : Prop
-q : Prop
-r : Prop
-hp : p
-hpq : p → q
-⊢ q"></span>apply hpq
-  <span class="goal-marker" data-goal="Goals: 1
-
-Goal 1:
-p : Prop
-q : Prop
-r : Prop
-hp : p
-hpq : p → q
-⊢ p"></span>exact hp
-
-/- [EXR] transitivity of `→` -/
-example (hpq : p → q) (hqr : q → r) : p → r := <span class="goal-marker" data-goal="Goals: 1
-
-Goal 1:
-p : Prop
-q : Prop
-r : Prop
-hpq : p → q
-hqr : q → r
-⊢ p → r"></span>by
-  <span class="goal-marker" data-goal="Goals: 1
-
-Goal 1:
-p : Prop
-q : Prop
-r : Prop
-hpq : p → q
-hqr : q → r
-⊢ p → r"></span>intro hp
-  <span class="goal-marker" data-goal="Goals: 1
-
-Goal 1:
-p : Prop
-q : Prop
-r : Prop
-hpq : p → q
-hqr : q → r
-hp : p
-⊢ r"></span>apply hqr
-  <span class="goal-marker" data-goal="Goals: 1
-
-Goal 1:
-p : Prop
-q : Prop
-r : Prop
-hpq : p → q
-hqr : q → r
-hp : p
-⊢ q"></span>apply hpq
-  <span class="goal-marker" data-goal="Goals: 1
-
-Goal 1:
-p : Prop
-q : Prop
-r : Prop
-hpq : p → q
-hqr : q → r
-hp : p
-⊢ p"></span>exact hp
-
-/-
-[IGNORE] Above tactics are minimal and sufficient for simple proofs.
-When proofs went more complicated, you may want more tactics that suit your needs.
-Remember your favorite tactics and use them accordingly.
--/
-
-/-
-tactic: `specialize`
-If we have `hpq : p → q` and `hp : p`,
-then `specialize hpq hp` reassigns `hpq` to `hpq hp`, a proof of `q`.
--/
-
-example (hp : p) (hpq : p → q) : q := <span class="goal-marker" data-goal="Goals: 1
-
-Goal 1:
-p : Prop
-q : Prop
-r : Prop
-hp : p
-hpq : p → q
-⊢ q"></span>by
-  <span class="goal-marker" data-goal="Goals: 1
-
-Goal 1:
-p : Prop
-q : Prop
-r : Prop
-hp : p
-hpq : p → q
-⊢ q"></span>specialize hpq hp
-  <span class="goal-marker" data-goal="Goals: 1
-
-Goal 1:
-p : Prop
-q : Prop
-r : Prop
-hp : p
-hpq : q
-⊢ q"></span>exact hpq
-
-example (hpq : p → q) (hqr : q → r) : p → r := <span class="goal-marker" data-goal="Goals: 1
-
-Goal 1:
-p : Prop
-q : Prop
-r : Prop
-hpq : p → q
-hqr : q → r
-⊢ p → r"></span>by
-  <span class="goal-marker" data-goal="Goals: 1
-
-Goal 1:
-p : Prop
-q : Prop
-r : Prop
-hpq : p → q
-hqr : q → r
-⊢ p → r"></span>intro hp
-  <span class="goal-marker" data-goal="Goals: 1
-
-Goal 1:
-p : Prop
-q : Prop
-r : Prop
-hpq : p → q
-hqr : q → r
-hp : p
-⊢ r"></span>specialize hpq hp
-  <span class="goal-marker" data-goal="Goals: 1
-
-Goal 1:
-p : Prop
-q : Prop
-r : Prop
-hqr : q → r
-hp : p
-hpq : q
-⊢ r"></span>specialize hqr hpq
-  <span class="goal-marker" data-goal="Goals: 1
-
-Goal 1:
-p : Prop
-q : Prop
-r : Prop
-hp : p
-hpq : q
-hqr : r
-⊢ r"></span>exact hqr
-
-/-
-tactic: `have`
-`have` helps you to state and prove a lemma in the middle of a proof.
-`have h : p := hp` adds the hypothesis `h : p` into the context,
-where `hp` is a proof of `p` that you provide.
-
-`haveI` is similar to `have`, but it adds the hypothesis as `this`.
--/
-example (hpq : p → q) (hqr : q → r) : p → r := <span class="goal-marker" data-goal="Goals: 1
-
-Goal 1:
-p : Prop
-q : Prop
-r : Prop
-hpq : p → q
-hqr : q → r
-⊢ p → r"></span>by
-  <span class="goal-marker" data-goal="Goals: 1
-
-Goal 1:
-p : Prop
-q : Prop
-r : Prop
-hpq : p → q
-hqr : q → r
-⊢ p → r"></span>intro hp
-  <span class="goal-marker" data-goal="Goals: 1
-
-Goal 1:
-p : Prop
-q : Prop
-r : Prop
-hpq : p → q
-hqr : q → r
-hp : p
-⊢ r"></span>have hq : q := hpq hp
-  <span class="goal-marker" data-goal="Goals: 1
-
-Goal 1:
-p : Prop
-q : Prop
-r : Prop
-hpq : p → q
-hqr : q → r
-hp : p
-hq : q
-⊢ r"></span>have hr : r := <span class="goal-marker" data-goal="Goals: 2
-
-Goal 1:
-p : Prop
-q : Prop
-r : Prop
-hpq : p → q
-hqr : q → r
-hp : p
-hq : q
-⊢ r
----
-
-Goal 2:
-p : Prop
-q : Prop
-r : Prop
-hpq : p → q
-hqr : q → r
-hp : p
-hq : q
-hr : r
-⊢ r"></span>by -- combine with `by` is also possible
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+HN : N ≤ ϕ.ker
+⊢ G ⧸ N → M"></span>by
     <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
-p : Prop
-q : Prop
-r : Prop
-hpq : p → q
-hqr : q → r
-hp : p
-hq : q
-⊢ r"></span>apply hqr
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+HN : N ≤ ϕ.ker
+⊢ G ⧸ N → M"></span>apply Quotient.lift ϕ
     <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
-p : Prop
-q : Prop
-r : Prop
-hpq : p → q
-hqr : q → r
-hp : p
-hq : q
-⊢ q"></span>exact hq
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+HN : N ≤ ϕ.ker
+⊢ ∀ (a b : G), a ≈ b → ϕ a = ϕ b"></span>intro a <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+HN : N ≤ ϕ.ker
+a : G
+⊢ ∀ (b : G), a ≈ b → ϕ a = ϕ b"></span>b <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+HN : N ≤ ϕ.ker
+a : G
+b : G
+⊢ a ≈ b → ϕ a = ϕ b"></span>h
+    <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+HN : N ≤ ϕ.ker
+a : G
+b : G
+h : a ≈ b
+⊢ ϕ a = ϕ b"></span>change QuotientGroup.leftRel N a b at h
+    <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+HN : N ≤ ϕ.ker
+a : G
+b : G
+h : (QuotientGroup.leftRel N) a b
+⊢ ϕ a = ϕ b"></span>rw [<span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+HN : N ≤ ϕ.ker
+a : G
+b : G
+h : (QuotientGroup.leftRel N) a b
+⊢ ϕ a = ϕ b"></span>QuotientGroup.leftRel_apply<span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+HN : N ≤ ϕ.ker
+a : G
+b : G
+h : a⁻¹ * b ∈ N
+⊢ ϕ a = ϕ b"></span>] at h
+    <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+HN : N ≤ ϕ.ker
+a : G
+b : G
+h : a⁻¹ * b ∈ N
+⊢ ϕ a = ϕ b"></span>haveI := HN h<span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+HN : N ≤ ϕ.ker
+a : G
+b : G
+h : a⁻¹ * b ∈ N
+this : a⁻¹ * b ∈ ϕ.ker
+⊢ ϕ a = ϕ b"></span>; <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+HN : N ≤ ϕ.ker
+a : G
+b : G
+h : a⁻¹ * b ∈ N
+this : a⁻¹ * b ∈ ϕ.ker
+⊢ ϕ a = ϕ b"></span>simp at this
+    <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+HN : N ≤ ϕ.ker
+a : G
+b : G
+h : a⁻¹ * b ∈ N
+this : (ϕ a)⁻¹ * ϕ b = 1
+⊢ ϕ a = ϕ b"></span>exact eq_of_inv_mul_eq_one this
+  )
   <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
-p : Prop
-q : Prop
-r : Prop
-hpq : p → q
-hqr : q → r
-hp : p
-hq : q
-hr : r
-⊢ r"></span>exact hr
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+HN : N ≤ ϕ.ker
+⊢ ∀ (a b : G ⧸ N), Quotient.lift ⇑ϕ ⋯ (a * b) = Quotient.lift ⇑ϕ ⋯ a * Quotient.lift ⇑ϕ ⋯ b"></span>intro a <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+HN : N ≤ ϕ.ker
+a : G ⧸ N
+⊢ ∀ (b : G ⧸ N), Quotient.lift ⇑ϕ ⋯ (a * b) = Quotient.lift ⇑ϕ ⋯ a * Quotient.lift ⇑ϕ ⋯ b"></span>b
+  <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+HN : N ≤ ϕ.ker
+a : G ⧸ N
+b : G ⧸ N
+⊢ Quotient.lift ⇑ϕ ⋯ (a * b) = Quotient.lift ⇑ϕ ⋯ a * Quotient.lift ⇑ϕ ⋯ b"></span>rcases QuotientGroup.mk'_surjective N a with ⟨a, rfl⟩
+  <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+HN : N ≤ ϕ.ker
+b : G ⧸ N
+a : G
+⊢ Quotient.lift ⇑ϕ ⋯ ((QuotientGroup.mk' N) a * b) = Quotient.lift ⇑ϕ ⋯ ((QuotientGroup.mk' N) a) * Quotient.lift ⇑ϕ ⋯ b"></span>rcases QuotientGroup.mk'_surjective N b with ⟨b, rfl⟩
+  <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+HN : N ≤ ϕ.ker
+a : G
+b : G
+⊢ Quotient.lift ⇑ϕ ⋯ ((QuotientGroup.mk' N) a * (QuotientGroup.mk' N) b) =
+  Quotient.lift ⇑ϕ ⋯ ((QuotientGroup.mk' N) a) * Quotient.lift ⇑ϕ ⋯ ((QuotientGroup.mk' N) b)"></span>rw [<span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+HN : N ≤ ϕ.ker
+a : G
+b : G
+⊢ Quotient.lift ⇑ϕ ⋯ ((QuotientGroup.mk' N) a * (QuotientGroup.mk' N) b) =
+  Quotient.lift ⇑ϕ ⋯ ((QuotientGroup.mk' N) a) * Quotient.lift ⇑ϕ ⋯ ((QuotientGroup.mk' N) b)"></span>← map_mul<span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+HN : N ≤ ϕ.ker
+a : G
+b : G
+⊢ Quotient.lift ⇑ϕ ⋯ ((QuotientGroup.mk' N) (a * b)) =
+  Quotient.lift ⇑ϕ ⋯ ((QuotientGroup.mk' N) a) * Quotient.lift ⇑ϕ ⋯ ((QuotientGroup.mk' N) b)"></span>]
+  <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+HN : N ≤ ϕ.ker
+a : G
+b : G
+⊢ Quotient.lift ⇑ϕ ⋯ ((QuotientGroup.mk' N) (a * b)) =
+  Quotient.lift ⇑ϕ ⋯ ((QuotientGroup.mk' N) a) * Quotient.lift ⇑ϕ ⋯ ((QuotientGroup.mk' N) b)"></span>dsimp only [QuotientGroup.mk'_apply, Quotient.lift_mk]
+  <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+HN : N ≤ ϕ.ker
+a : G
+b : G
+⊢ ϕ (a * b) = ϕ a * ϕ b"></span>apply map_mul
+:= <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+HN : N ≤ ϕ.ker
+⊢ QuotientGroup.lift N ϕ HN =
+  have this := MonoidHom.mk' (Quotient.lift ⇑ϕ ⋯) ⋯;
+  this"></span>by <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293420._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+HN : N ≤ ϕ.ker
+⊢ QuotientGroup.lift N ϕ HN =
+  have this := MonoidHom.mk' (Quotient.lift ⇑ϕ ⋯) ⋯;
+  this"></span>rfl
 
 /-
-tactic: `suffices`
-Say our goal is `q`, `suffices hp : p from hq` changes the goal to `p`,
-as long as you can provide a proof `hq` of `q` from a proof `hp` of `p`.
-You may also switch to the tactic mode by `suffices hp : p by ...`
+### The first isomorphism theorem
+
+At last, we come to our grand finale.
 -/
 
-example (hpq : p → q) (hqr : q → r) : p → r := <span class="goal-marker" data-goal="Goals: 1
+/- Now we can lift the group homomorphisms `ϕ : G →* M` to `G ⧸ ker ϕ →* M`. -/
+example : G ⧸ ϕ.ker →* M := QuotientGroup.lift ϕ.ker ϕ (<span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
-p : Prop
-q : Prop
-r : Prop
-hpq : p → q
-hqr : q → r
-⊢ p → r"></span>by
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293421._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293421._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293421._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+⊢ ϕ.ker ≤ ϕ.ker"></span>by <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293421._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293421._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293421._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+⊢ ϕ.ker ≤ ϕ.ker"></span>simp)
+/- Recall the range restriction of `ϕ`. -/
+example : G →* ϕ.range := MonoidHom.rangeRestrict ϕ
+/- Recall the kernel of the range restriction -/
+example : ϕ.rangeRestrict.ker = ϕ.ker := MonoidHom.ker_rangeRestrict ϕ
+
+/- Combining above gives our desired homomorphism. -/
+example : QuotientGroup.rangeKerLift ϕ = <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293424._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293424._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293424._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+⊢ G ⧸ ϕ.ker →* ↥ϕ.range"></span>show G ⧸ ϕ.ker →* ϕ.range <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293424._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293424._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293424._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+⊢ G ⧸ ϕ.ker →* ↥ϕ.range"></span>by
   <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
-p : Prop
-q : Prop
-r : Prop
-hpq : p → q
-hqr : q → r
-⊢ p → r"></span>intro hp
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293424._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293424._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293424._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+⊢ G ⧸ ϕ.ker →* ↥ϕ.range"></span>let rangeRestricted := MonoidHom.rangeRestrict ϕ
   <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
-p : Prop
-q : Prop
-r : Prop
-hpq : p → q
-hqr : q → r
-hp : p
-⊢ r"></span>suffices hq : q from hqr hq
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293424._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293424._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293424._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+rangeRestricted : G →* ↥ϕ.range
+  := ϕ.rangeRestrict
+⊢ G ⧸ ϕ.ker →* ↥ϕ.range"></span>apply QuotientGroup.lift ϕ.ker rangeRestricted
   <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
-p : Prop
-q : Prop
-r : Prop
-hpq : p → q
-hqr : q → r
-hp : p
-⊢ q"></span>exact hpq hp
-
-example (hpq : p → q) (hqr : q → r) : p → r := <span class="goal-marker" data-goal="Goals: 1
-
-Goal 1:
-p : Prop
-q : Prop
-r : Prop
-hpq : p → q
-hqr : q → r
-⊢ p → r"></span>by
-  <span class="goal-marker" data-goal="Goals: 1
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293424._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293424._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293424._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+rangeRestricted : G →* ↥ϕ.range
+  := ϕ.rangeRestrict
+⊢ ϕ.ker ≤ rangeRestricted.ker"></span>rw [<span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
-p : Prop
-q : Prop
-r : Prop
-hpq : p → q
-hqr : q → r
-⊢ p → r"></span>intro hp
-  <span class="goal-marker" data-goal="Goals: 1
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293424._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293424._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293424._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+rangeRestricted : G →* ↥ϕ.range
+  := ϕ.rangeRestrict
+⊢ ϕ.ker ≤ rangeRestricted.ker"></span>MonoidHom.ker_rangeRestrict<span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
-p : Prop
-q : Prop
-r : Prop
-hpq : p → q
-hqr : q → r
-hp : p
-⊢ r"></span>suffices hq : q <span class="goal-marker" data-goal="Goals: 1
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293424._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293424._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293424._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+rangeRestricted : G →* ↥ϕ.range
+  := ϕ.rangeRestrict
+⊢ ϕ.ker ≤ ϕ.ker"></span>]
+:= <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
-p : Prop
-q : Prop
-r : Prop
-hpq : p → q
-hqr : q → r
-hp : p
-hq : q
-⊢ r"></span>by
-    <span class="goal-marker" data-goal="Goals: 1
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293424._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293424._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293424._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+⊢ QuotientGroup.rangeKerLift ϕ =
+  have this :=
+    let rangeRestricted := ϕ.rangeRestrict;
+    QuotientGroup.lift ϕ.ker rangeRestricted ⋯;
+  this"></span>by <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
-p : Prop
-q : Prop
-r : Prop
-hpq : p → q
-hqr : q → r
-hp : p
-hq : q
-⊢ r"></span>apply hqr
-    <span class="goal-marker" data-goal="Goals: 1
-
-Goal 1:
-p : Prop
-q : Prop
-r : Prop
-hpq : p → q
-hqr : q → r
-hp : p
-hq : q
-⊢ q"></span>exact hq
-  <span class="goal-marker" data-goal="Goals: 1
-
-Goal 1:
-p : Prop
-q : Prop
-r : Prop
-hpq : p → q
-hqr : q → r
-hp : p
-⊢ q"></span>exact hpq hp
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293424._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293424._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293424._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+⊢ QuotientGroup.rangeKerLift ϕ =
+  have this :=
+    let rangeRestricted := ϕ.rangeRestrict;
+    QuotientGroup.lift ϕ.ker rangeRestricted ⋯;
+  this"></span>rfl
 
 /-
-`show` (it is not a tactic!)
-Sometimes you want to clarify what exactly you are giving a proof for.
-`show p from h` make sure that `h` is interpreted as a proof of `p`.
-`show p by ...` switches to the tactic mode to construct a proof of `p`.
+It remains to show that `QuotientGroup.rangeKerLift ϕ` is an isomorphism.
+Let's attack this by showing it's both injective and surjective.
 -/
 
-example (hpq : p → q) (hqr : q → r) : p → r := <span class="goal-marker" data-goal="Goals: 1
+#check MonoidHom.ker_eq_bot_iff -- recall the kernel criterion for injectivity
+example : Function.Injective (QuotientGroup.rangeKerLift ϕ) := <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
-p : Prop
-q : Prop
-r : Prop
-hpq : p → q
-hqr : q → r
-⊢ p → r"></span>by
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293425._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293425._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293425._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+⊢ Function.Injective ⇑(QuotientGroup.rangeKerLift ϕ)"></span>by
   <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
-p : Prop
-q : Prop
-r : Prop
-hpq : p → q
-hqr : q → r
-⊢ p → r"></span>intro hp
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293425._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293425._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293425._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+⊢ Function.Injective ⇑(QuotientGroup.rangeKerLift ϕ)"></span>rw [<span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293425._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293425._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293425._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+⊢ Function.Injective ⇑(QuotientGroup.rangeKerLift ϕ)"></span>← MonoidHom.ker_eq_bot_iff, <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293425._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293425._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293425._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+⊢ (QuotientGroup.rangeKerLift ϕ).ker = ⊥"></span>Subgroup.eq_bot_iff_forall<span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293425._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293425._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293425._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+⊢ ∀ x ∈ (QuotientGroup.rangeKerLift ϕ).ker, x = 1"></span>]
   <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
-p : Prop
-q : Prop
-r : Prop
-hpq : p → q
-hqr : q → r
-hp : p
-⊢ r"></span>exact hqr (<span class="goal-marker" data-goal="Goals: 1
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293425._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293425._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293425._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+⊢ ∀ x ∈ (QuotientGroup.rangeKerLift ϕ).ker, x = 1"></span>intro gq <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
-p : Prop
-q : Prop
-r : Prop
-hpq : p → q
-hqr : q → r
-hp : p
-⊢ q"></span>show q <span class="goal-marker" data-goal="Goals: 1
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293425._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293425._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293425._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+gq : G ⧸ ϕ.ker
+⊢ gq ∈ (QuotientGroup.rangeKerLift ϕ).ker → gq = 1"></span>hgq
+
+  <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
-p : Prop
-q : Prop
-r : Prop
-hpq : p → q
-hqr : q → r
-hp : p
-⊢ q"></span>by <span class="goal-marker" data-goal="Goals: 1
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293425._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293425._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293425._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+gq : G ⧸ ϕ.ker
+hgq : gq ∈ (QuotientGroup.rangeKerLift ϕ).ker
+⊢ gq = 1"></span>induction' gq using Quotient.ind with g
+  <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
-p : Prop
-q : Prop
-r : Prop
-hpq : p → q
-hqr : q → r
-hp : p
-⊢ q"></span>apply hpq<span class="goal-marker" data-goal="Goals: 1
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293425._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293425._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293425._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+g : G
+hgq : ⟦g⟧ ∈ (QuotientGroup.rangeKerLift ϕ).ker
+⊢ ⟦g⟧ = 1"></span>unfold QuotientGroup.rangeKerLift MonoidHom.rangeRestrict at hgq
+  <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
-p : Prop
-q : Prop
-r : Prop
-hpq : p → q
-hqr : q → r
-hp : p
-⊢ p"></span>; <span class="goal-marker" data-goal="Goals: 1
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293425._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293425._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293425._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+g : G
+hgq : ⟦g⟧ ∈ (QuotientGroup.lift ϕ.ker (ϕ.codRestrict ϕ.range ⋯) ⋯).ker
+⊢ ⟦g⟧ = 1"></span>simp only [MonoidHom.mem_ker, QuotientGroup.lift_mk, MonoidHom.codRestrict_apply] at hgq
+  <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
-p : Prop
-q : Prop
-r : Prop
-hpq : p → q
-hqr : q → r
-hp : p
-⊢ p"></span>exact hp)
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293425._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293425._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293425._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+g : G
+hgq : ⟨ϕ g, ⋯⟩ = 1
+⊢ ⟦g⟧ = 1"></span>apply_fun Subtype.val at hgq<span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293425._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293425._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293425._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+g : G
+hgq : ↑⟨ϕ g, ⋯⟩ = ↑1
+⊢ ⟦g⟧ = 1"></span>; <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293425._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293425._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293425._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+g : G
+hgq : ↑⟨ϕ g, ⋯⟩ = ↑1
+⊢ ⟦g⟧ = 1"></span>dsimp at hgq
+
+  <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293425._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293425._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293425._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+g : G
+hgq : ϕ g = 1
+⊢ ⟦g⟧ = 1"></span>apply Quotient.sound
+  <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293425._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293425._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293425._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+g : G
+hgq : ϕ g = 1
+⊢ g ≈ 1"></span>change QuotientGroup.leftRel _ _ _
+  <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293425._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293425._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293425._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+g : G
+hgq : ϕ g = 1
+⊢ (QuotientGroup.leftRel ϕ.ker) g 1"></span>rw [<span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293425._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293425._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293425._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+g : G
+hgq : ϕ g = 1
+⊢ (QuotientGroup.leftRel ϕ.ker) g 1"></span>QuotientGroup.leftRel_apply<span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293425._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293425._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293425._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+g : G
+hgq : ϕ g = 1
+⊢ g⁻¹ * 1 ∈ ϕ.ker"></span>]
+  <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293425._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293425._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293425._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+g : G
+hgq : ϕ g = 1
+⊢ g⁻¹ * 1 ∈ ϕ.ker"></span>simp only [mul_one, inv_mem_iff, MonoidHom.mem_ker]
+
+  <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293425._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293425._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293425._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+g : G
+hgq : ϕ g = 1
+⊢ ϕ g = 1"></span>exact hgq
+#check QuotientGroup.rangeKerLift_injective -- corresponding Mathlib lemma
+
+example : Function.Surjective (QuotientGroup.rangeKerLift ϕ) := <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293426._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293426._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293426._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+⊢ Function.Surjective ⇑(QuotientGroup.rangeKerLift ϕ)"></span>by
+  <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293426._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293426._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293426._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+⊢ Function.Surjective ⇑(QuotientGroup.rangeKerLift ϕ)"></span>unfold QuotientGroup.rangeKerLift MonoidHom.rangeRestrict
+  <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293426._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293426._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293426._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+⊢ Function.Surjective ⇑(QuotientGroup.lift ϕ.ker (ϕ.codRestrict ϕ.range ⋯) ⋯)"></span>rintro ⟨m, g, rfl⟩
+  <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293426._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293426._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293426._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+g : G
+⊢ ∃ a, (QuotientGroup.lift ϕ.ker (ϕ.codRestrict ϕ.range ⋯) ⋯) a = ⟨ϕ g, ⋯⟩"></span>use ⟦g⟧<span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293426._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293426._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293426._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+g : G
+⊢ (QuotientGroup.lift ϕ.ker (ϕ.codRestrict ϕ.range ⋯) ⋯) ⟦g⟧ = ⟨ϕ g, ⋯⟩"></span>; <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293426._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293426._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293426._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+g : G
+⊢ (QuotientGroup.lift ϕ.ker (ϕ.codRestrict ϕ.range ⋯) ⋯) ⟦g⟧ = ⟨ϕ g, ⋯⟩"></span>simp
+
+#check QuotientGroup.rangeKerLift_surjective -- corresponding Mathlib lemma
+
+/-
+Recall that we've shown before in the exercises
+that an `Equiv` can be reached from a bijective function.
+Nothing special here for `MulEquiv`.
+-/
+#check Equiv.ofBijective
+#check MulEquiv.ofBijective
+
+/- The First Isomorphism Theorem for groups. -/
+example : QuotientGroup.quotientKerEquivRange ϕ = show G ⧸ ϕ.ker ≃* ϕ.range from
+  MulEquiv.ofBijective
+    (QuotientGroup.rangeKerLift ϕ)
+    ⟨QuotientGroup.rangeKerLift_injective ϕ, QuotientGroup.rangeKerLift_surjective ϕ⟩
+:= <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293427._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293427._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293427._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+⊢ QuotientGroup.quotientKerEquivRange ϕ =
+  have this := MulEquiv.ofBijective (QuotientGroup.rangeKerLift ϕ) ⋯;
+  this"></span>by <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293427._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293427._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293427._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+⊢ QuotientGroup.quotientKerEquivRange ϕ =
+  have this := MulEquiv.ofBijective (QuotientGroup.rangeKerLift ϕ) ⋯;
+  this"></span>rfl
+
+end
+
+/-
+### Appendix: Quotient groups under morphisms
+-/
+section
+
+variable {G M : Type*} [Group G] [Group M] (N : Subgroup G) [N.Normal]
+         (ϕ : G →* M)
+
+/- [EXR] Upgrade `Set.range_quotient_lift` to groups. -/
+example (HN : N ≤ ϕ.ker) : (QuotientGroup.lift N ϕ HN).range = ϕ.range := <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293428._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293428._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293428._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+HN : N ≤ ϕ.ker
+⊢ (QuotientGroup.lift N ϕ HN).range = ϕ.range"></span>by <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+G : Type u_1
+M : Type u_2
+inst._@.Examples.quotient.2021293428._hygCtx._hyg.4 : Group G
+inst._@.Examples.quotient.2021293428._hygCtx._hyg.7 : Group M
+N : Subgroup G
+inst._@.Examples.quotient.2021293428._hygCtx._hyg.12 : N.Normal
+ϕ : G →* M
+HN : N ≤ ϕ.ker
+⊢ (QuotientGroup.lift N ϕ HN).range = ϕ.range"></span>sorry
+
+end
+
+section
+/-
+As the case of sets, even you have two subgroups `N` and `K` that are propositionally equal,
+an element of `G ⧸ N` cannot be directly used as a `G ⧸ K` in general.
+You may, however, transfer between them via the canonical equivalence.
+-/
+#check QuotientGroup.congr
+#check QuotientGroup.quotientMulEquivOfEq
 
 end
