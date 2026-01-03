@@ -101,7 +101,14 @@ def collectInfoFromTrees (trees : PersistentArray InfoTree) (fileMap : FileMap) 
   return (infoArray, results)
 
 /-- Process a Lean file and extract all info tree data -/
-def processFile (fileName : String) : IO Unit := do
+def processFile (fileName : String) (outputFile : Option String := none) : IO Unit := do
+  -- Determine output filename
+  let outputPath := match outputFile with
+    | some path => path
+    | none =>
+      -- Extract basename without path and replace .lean with .json
+      let baseName := FilePath.mk fileName |>.fileName.getD fileName
+      baseName.stripSuffix ".lean" ++ ".json"
   -- Initialize Lean environment
   initSearchPath (← findSysroot)
 
@@ -132,12 +139,17 @@ def processFile (fileName : String) : IO Unit := do
     ("positions", Lean.Json.arr positions)
   ]
 
-  IO.FS.writeFile "info.json" jsonOutput.pretty
-  IO.println "Generated info.json"
+  IO.FS.writeFile outputPath jsonOutput.pretty
+  IO.println s!"Generated {outputPath}"
 
 def main (args : List String) : IO Unit := do
   match args with
-  | [fileName] => processFile fileName
+  | [fileName] => processFile fileName none
+  | ["-o", outputFile, fileName] => processFile fileName (some outputFile)
+  | [fileName, "-o", outputFile] => processFile fileName (some outputFile)
   | _ =>
-    IO.println "Usage: staticInfoView <lean-file>"
+    IO.println "Usage: staticInfoView [options] <lean-file>"
+    IO.println "Options:"
+    IO.println "  -o <file>    Specify output file (default: <input>.json)"
     IO.println "Example: staticInfoView Examples/Basic.lean"
+    IO.println "         staticInfoView -o output.json Examples/Basic.lean"

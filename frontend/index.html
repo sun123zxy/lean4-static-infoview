@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lean Static InfoView</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <input type="file" id="file-input" accept=".json" style="display: none;">
+    
+    <div id="container">
+        <div id="toolbar">
+            <button id="change-file-btn" class="toolbar-btn">Load JSON</button>
+            <span id="current-file-name"></span>
+        </div>
+        <div id="main-content">
+            <div id="code-panel">
+                <div id="instructions">
+                    Click on any character or use arrow keys to navigate. The info panel shows tactic states.
+                </div>
+                <div id="code-content"></div>
+            </div>
+            <div id="info-panel">
+                <div class="info-title">Lean InfoView</div>
+                <div id="info-content" class="info-empty">
+                    Click on the code to see information
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>
