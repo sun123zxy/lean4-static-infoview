@@ -1,144 +1,141 @@
 // ============================================================================
-// Position Management and Keyboard Navigation
+// Navigation and Marker Selection
 // ============================================================================
 
 import { state } from './state.js';
 import { updateInfoPanel } from './infoPanel.js';
 
-export function setPosition(offset) {
-    state.currentPosition = offset;
+export function setupMarkerClickHandlers() {
+    const markers = document.querySelectorAll('.goal-marker');
     
-    // Throttle updates using requestAnimationFrame
-    if (!state.updateScheduled) {
-        state.updateScheduled = true;
-        requestAnimationFrame(() => {
-            state.updateScheduled = false;
-            
-            // Remove previous active class (cached reference)
-            if (state.activeElement) {
-                state.activeElement.classList.remove('active');
-            }
-            
-            // Get element from cache (O(1) lookup)
-            const charElement = state.offsetToElement.get(state.currentPosition);
-            if (charElement) {
-                charElement.classList.add('active');
-                charElement.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'auto' });
-                state.activeElement = charElement;
-            }
-            
-            // Update info panel
-            updateInfoPanel(state.currentPosition);
+    markers.forEach(marker => {
+        marker.addEventListener('click', (e) => {
+            e.stopPropagation();
+            selectMarker(marker);
         });
-    }
-}
-
-export function findPreviousOffset(offset) {
-    if (state.tacticOffsets.length === 0) return offset;
-    
-    let left = 0, right = state.tacticOffsets.length - 1;
-    
-    while (left <= right) {
-        const mid = Math.floor((left + right) / 2);
-        state.tacticOffsets[mid] < offset ? left = mid + 1 : right = mid - 1;
-    }
-    
-    return right >= 0 ? state.tacticOffsets[right] : offset;
-}
-
-export function findNextOffset(offset) {
-    if (state.tacticOffsets.length === 0) return offset;
-    
-    let left = 0, right = state.tacticOffsets.length - 1;
-    
-    while (left <= right) {
-        const mid = Math.floor((left + right) / 2);
-        state.tacticOffsets[mid] <= offset ? left = mid + 1 : right = mid - 1;
-    }
-    
-    return left < state.tacticOffsets.length ? state.tacticOffsets[left] : offset;
-}
-
-export function moveVertical(direction) {
-    if (!state.infoData || state.lineOffsets.length === 0 || state.tacticOffsets.length === 0) {
-        return state.currentPosition;
-    }
-    
-    // Binary search to find current line
-    let currentLine = 0;
-    for (let i = 0; i < state.lineOffsets.length; i++) {
-        if (state.currentPosition < state.lineOffsets[i]) {
-            currentLine = i - 1;
-            break;
-        }
-        if (i === state.lineOffsets.length - 1) {
-            currentLine = i;
-        }
-    }
-    
-    const currentColumn = state.currentPosition - state.lineOffsets[currentLine];
-    
-    // Search for the next/previous line with tactics
-    let searchLine = currentLine + direction;
-    
-    while (searchLine >= 0 && searchLine < state.lineOffsets.length) {
-        const lineStart = state.lineOffsets[searchLine];
-        const lineEnd = searchLine + 1 < state.lineOffsets.length 
-            ? state.lineOffsets[searchLine + 1] - 1 
-            : state.tacticOffsets[state.tacticOffsets.length - 1];
         
-        // Try to find a tactic on this line at the target column
-        const targetOffset = lineStart + currentColumn;
+        // Make markers tabbable
+        marker.setAttribute('tabindex', '0');
         
-        // First, try to find tactic at or near target column
-        for (let i = 0; i < state.tacticOffsets.length; i++) {
-            if (state.tacticOffsets[i] >= targetOffset && state.tacticOffsets[i] <= lineEnd) {
-                return state.tacticOffsets[i];
+        // Handle Enter/Space on focused marker
+        marker.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                selectMarker(marker);
+            }
+        });
+    });
+    
+    // Auto-select first marker
+    if (markers.length > 0) {
+        selectMarker(markers[0]);
+    }
+}
+
+function selectMarker(marker) {
+    // Remove active class from previous marker
+    if (state.currentMarker) {
+        state.currentMarker.classList.remove('active');
+    }
+    
+    // Add active class to new marker
+    marker.classList.add('active');
+    state.currentMarker = marker;
+    
+    // Scroll into view
+    marker.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    
+    // Update info panel with goal text from data attribute
+    const goalText = marker.getAttribute('data-goal');
+    updateInfoPanel(goalText);
+}
+
+function getYPosition(element) {
+    return element.offsetTop;
+}
+
+function findMarkerOnDifferentLine(markers, currentIndex, direction) {
+    const currentY = getYPosition(markers[currentIndex]);
+    const tolerance = 5; // pixels tolerance for same line
+    
+    if (direction === 'next') {
+        // Find first marker on next line (leftmost)
+        for (let i = currentIndex + 1; i < markers.length; i++) {
+            const markerY = getYPosition(markers[i]);
+            if (Math.abs(markerY - currentY) > tolerance) {
+                return i;
+            }
+        }
+    } else { // previous
+        // Find first marker on previous line (leftmost)
+        // First, find any marker on a different line going backward
+        let targetY = null;
+        for (let i = currentIndex - 1; i >= 0; i--) {
+            const markerY = getYPosition(markers[i]);
+            if (Math.abs(markerY - currentY) > tolerance) {
+                targetY = markerY;
+                break;
             }
         }
         
-        // If no tactic at target column, find any tactic on this line
-        for (let i = 0; i < state.tacticOffsets.length; i++) {
-            if (state.tacticOffsets[i] >= lineStart && state.tacticOffsets[i] <= lineEnd) {
-                return state.tacticOffsets[i];
+        // If found a different line, find the leftmost marker on that line
+        if (targetY !== null) {
+            for (let i = 0; i < markers.length; i++) {
+                const markerY = getYPosition(markers[i]);
+                if (Math.abs(markerY - targetY) <= tolerance) {
+                    return i;
+                }
             }
         }
-        
-        // No tactics on this line, continue searching
-        searchLine += direction;
     }
-    
-    // No tactics found in that direction
-    return state.currentPosition;
+    return currentIndex; // Stay at current if no marker found on different line
 }
 
 export function setupKeyboardNavigation() {
     document.addEventListener('keydown', (e) => {
-        if (!state.infoData) return;
+        if (!state.currentMarker) return;
         
-        let newPosition = state.currentPosition;
+        const markers = Array.from(document.querySelectorAll('.goal-marker'));
+        const currentIndex = markers.indexOf(state.currentMarker);
+        let newIndex = currentIndex;
         
         switch(e.key) {
             case 'ArrowLeft':
+            case 'PageUp':
                 e.preventDefault();
-                newPosition = findPreviousOffset(state.currentPosition);
+                if (currentIndex > 0) {
+                    newIndex = currentIndex - 1;
+                }
                 break;
             case 'ArrowRight':
+            case 'PageDown':
                 e.preventDefault();
-                newPosition = findNextOffset(state.currentPosition);
+                if (currentIndex < markers.length - 1) {
+                    newIndex = currentIndex + 1;
+                }
                 break;
             case 'ArrowUp':
                 e.preventDefault();
-                newPosition = moveVertical(-1);
+                newIndex = findMarkerOnDifferentLine(markers, currentIndex, 'previous');
                 break;
             case 'ArrowDown':
                 e.preventDefault();
-                newPosition = moveVertical(1);
+                newIndex = findMarkerOnDifferentLine(markers, currentIndex, 'next');
+                break;
+            case 'Home':
+                e.preventDefault();
+                newIndex = 0;
+                break;
+            case 'End':
+                e.preventDefault();
+                newIndex = markers.length - 1;
                 break;
             default:
                 return;
         }
         
-        setPosition(newPosition);
+        if (newIndex !== currentIndex) {
+            selectMarker(markers[newIndex]);
+        }
     });
 }

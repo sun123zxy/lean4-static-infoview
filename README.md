@@ -4,23 +4,25 @@ Disclaimer: This project is purely experimental, mainly written by LLM assistant
 
 [The VSCode extension for Lean 4](https://github.com/leanprover/vscode-lean4) has a dynamic InfoView implementation. This project aims to provide a static alternative. It does not require a backend or a running Lean server, making it particularly useful for posting Lean code on static websites (e.g., blogs) for educational purposes.
 
-It consists of a Lean program that pregenerates JSON files containing the info trees for a specified Lean file, and then an HTML/JS frontend that loads the JSON and displays the info trees with the code.
+It consists of a Lean program that generates HTML files with embedded tactic state markers, and an HTML/JS frontend that displays the code with interactive goal markers.
 
 ## Usage
 
-### Building static info JSON
+### Generating static info HTML
 
 ```bash
 lake build
-lake exe staticInfoView Examples/Basic.lean -o info.json
+lake exe staticInfoView Examples/Basic.lean -o info.html
 ```
 
 ### View in the frontend
 
-Open `frontend/index.html` in a web browser. Use the file picker to load the generated JSON file.
+Open `frontend/index.html` in a web browser. Use the file picker to load the generated HTML file.
 
 ### Navigation
 
-- **Mouse**: Click any character to see the tactic state at that position
-- **Arrow Left/Right**: Navigate to previous/next tactic position
-- **Arrow Up/Down**: Move to tactic on previous/next line
+- **Mouse**: Click on any goal marker (▸) to see the tactic state
+- **Arrow Left/Right**: Navigate to previous/next marker
+- **Arrow Up/Down**: Jump to the leftmost marker on the previous/next line
+- **Page Up/Down**: Same as Arrow Left/Right
+- **Home/End**: Jump to first/last marker

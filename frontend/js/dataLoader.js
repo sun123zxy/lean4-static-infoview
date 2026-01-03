@@ -5,41 +5,28 @@
 import { state, resetState } from './state.js';
 import { displayCode } from './codeDisplay.js';
 
-export function processInfoData(data, filename = 'info.json') {
-    state.infoData = data;
-    
+export function processHtmlData(html, filename = 'info.html') {
     // Reset state
     resetState();
-    
-    // Build position map and tactic offset array using info_strings lookup
-    if (data.positions && data.info_strings) {
-        const offsets = [];
-        data.positions.forEach(pos => {
-            const infoText = data.info_strings[pos.info_id];
-            state.positionMap.set(pos.offset, [infoText]);
-            offsets.push(pos.offset);
-        });
-        // Sort offsets for binary search
-        state.tacticOffsets = offsets.sort((a, b) => a - b);
-    }
+    state.currentFile = filename;
     
     // Update filename display
     document.getElementById('current-file-name').textContent = filename;
     
-    displayCode(data.source);
+    displayCode(html);
 }
 
 export async function loadDefaultFile() {
     try {
-        const response = await fetch('info.json');
+        const response = await fetch('info.html');
         if (!response.ok) {
             throw new Error('File not found');
         }
-        const data = await response.json();
-        processInfoData(data, 'info.json');
+        const html = await response.text();
+        processHtmlData(html, 'info.html');
     } catch (error) {
-        console.error('Error loading info.json:', error);
-        alert('Error: Could not load info.json. Generate it first with: lake exe staticInfoView <file.lean>');
+        console.error('Error loading info.html:', error);
+        alert('Error: Could not load info.html. Generate it first with: lake exe staticInfoView <file.lean>');
     }
 }
 
@@ -48,16 +35,10 @@ export function loadFromFile(file) {
     
     reader.onload = (e) => {
         try {
-            const data = JSON.parse(e.target.result);
-            
-            // Validate structure
-            if (!data.source || !data.positions || !data.info_strings) {
-                throw new Error('Invalid JSON structure');
-            }
-            
-            processInfoData(data, file.name);
+            const html = e.target.result;
+            processHtmlData(html, file.name);
         } catch (error) {
-            console.error('Error parsing JSON:', error);
+            console.error('Error loading file:', error);
             alert(`Error: ${error.message}`);
         }
     };

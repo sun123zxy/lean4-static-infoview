@@ -2,47 +2,50 @@
 
 ### Components Implemented
 
-1. **Main.lean** - Lean program for extracting info trees
+1. **Main.lean** - Lean program for extracting info trees and generating HTML
    - `formatGoal`: Formats goals with proper variable names using `withLCtx` for correct pretty-printing
-   - `collectInfoFromTrees`: Traverses InfoTree nodes to extract tactic states with goal deduplication
-   - `processFile`: Main pipeline that parses, elaborates, and exports JSON
+   - `collectInfoFromTrees`: Traverses InfoTree nodes to extract tactic states
+   - `processFile`: Main pipeline that parses, elaborates, and generates HTML with inline goal markers
    - Focuses exclusively on tactic state information (goals, hypotheses, targets)
-   - Uses RBMap to deduplicate goal strings and store them separately with ID references
+   - Outputs plain HTML with visible goal markers: `<span class="goal-marker" data-goal="{goal}">▸</span>`
 
 2. **Frontend** - Modular HTML/CSS/JS interface (in `frontend/` directory)
-   - **index.html**: File picker + split-panel layout (code view | info panel)
-   - **css/style.css**: VS Code-inspired dark theme with file picker UI
+   - **index.html**: Split-panel layout (code view | info panel) with file picker
+   - **css/style.css**: VS Code-inspired dark theme with goal marker styles
    - **js/main.js**: Entry point and initialization
-   - **js/state.js**: Centralized state management
-   - **js/dataLoader.js**: JSON loading, file handling, and validation
-   - **js/codeDisplay.js**: Code rendering with UTF-8 byte offset calculation
-   - **js/navigation.js**: Position management and keyboard navigation
+   - **js/state.js**: Minimal state management (currentMarker)
+   - **js/dataLoader.js**: HTML file loading and validation
+   - **js/codeDisplay.js**: Injects HTML and sets up click handlers
+   - **js/navigation.js**: Marker click handling and keyboard navigation with line-aware movement
    - **js/infoPanel.js**: Info panel rendering with goal syntax highlighting
 
 3. **lakefile.toml** - Build configuration
 
 ### Key Technical Details
 
-- **Modular Architecture**: JavaScript split into modules
-- **File Picker UI**: Users can select any info JSON file, not just the default
+- **HTML Generation**: Direct HTML output from Lean instead of JSON (simpler architecture)
+- **Visible Markers**: Goal markers are inline `<span>` elements with triangle icons (▸)
+- **Click-Only Interaction**: Users can only click markers, not arbitrary text positions
+- **Line-Aware Navigation**: 
+  - Arrow Up/Down: Jumps to leftmost marker on previous/next line
+  - Arrow Left/Right: Moves to adjacent markers
+  - Uses `offsetTop` with tolerance to detect same-line markers
 - **Tactic-Only Extraction**: Focuses exclusively on `TacticInfo.goalsBefore`, ignoring term type information
 - **Pretty Printing**: Uses `withLCtx` with proper local context to show actual variable names instead of internal `_fvar` identifiers
-- **Offset Handling**: JavaScript calculates UTF-8 byte offsets using `new Blob([char]).size` to match Lean's byte indexing
-- **Goal Deduplication**: Uses RBMap to store unique goal strings once, referenced by ID from position entries
-- **Compression**: Achieves ~27% reduction in JSON size (21KB → 15KB) by deduplicating consecutive same goals
-- **Smart Navigation**: Binary search finds the most recent tactic state for any clicked position
-- **Syntax Highlighting**: CSS classes colorize goal components (hypotheses in blue, turnstile in purple, targets in yellow)
+- **UTF-8 Handling**: Uses `String.next()` for proper multi-byte character advancement
+- **Syntax Highlighting**: CSS classes colorize goal components (hypotheses, turnstile, targets)
 - **ES6 Modules**: Uses native browser module support for clean imports/exports
+- **Visual Feedback**: Markers scale and glow on hover/selection
 
-### JSON Format
+### HTML Format
 
-```json
-{
-  "source": "source code...",
-  "info_strings": ["goal text 1", "goal text 2", ...],
-  "positions": [
-    {"offset": 102, "line": 3, "column": 55, "info_id": 0},
-    ...
-  ]
-}
+Generated HTML contains plain text with inline goal markers:
+
+```html
+theorem mp : p → (p → q) → q := <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+p : Prop
+q : Prop
+⊢ p → (p → q) → q">▸</span>by ...
 ```

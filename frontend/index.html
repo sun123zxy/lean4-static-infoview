@@ -7,20 +7,21 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <input type="file" id="file-input" accept=".json" style="display: none;">
+    <input type="file" id="file-input" accept=".html" style="display: none;">
     
     <div id="container">
         <div id="toolbar">
-            <button id="change-file-btn" class="toolbar-btn">Load JSON</button>
+            <button id="change-file-btn" class="toolbar-btn">Load Static Info</button>
             <span id="current-file-name"></span>
         </div>
         <div id="main-content">
             <div id="code-panel">
                 <div id="instructions">
-                    Click on any character or use arrow keys to navigate. The info panel shows tactic states.
+                    Click on any goal marker or use arrow keys to navigate. The info panel shows tactic states.
                 </div>
                 <div id="code-content"></div>
             </div>
+            <div id="resize-handle"></div>
             <div id="info-panel">
                 <div class="info-title">Lean InfoView</div>
                 <div id="info-content" class="info-empty">

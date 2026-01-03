@@ -2,8 +2,6 @@
 // Info Panel Management and Goal Syntax Highlighting
 // ============================================================================
 
-import { state } from './state.js';
-
 export function colorizeGoal(text) {
     const lines = text.split('\n');
     let html = '';
@@ -60,55 +58,17 @@ function escapeHtml(text) {
     return div.innerHTML;
 }
 
-export function updateInfoPanel(offset) {
-    if (!state.infoContentElement) {
-        state.infoContentElement = document.getElementById('info-content');
-    }
+export function updateInfoPanel(goalText) {
+    const infoContent = document.getElementById('info-content');
     
-    // Look for info at this position
-    let info = state.positionMap.get(offset);
-    
-    // If no exact match, find the most recent tactic state before this position
-    if (!info && state.tacticOffsets.length > 0) {
-        // Binary search to find the position at or before the clicked offset
-        let left = 0;
-        let right = state.tacticOffsets.length - 1;
-        let bestOffset = -1;
+    if (goalText && goalText.trim()) {
+        infoContent.innerHTML = '';
         
-        while (left <= right) {
-            const mid = Math.floor((left + right) / 2);
-            const midOffset = state.tacticOffsets[mid];
-            
-            if (midOffset <= offset) {
-                bestOffset = midOffset;
-                left = mid + 1;
-            } else {
-                right = mid - 1;
-            }
-        }
-        
-        // Use the most recent tactic state
-        if (bestOffset >= 0) {
-            info = state.positionMap.get(bestOffset);
-        }
-    }
-    
-    // Skip re-rendering if info hasn't changed
-    if (info === state.lastRenderedInfo) {
-        return;
-    }
-    state.lastRenderedInfo = info;
-    
-    if (info && info.length > 0) {
-        state.infoContentElement.innerHTML = '';
-        info.forEach(message => {
-            const msgDiv = document.createElement('div');
-            msgDiv.className = 'info-message';
-            // Apply syntax highlighting to goal text
-            msgDiv.innerHTML = colorizeGoal(message);
-            state.infoContentElement.appendChild(msgDiv);
-        });
+        const msgDiv = document.createElement('div');
+        msgDiv.className = 'info-message';
+        msgDiv.innerHTML = colorizeGoal(goalText);
+        infoContent.appendChild(msgDiv);
     } else {
-        state.infoContentElement.innerHTML = '<div class="info-empty">No information available at this position</div>';
+        infoContent.innerHTML = '<div class="info-empty">No information available at this position</div>';
     }
 }

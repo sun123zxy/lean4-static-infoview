@@ -35,20 +35,18 @@ def formatGoal (mvarId : MVarId) : MetaM String := do
 
     return result
 
-/-- Collect tactic state information from info trees with deduplication -/
-def collectInfoFromTrees (trees : PersistentArray InfoTree) (fileMap : FileMap) :
-    IO (Lean.Json × Array Lean.Json) := do
-  let resultsRef ← IO.mkRef #[]
+/-- Collect tactic state information from info trees and generate HTML -/
+def collectInfoFromTrees (trees : PersistentArray InfoTree) (source : String) (fileMap : FileMap) :
+    IO String := do
+  -- Build array of (offset, goalText) pairs
+  let positionsRef ← IO.mkRef #[]
   let seenRef ← IO.mkRef #[]
-  let infoStringsRef ← IO.mkRef #[]
-  let infoMapRef ← IO.mkRef (Lean.RBMap.empty : Lean.RBMap String Nat compare)
 
   for tree in trees do
     let _ ← tree.visitM (m := IO) (α := Unit) (preNode := fun ctx info _ => do
       match info with
       | .ofTacticInfo ti =>
         if let some range := ti.stx.getRange? then
-          let lspPos := fileMap.toPosition range.start
           let offset := range.start.byteIdx
 
           -- Check if we've already seen this offset
@@ -73,32 +71,39 @@ def collectInfoFromTrees (trees : PersistentArray InfoTree) (fileMap : FileMap) 
                   result := result ++ (← formatGoal mvarId)
                 return result)
 
-            -- Get or create info string ID for deduplication
-            let infoMap ← infoMapRef.get
-            let infoId ← match infoMap.find? goalsBeforeStr with
-              | some id => pure id
-              | none =>
-                let infoStrings ← infoStringsRef.get
-                let newId := infoStrings.size
-                infoStringsRef.set (infoStrings.push goalsBeforeStr)
-                infoMapRef.set (infoMap.insert goalsBeforeStr newId)
-                pure newId
-
-            let json := Lean.Json.mkObj [
-              ("line", lspPos.line),
-              ("column", lspPos.column),
-              ("offset", offset),
-              ("info_id", infoId)
-            ]
-            resultsRef.modify (·.push json)
+            positionsRef.modify (·.push (offset, goalsBeforeStr))
         return true
 
       | _ => return true) (fun _ _ _ _ => pure ())
 
-  let infoStrings ← infoStringsRef.get
-  let infoArray := Lean.Json.arr (infoStrings.map Lean.Json.str)
-  let results ← resultsRef.get
-  return (infoArray, results)
+  let positions ← positionsRef.get
+  -- Sort by offset
+  let sortedPositions := positions.qsort (fun a b => a.1 < b.1)
+
+  -- Generate HTML with plain text and markers
+  let mut html := ""
+  let mut currentPos := 0
+
+  for (offset, goalText) in sortedPositions do
+    -- Add text before this position
+    if currentPos < offset then
+      let textSegment := source.extract ⟨currentPos⟩ ⟨offset⟩
+      -- Escape HTML characters
+      let escaped := textSegment.replace "&" "&amp;" |>.replace "<" "&lt;" |>.replace ">" "&gt;"
+      html := html ++ escaped
+
+    -- Insert goal marker
+    let escapedGoal := goalText.replace "&" "&amp;" |>.replace "<" "&lt;" |>.replace ">" "&gt;"
+    html := html ++ s!"<span class=\"goal-marker\" data-goal=\"{escapedGoal}\">▸</span>"
+    currentPos := offset
+
+  -- Add remaining text
+  if currentPos < source.length then
+    let textSegment := source.extract ⟨currentPos⟩ ⟨source.length⟩
+    let escaped := textSegment.replace "&" "&amp;" |>.replace "<" "&lt;" |>.replace ">" "&gt;"
+    html := html ++ escaped
+
+  return html
 
 /-- Process a Lean file and extract all info tree data -/
 def processFile (fileName : String) (outputFile : Option String := none) : IO Unit := do
@@ -106,9 +111,9 @@ def processFile (fileName : String) (outputFile : Option String := none) : IO Un
   let outputPath := match outputFile with
     | some path => path
     | none =>
-      -- Extract basename without path and replace .lean with .json
+      -- Extract basename without path and replace .lean with .html
       let baseName := FilePath.mk fileName |>.fileName.getD fileName
-      baseName.stripSuffix ".lean" ++ ".json"
+      baseName.stripSuffix ".lean" ++ ".html"
   -- Initialize Lean environment
   initSearchPath (← findSysroot)
 
@@ -128,18 +133,12 @@ def processFile (fileName : String) (outputFile : Option String := none) : IO Un
   let commandState := { Command.mkState env messages {} with infoState.enabled := true }
   let s ← IO.processCommands inputCtx parserState commandState
 
-  -- Extract and collect info from trees
+  -- Extract and generate HTML from trees
   let trees := s.commandState.infoState.trees.toArray
-  let (infoArray, positions) ← collectInfoFromTrees trees.toPArray' inputCtx.fileMap
+  let html ← collectInfoFromTrees trees.toPArray' source inputCtx.fileMap
 
-  -- Write JSON output
-  let jsonOutput := Lean.Json.mkObj [
-    ("source", source),
-    ("info_strings", infoArray),
-    ("positions", Lean.Json.arr positions)
-  ]
-
-  IO.FS.writeFile outputPath jsonOutput.pretty
+  -- Write HTML output
+  IO.FS.writeFile outputPath html
   IO.println s!"Generated {outputPath}"
 
 def main (args : List String) : IO Unit := do
@@ -150,6 +149,6 @@ def main (args : List String) : IO Unit := do
   | _ =>
     IO.println "Usage: staticInfoView [options] <lean-file>"
     IO.println "Options:"
-    IO.println "  -o <file>    Specify output file (default: <input>.json)"
+    IO.println "  -o <file>    Specify output file (default: <input>.html)"
     IO.println "Example: staticInfoView Examples/Basic.lean"
-    IO.println "         staticInfoView -o output.json Examples/Basic.lean"
+    IO.println "         staticInfoView -o output.html Examples/Basic.lean"
