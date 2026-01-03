@@ -94,12 +94,12 @@ def collectInfoFromTrees (trees : PersistentArray InfoTree) (source : String) :
 
     -- Insert goal marker
     let escapedGoal := goalText.replace "&" "&amp;" |>.replace "<" "&lt;" |>.replace ">" "&gt;"
-    html := html ++ s!"<span class=\"goal-marker\" data-goal=\"{escapedGoal}\">▸</span>"
+    html := html ++ s!"<span class=\"goal-marker\" data-goal=\"{escapedGoal}\"></span>"
     currentPos := offset
 
   -- Add remaining text
-  if currentPos < source.length then
-    let textSegment := String.Pos.Raw.extract source ⟨currentPos⟩ ⟨source.length⟩
+  if currentPos < source.utf8ByteSize then
+    let textSegment := String.Pos.Raw.extract source ⟨currentPos⟩ ⟨source.utf8ByteSize⟩
     let escaped := textSegment.replace "&" "&amp;" |>.replace "<" "&lt;" |>.replace ">" "&gt;"
     html := html ++ escaped
 

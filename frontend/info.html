@@ -28,12 +28,12 @@ theorem mp : p → (p → q) → q := <span class="goal-marker" data-goal="Goals
 Goal 1:
 p : Prop
 q : Prop
-⊢ p → (p → q) → q">▸</span>by <span class="goal-marker" data-goal="Goals: 1
+⊢ p → (p → q) → q"></span>by <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 p : Prop
 q : Prop
-⊢ p → (p → q) → q">▸</span>sorry -- `sorry` is a placeholder for unfinished proofs
+⊢ p → (p → q) → q"></span>sorry -- `sorry` is a placeholder for unfinished proofs
 
 /-
 By the Curry--Howard correspondence, `p → q` is also understood as
@@ -92,14 +92,14 @@ p : Prop
 q : Prop
 r : Prop
 hp : p
-⊢ p">▸</span>by <span class="goal-marker" data-goal="Goals: 1
+⊢ p"></span>by <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 p : Prop
 q : Prop
 r : Prop
 hp : p
-⊢ p">▸</span>exact hp
+⊢ p"></span>exact hp
 
 /-
 tactic: `exact`
@@ -115,7 +115,7 @@ q : Prop
 r : Prop
 hp : p
 hpq : p → q
-⊢ q">▸</span>by <span class="goal-marker" data-goal="Goals: 1
+⊢ q"></span>by <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 p : Prop
@@ -123,7 +123,7 @@ q : Prop
 r : Prop
 hp : p
 hpq : p → q
-⊢ q">▸</span>exact?
+⊢ q"></span>exact?
 
 /-
 tactic: `intro`
@@ -140,7 +140,7 @@ p : Prop
 q : Prop
 r : Prop
 hp : p
-⊢ (p → q) → q">▸</span>by
+⊢ (p → q) → q"></span>by
   <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
@@ -148,7 +148,7 @@ p : Prop
 q : Prop
 r : Prop
 hp : p
-⊢ (p → q) → q">▸</span>intro hpq
+⊢ (p → q) → q"></span>intro hpq
   <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
@@ -157,7 +157,7 @@ q : Prop
 r : Prop
 hp : p
 hpq : p → q
-⊢ q">▸</span>exact hpq hp
+⊢ q"></span>exact hpq hp
 
 example (hq : q) : p → q := <span class="goal-marker" data-goal="Goals: 1
 
@@ -166,7 +166,7 @@ p : Prop
 q : Prop
 r : Prop
 hq : q
-⊢ p → q">▸</span>by
+⊢ p → q"></span>by
   <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
@@ -174,7 +174,7 @@ p : Prop
 q : Prop
 r : Prop
 hq : q
-⊢ p → q">▸</span>intro _  -- use `_` as a placeholder if the introduced hypothesis is not needed
+⊢ p → q"></span>intro _  -- use `_` as a placeholder if the introduced hypothesis is not needed
   <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
@@ -183,7 +183,7 @@ q : Prop
 r : Prop
 hq : q
 a._@._internal.0.Examples.Basic.2021293404._hygCtx._hyg.13 : p
-⊢ q">▸</span>exact hq
+⊢ q"></span>exact hq
 
 /- modus ponens, with two hidden hypothesis -/
 example : p → (p → q) → q := <span class="goal-marker" data-goal="Goals: 1
@@ -192,21 +192,21 @@ Goal 1:
 p : Prop
 q : Prop
 r : Prop
-⊢ p → (p → q) → q">▸</span>by
+⊢ p → (p → q) → q"></span>by
   <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 p : Prop
 q : Prop
 r : Prop
-⊢ p → (p → q) → q">▸</span>intro hp <span class="goal-marker" data-goal="Goals: 1
+⊢ p → (p → q) → q"></span>intro hp <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 p : Prop
 q : Prop
 r : Prop
 hp : p
-⊢ (p → q) → q">▸</span>hpq -- you can `intro` multiple hypotheses at once
+⊢ (p → q) → q"></span>hpq -- you can `intro` multiple hypotheses at once
   <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
@@ -215,7 +215,7 @@ q : Prop
 r : Prop
 hp : p
 hpq : p → q
-⊢ q">▸</span>exact hpq hp
+⊢ q"></span>exact hpq hp
 
 /- [EXR] transitivity of `→` -/
 example : (p → q) → (q → r) → (p → r) := <span class="goal-marker" data-goal="Goals: 1
@@ -224,21 +224,21 @@ Goal 1:
 p : Prop
 q : Prop
 r : Prop
-⊢ (p → q) → (q → r) → p → r">▸</span>by
+⊢ (p → q) → (q → r) → p → r"></span>by
   <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 p : Prop
 q : Prop
 r : Prop
-⊢ (p → q) → (q → r) → p → r">▸</span>intro hpq <span class="goal-marker" data-goal="Goals: 1
+⊢ (p → q) → (q → r) → p → r"></span>intro hpq <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 p : Prop
 q : Prop
 r : Prop
 hpq : p → q
-⊢ (q → r) → p → r">▸</span>hqr <span class="goal-marker" data-goal="Goals: 1
+⊢ (q → r) → p → r"></span>hqr <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 p : Prop
@@ -246,7 +246,7 @@ q : Prop
 r : Prop
 hpq : p → q
 hqr : q → r
-⊢ p → r">▸</span>hp
+⊢ p → r"></span>hp
   <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
@@ -256,7 +256,7 @@ r : Prop
 hpq : p → q
 hqr : q → r
 hp : p
-⊢ r">▸</span>exact hqr (hpq hp)
+⊢ r"></span>exact hqr (hpq hp)
 
 /-
 tactic: `apply`
@@ -272,7 +272,7 @@ q : Prop
 r : Prop
 hp : p
 hpq : p → q
-⊢ q">▸</span>by
+⊢ q"></span>by
   <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
@@ -281,7 +281,7 @@ q : Prop
 r : Prop
 hp : p
 hpq : p → q
-⊢ q">▸</span>apply hpq
+⊢ q"></span>apply hpq
   <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
@@ -290,7 +290,7 @@ q : Prop
 r : Prop
 hp : p
 hpq : p → q
-⊢ p">▸</span>exact hp
+⊢ p"></span>exact hp
 
 /- [EXR] transitivity of `→` -/
 example (hpq : p → q) (hqr : q → r) : p → r := <span class="goal-marker" data-goal="Goals: 1
@@ -301,7 +301,7 @@ q : Prop
 r : Prop
 hpq : p → q
 hqr : q → r
-⊢ p → r">▸</span>by
+⊢ p → r"></span>by
   <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
@@ -310,17 +310,7 @@ q : Prop
 r : Prop
 hpq : p → q
 hqr : q → r
-⊢ p → r">▸</span>intro hp
-  <span class="goal-marker" data-goal="Goals: 1
-
-Goal 1:
-p : Prop
-q : Prop
-r : Prop
-hpq : p → q
-hqr : q → r
-hp : p
-⊢ r">▸</span>apply hqr
+⊢ p → r"></span>intro hp
   <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
@@ -330,7 +320,7 @@ r : Prop
 hpq : p → q
 hqr : q → r
 hp : p
-⊢ q">▸</span>apply hpq
+⊢ r"></span>apply hqr
   <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
@@ -340,7 +330,17 @@ r : Prop
 hpq : p → q
 hqr : q → r
 hp : p
-⊢ p">▸</span>exact hp
+⊢ q"></span>apply hpq
+  <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+p : Prop
+q : Prop
+r : Prop
+hpq : p → q
+hqr : q → r
+hp : p
+⊢ p"></span>exact hp
 
 /-
 [IGNORE] Above tactics are minimal and sufficient for simple proofs.
@@ -362,7 +362,7 @@ q : Prop
 r : Prop
 hp : p
 hpq : p → q
-⊢ q">▸</span>by
+⊢ q"></span>by
   <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
@@ -371,7 +371,7 @@ q : Prop
 r : Prop
 hp : p
 hpq : p → q
-⊢ q">▸</span>specialize hpq hp
+⊢ q"></span>specialize hpq hp
   <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
@@ -380,7 +380,7 @@ q : Prop
 r : Prop
 hp : p
 hpq : q
-⊢ q">▸</span>exact hpq
+⊢ q"></span>exact hpq
 
 example (hpq : p → q) (hqr : q → r) : p → r := <span class="goal-marker" data-goal="Goals: 1
 
@@ -390,7 +390,7 @@ q : Prop
 r : Prop
 hpq : p → q
 hqr : q → r
-⊢ p → r">▸</span>by
+⊢ p → r"></span>by
   <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
@@ -399,7 +399,7 @@ q : Prop
 r : Prop
 hpq : p → q
 hqr : q → r
-⊢ p → r">▸</span>intro hp
+⊢ p → r"></span>intro hp
   <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
@@ -409,7 +409,7 @@ r : Prop
 hpq : p → q
 hqr : q → r
 hp : p
-⊢ r">▸</span>specialize hpq hp
+⊢ r"></span>specialize hpq hp
   <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
@@ -419,7 +419,7 @@ r : Prop
 hqr : q → r
 hp : p
 hpq : q
-⊢ r">▸</span>specialize hqr hpq
+⊢ r"></span>specialize hqr hpq
   <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
@@ -429,7 +429,7 @@ r : Prop
 hp : p
 hpq : q
 hqr : r
-⊢ r">▸</span>exact hqr
+⊢ r"></span>exact hqr
 
 /-
 tactic: `have`
@@ -447,7 +447,7 @@ q : Prop
 r : Prop
 hpq : p → q
 hqr : q → r
-⊢ p → r">▸</span>by
+⊢ p → r"></span>by
   <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
@@ -456,7 +456,7 @@ q : Prop
 r : Prop
 hpq : p → q
 hqr : q → r
-⊢ p → r">▸</span>intro hp
+⊢ p → r"></span>intro hp
   <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
@@ -466,7 +466,7 @@ r : Prop
 hpq : p → q
 hqr : q → r
 hp : p
-⊢ r">▸</span>have hq : q := hpq hp
+⊢ r"></span>have hq : q := hpq hp
   <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
@@ -477,7 +477,7 @@ hpq : p → q
 hqr : q → r
 hp : p
 hq : q
-⊢ r">▸</span>have hr : r := <span class="goal-marker" data-goal="Goals: 2
+⊢ r"></span>have hr : r := <span class="goal-marker" data-goal="Goals: 2
 
 Goal 1:
 p : Prop
@@ -499,7 +499,7 @@ hqr : q → r
 hp : p
 hq : q
 hr : r
-⊢ r">▸</span>by -- combine with `by` is also possible
+⊢ r"></span>by -- combine with `by` is also possible
     <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
@@ -510,7 +510,7 @@ hpq : p → q
 hqr : q → r
 hp : p
 hq : q
-⊢ r">▸</span>apply hqr
+⊢ r"></span>apply hqr
     <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
@@ -521,7 +521,7 @@ hpq : p → q
 hqr : q → r
 hp : p
 hq : q
-⊢ q">▸</span>exact hq
+⊢ q"></span>exact hq
   <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
@@ -533,7 +533,7 @@ hqr : q → r
 hp : p
 hq : q
 hr : r
-⊢ r">▸</span>exact hr
+⊢ r"></span>exact hr
 
 /-
 tactic: `suffices`
@@ -550,7 +550,7 @@ q : Prop
 r : Prop
 hpq : p → q
 hqr : q → r
-⊢ p → r">▸</span>by
+⊢ p → r"></span>by
   <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
@@ -559,17 +559,7 @@ q : Prop
 r : Prop
 hpq : p → q
 hqr : q → r
-⊢ p → r">▸</span>intro hp
-  <span class="goal-marker" data-goal="Goals: 1
-
-Goal 1:
-p : Prop
-q : Prop
-r : Prop
-hpq : p → q
-hqr : q → r
-hp : p
-⊢ r">▸</span>suffices hq : q from hqr hq
+⊢ p → r"></span>intro hp
   <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
@@ -579,7 +569,17 @@ r : Prop
 hpq : p → q
 hqr : q → r
 hp : p
-⊢ q">▸</span>exact hpq hp
+⊢ r"></span>suffices hq : q from hqr hq
+  <span class="goal-marker" data-goal="Goals: 1
+
+Goal 1:
+p : Prop
+q : Prop
+r : Prop
+hpq : p → q
+hqr : q → r
+hp : p
+⊢ q"></span>exact hpq hp
 
 example (hpq : p → q) (hqr : q → r) : p → r := <span class="goal-marker" data-goal="Goals: 1
 
@@ -589,7 +589,7 @@ q : Prop
 r : Prop
 hpq : p → q
 hqr : q → r
-⊢ p → r">▸</span>by
+⊢ p → r"></span>by
   <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
@@ -598,7 +598,7 @@ q : Prop
 r : Prop
 hpq : p → q
 hqr : q → r
-⊢ p → r">▸</span>intro hp
+⊢ p → r"></span>intro hp
   <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
@@ -608,7 +608,7 @@ r : Prop
 hpq : p → q
 hqr : q → r
 hp : p
-⊢ r">▸</span>suffices hq : q <span class="goal-marker" data-goal="Goals: 1
+⊢ r"></span>suffices hq : q <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 p : Prop
@@ -618,7 +618,7 @@ hpq : p → q
 hqr : q → r
 hp : p
 hq : q
-⊢ r">▸</span>by
+⊢ r"></span>by
     <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
@@ -629,7 +629,7 @@ hpq : p → q
 hqr : q → r
 hp : p
 hq : q
-⊢ r">▸</span>apply hqr
+⊢ r"></span>apply hqr
     <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
@@ -640,7 +640,7 @@ hpq : p → q
 hqr : q → r
 hp : p
 hq : q
-⊢ q">▸</span>exact hq
+⊢ q"></span>exact hq
   <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
@@ -650,7 +650,7 @@ r : Prop
 hpq : p → q
 hqr : q → r
 hp : p
-⊢ q">▸</span>exact hpq hp
+⊢ q"></span>exact hpq hp
 
 /-
 `show` (it is not a tactic!)
@@ -667,7 +667,7 @@ q : Prop
 r : Prop
 hpq : p → q
 hqr : q → r
-⊢ p → r">▸</span>by
+⊢ p → r"></span>by
   <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
@@ -676,7 +676,7 @@ q : Prop
 r : Prop
 hpq : p → q
 hqr : q → r
-⊢ p → r">▸</span>intro hp
+⊢ p → r"></span>intro hp
   <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
@@ -686,7 +686,7 @@ r : Prop
 hpq : p → q
 hqr : q → r
 hp : p
-⊢ r">▸</span>exact hqr (<span class="goal-marker" data-goal="Goals: 1
+⊢ r"></span>exact hqr (<span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 p : Prop
@@ -695,7 +695,7 @@ r : Prop
 hpq : p → q
 hqr : q → r
 hp : p
-⊢ q">▸</span>show q <span class="goal-marker" data-goal="Goals: 1
+⊢ q"></span>show q <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 p : Prop
@@ -704,7 +704,7 @@ r : Prop
 hpq : p → q
 hqr : q → r
 hp : p
-⊢ q">▸</span>by <span class="goal-marker" data-goal="Goals: 1
+⊢ q"></span>by <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 p : Prop
@@ -713,7 +713,7 @@ r : Prop
 hpq : p → q
 hqr : q → r
 hp : p
-⊢ q">▸</span>apply hpq<span class="goal-marker" data-goal="Goals: 1
+⊢ q"></span>apply hpq<span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 p : Prop
@@ -722,7 +722,7 @@ r : Prop
 hpq : p → q
 hqr : q → r
 hp : p
-⊢ p">▸</span>; <span class="goal-marker" data-goal="Goals: 1
+⊢ p"></span>; <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 p : Prop
@@ -731,4 +731,6 @@ r : Prop
 hpq : p → q
 hqr : q → r
 hp : p
-⊢ p">▸</span>
+⊢ p"></span>exact hp)
+
+end
