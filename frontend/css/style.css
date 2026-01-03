@@ -234,10 +234,6 @@ body {
     border-left: 3px solid #007acc;
 }
 
-.info-empty {
-    color: #858585;
-}
-
 .line-number {
     display: inline-block;
     width: 40px;
@@ -294,6 +290,10 @@ body {
     font-weight: 500;
 }
 
+.goal-hyp-name.inst {
+    color: #858585;
+}
+
 .goal-hyp-type {
     color: #d4d4d4;
 }
@@ -317,7 +317,6 @@ body {
 }
 
 .goal-type {
-    color: #dcdcaa;
 }
 
 .goal-separator {

@@ -115,23 +115,23 @@ Goal 1:
 ∀ (x : ℕ × ℕ), NN_r x x"></span>intro _<span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
-x._@.Examples.quotient.1132322385._hygCtx._hyg.14 : ℕ × ℕ
+x : ℕ × ℕ
 ⊢ NN_r x✝ x✝"></span>; <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
-x._@.Examples.quotient.1132322385._hygCtx._hyg.14 : ℕ × ℕ
+x : ℕ × ℕ
 ⊢ NN_r x✝ x✝"></span>rw [<span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
-x._@.Examples.quotient.1132322385._hygCtx._hyg.14 : ℕ × ℕ
+x : ℕ × ℕ
 ⊢ NN_r x✝ x✝"></span>NN_r, <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
-x._@.Examples.quotient.1132322385._hygCtx._hyg.14 : ℕ × ℕ
+x : ℕ × ℕ
 ⊢ x✝.1 + x✝.2 = x✝.2 + x✝.1"></span>add_comm<span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
-x._@.Examples.quotient.1132322385._hygCtx._hyg.14 : ℕ × ℕ
+x : ℕ × ℕ
 ⊢ x✝.2 + x✝.1 = x✝.2 + x✝.1"></span>]
   symm := <span class="goal-marker" data-goal="Goals: 1
 
@@ -960,7 +960,7 @@ s : Setoid α
 Goal 1:
 α : Type u_1
 s : Setoid α
-b._@.Examples.quotient.2021293408._hygCtx._hyg.14 : Quotient s
+b : Quotient s
 x : α
 ⊢ ∃ a, ⟦a⟧ = Quot.mk (⇑s) x"></span>exact ⟨x, rfl⟩
 #check Quotient.mk_surjective
@@ -1136,7 +1136,7 @@ example : QuotientGroup.mk = (show G → G ⧸ H from
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293412._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
 ⊢ QuotientGroup.mk =
   have this := Quotient.mk'';
@@ -1144,7 +1144,7 @@ H : Subgroup G
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293412._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
 ⊢ QuotientGroup.mk =
   have this := Quotient.mk'';
@@ -1194,49 +1194,49 @@ example : (QuotientGroup.Quotient.group H).toSemigroup = show Semigroup (G ⧸ H
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 ⊢ G ⧸ H → G ⧸ H → G ⧸ H"></span>by
     <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 ⊢ G ⧸ H → G ⧸ H → G ⧸ H"></span>apply Quotient.lift₂ (fun (a b : G) ↦ ⟦a * b⟧)
     <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 ⊢ ∀ (a₁ b₁ a₂ b₂ : G), a₁ ≈ a₂ → b₁ ≈ b₂ → ⟦a₁ * b₁⟧ = ⟦a₂ * b₂⟧"></span>intro a1 <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a1 : G
 ⊢ ∀ (b₁ a₂ b₂ : G), a1 ≈ a₂ → b₁ ≈ b₂ → ⟦a1 * b₁⟧ = ⟦a₂ * b₂⟧"></span>a2 <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a1 : G
 a2 : G
 ⊢ ∀ (a₂ b₂ : G), a1 ≈ a₂ → a2 ≈ b₂ → ⟦a1 * a2⟧ = ⟦a₂ * b₂⟧"></span>b1 <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a1 : G
 a2 : G
 b1 : G
@@ -1244,9 +1244,9 @@ b1 : G
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a1 : G
 a2 : G
 b1 : G
@@ -1255,9 +1255,9 @@ b2 : G
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a1 : G
 a2 : G
 b1 : G
@@ -1268,9 +1268,9 @@ h1 : a1 ≈ b1
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a1 : G
 a2 : G
 b1 : G
@@ -1282,9 +1282,9 @@ h2 : a2 ≈ b2
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a1 : G
 a2 : G
 b1 : G
@@ -1296,9 +1296,9 @@ h2 : a2 ≈ b2
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a1 : G
 a2 : G
 b1 : G
@@ -1310,9 +1310,9 @@ h1 : (QuotientGroup.leftRel H) a1 b1
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a1 : G
 a2 : G
 b1 : G
@@ -1324,9 +1324,9 @@ h2 : (QuotientGroup.leftRel H) a2 b2
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a1 : G
 a2 : G
 b1 : G
@@ -1337,9 +1337,9 @@ h2 : (QuotientGroup.leftRel H) a2 b2
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a1 : G
 a2 : G
 b1 : G
@@ -1350,9 +1350,9 @@ h2 : (QuotientGroup.leftRel H) a2 b2
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a1 : G
 a2 : G
 b1 : G
@@ -1365,9 +1365,9 @@ h2 : a2⁻¹ * b2 ∈ H
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a1 : G
 a2 : G
 b1 : G
@@ -1378,9 +1378,9 @@ h2 : a2⁻¹ * b2 ∈ H
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a1 : G
 a2 : G
 b1 : G
@@ -1392,9 +1392,9 @@ hn : H.Normal
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a1 : G
 a2 : G
 b1 : G
@@ -1407,9 +1407,9 @@ hn : H.Normal
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a1 : G
 a2 : G
 b1 : G
@@ -1422,9 +1422,9 @@ hn : ∀ n ∈ H, ∀ (g : G), g * n * g⁻¹ ∈ H
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a1 : G
 a2 : G
 b1 : G
@@ -1438,9 +1438,9 @@ hn : a2⁻¹ * (a1⁻¹ * b1) * a2⁻¹⁻¹ ∈ H
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a1 : G
 a2 : G
 b1 : G
@@ -1453,9 +1453,9 @@ hn : a2⁻¹ * (a1⁻¹ * b1) * a2 ∈ H
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a1 : G
 a2 : G
 b1 : G
@@ -1467,9 +1467,9 @@ hn : a2⁻¹ * (a1⁻¹ * b1) * a2 ∈ H
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a1 : G
 a2 : G
 b1 : G
@@ -1482,9 +1482,9 @@ hn : a2⁻¹ * (a1⁻¹ * b1) * a2 ∈ H
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a1 : G
 a2 : G
 b1 : G
@@ -1497,9 +1497,9 @@ this : (a1 * a2)⁻¹ * (b1 * b2) = a2⁻¹ * (a1⁻¹ * b1) * a2 * (a2⁻¹ * b
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a1 : G
 a2 : G
 b1 : G
@@ -1512,9 +1512,9 @@ this : (a1 * a2)⁻¹ * (b1 * b2) = a2⁻¹ * (a1⁻¹ * b1) * a2 * (a2⁻¹ * b
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a1 : G
 a2 : G
 b1 : G
@@ -1529,9 +1529,9 @@ this : (a1 * a2)⁻¹ * (b1 * b2) = a2⁻¹ * (a1⁻¹ * b1) * a2 * (a2⁻¹ * b
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a1 : G
 a2 : G
 b1 : G
@@ -1546,32 +1546,32 @@ this : (a1 * a2)⁻¹ * (b1 * b2) = a2⁻¹ * (a1⁻¹ * b1) * a2 * (a2⁻¹ * b
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 ⊢ ∀ (a b c : G ⧸ H), a * b * c = a * (b * c)"></span>by
     <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 ⊢ ∀ (a b c : G ⧸ H), a * b * c = a * (b * c)"></span>intro a <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a : G ⧸ H
 ⊢ ∀ (b c : G ⧸ H), a * b * c = a * (b * c)"></span>b <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a : G ⧸ H
 b : G ⧸ H
 ⊢ ∀ (c : G ⧸ H), a * b * c = a * (b * c)"></span>c
@@ -1579,9 +1579,9 @@ b : G ⧸ H
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a : G ⧸ H
 b : G ⧸ H
 c : G ⧸ H
@@ -1590,9 +1590,9 @@ c : G ⧸ H
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 b : G ⧸ H
 c : G ⧸ H
 a : G
@@ -1601,9 +1601,9 @@ a : G
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 c : G ⧸ H
 a : G
 b : G
@@ -1612,9 +1612,9 @@ b : G
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a : G
 b : G
 c : G
@@ -1623,9 +1623,9 @@ c : G
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a : G
 b : G
 c : G
@@ -1633,9 +1633,9 @@ c : G
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a : G
 b : G
 c : G
@@ -1643,9 +1643,9 @@ c : G
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a : G
 b : G
 c : G
@@ -1654,9 +1654,9 @@ c : G
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a : G
 b : G
 c : G
@@ -1665,18 +1665,18 @@ c : G
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 ⊢ (QuotientGroup.Quotient.group H).toSemigroup =
   have this := { mul := Quotient.lift₂ (fun a b =&gt; ⟦a * b⟧) ⋯, mul_assoc := ⋯ };
   this"></span>by <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293415._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 ⊢ (QuotientGroup.Quotient.group H).toSemigroup =
   have this := { mul := Quotient.lift₂ (fun a b =&gt; ⟦a * b⟧) ⋯, mul_assoc := ⋯ };
   this"></span>rfl
@@ -1686,186 +1686,186 @@ example : (QuotientGroup.Quotient.group H).toMonoid = show Monoid (G ⧸ H) from
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293416._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293416._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 ⊢ ∀ (x : G ⧸ H), npowRecAuto 0 x = 1"></span>{
   one := ⟦1⟧
   one_mul := <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293416._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293416._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 ⊢ ∀ (a : G ⧸ H), 1 * a = a"></span>by
     <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293416._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293416._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 ⊢ ∀ (a : G ⧸ H), 1 * a = a"></span>intro a
     <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293416._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293416._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a : G ⧸ H
 ⊢ 1 * a = a"></span>induction' a using Quotient.ind with a
     <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293416._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293416._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a : G
 ⊢ 1 * ⟦a⟧ = ⟦a⟧"></span>apply Quotient.sound<span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293416._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293416._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a : G
 ⊢ (fun x1 x2 =&gt; x1 * x2) 1 a ≈ a"></span>; <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293416._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293416._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a : G
 ⊢ (fun x1 x2 =&gt; x1 * x2) 1 a ≈ a"></span>dsimp
     <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293416._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293416._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a : G
 ⊢ 1 * a ≈ a"></span>rw [<span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293416._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293416._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a : G
 ⊢ 1 * a ≈ a"></span>one_mul<span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293416._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293416._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a : G
 ⊢ a ≈ a"></span>]
     <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293416._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293416._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a : G
 ⊢ a ≈ a"></span>apply refl
   mul_one := <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293416._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293416._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 ⊢ ∀ (a : G ⧸ H), a * 1 = a"></span>by
     <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293416._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293416._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 ⊢ ∀ (a : G ⧸ H), a * 1 = a"></span>intro a
     <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293416._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293416._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a : G ⧸ H
 ⊢ a * 1 = a"></span>induction' a using Quotient.ind with a
     <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293416._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293416._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a : G
 ⊢ ⟦a⟧ * 1 = ⟦a⟧"></span>apply Quotient.sound<span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293416._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293416._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a : G
 ⊢ (fun x1 x2 =&gt; x1 * x2) a 1 ≈ a"></span>; <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293416._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293416._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a : G
 ⊢ (fun x1 x2 =&gt; x1 * x2) a 1 ≈ a"></span>dsimp
     <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293416._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293416._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a : G
 ⊢ a * 1 ≈ a"></span>rw [<span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293416._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293416._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a : G
 ⊢ a * 1 ≈ a"></span>mul_one<span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293416._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293416._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a : G
 ⊢ a ≈ a"></span>]
     <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293416._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293416._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a : G
 ⊢ a ≈ a"></span>apply refl
 } := <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293416._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293416._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 ⊢ (QuotientGroup.Quotient.group H).toMonoid =
   have this :=
     { toSemigroup := (QuotientGroup.Quotient.group H).toSemigroup, one := ⟦1⟧, one_mul := ⋯, mul_one := ⋯,
@@ -1874,9 +1874,9 @@ inst._@.Examples.quotient.2021293416._hygCtx._hyg.8 : H.Normal
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293416._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293416._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 ⊢ (QuotientGroup.Quotient.group H).toMonoid =
   have this :=
     { toSemigroup := (QuotientGroup.Quotient.group H).toSemigroup, one := ⟦1⟧, one_mul := ⋯, mul_one := ⋯,
@@ -1885,20 +1885,20 @@ inst._@.Examples.quotient.2021293416._hygCtx._hyg.8 : H.Normal
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293416._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293416._hygCtx._hyg.8 : H.Normal
-x._@.Examples.quotient.2021293416._hygCtx._hyg.146 : G ⧸ H
-x._@.Examples.quotient.2021293416._hygCtx._hyg.147 : G ⧸ H
+inst : H.Normal
+x : G ⧸ H
+x : G ⧸ H
 ⊢ x✝¹ * x✝ = x✝¹ * x✝"></span>; <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293416._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293416._hygCtx._hyg.8 : H.Normal
-x._@.Examples.quotient.2021293416._hygCtx._hyg.146 : G ⧸ H
-x._@.Examples.quotient.2021293416._hygCtx._hyg.147 : G ⧸ H
+inst : H.Normal
+x : G ⧸ H
+x : G ⧸ H
 ⊢ x✝¹ * x✝ = x✝¹ * x✝"></span>rfl
 
 #synth Group (G ⧸ H)
@@ -1906,48 +1906,48 @@ example : QuotientGroup.Quotient.group H = show Group (G ⧸ H) from <span class
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 ⊢ ∀ (a b : G ⧸ H), a / b = a * Quotient.lift (fun a =&gt; ⟦a⁻¹⟧) ⋯ b"></span>{
   inv := <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 ⊢ G ⧸ H → G ⧸ H"></span>by
     <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 ⊢ G ⧸ H → G ⧸ H"></span>apply Quotient.lift (fun a ↦ ⟦a⁻¹⟧)
     <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 ⊢ ∀ (a b : G), a ≈ b → ⟦a⁻¹⟧ = ⟦b⁻¹⟧"></span>intro a1 <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a1 : G
 ⊢ ∀ (b : G), a1 ≈ b → ⟦a1⁻¹⟧ = ⟦b⁻¹⟧"></span>a2 <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a1 : G
 a2 : G
 ⊢ a1 ≈ a2 → ⟦a1⁻¹⟧ = ⟦a2⁻¹⟧"></span>h
@@ -1955,9 +1955,9 @@ a2 : G
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a1 : G
 a2 : G
 h : a1 ≈ a2
@@ -1966,9 +1966,9 @@ h : a1 ≈ a2
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a1 : G
 a2 : G
 h : a1 ≈ a2
@@ -1977,9 +1977,9 @@ h : a1 ≈ a2
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a1 : G
 a2 : G
 h : (QuotientGroup.leftRel H) a1 a2
@@ -1988,9 +1988,9 @@ h : (QuotientGroup.leftRel H) a1 a2
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a1 : G
 a2 : G
 h : (QuotientGroup.leftRel H) a1 a2
@@ -1998,9 +1998,9 @@ h : (QuotientGroup.leftRel H) a1 a2
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a1 : G
 a2 : G
 h : (QuotientGroup.leftRel H) a1 a2
@@ -2008,9 +2008,9 @@ h : (QuotientGroup.leftRel H) a1 a2
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a1 : G
 a2 : G
 h : a1⁻¹ * a2 ∈ H
@@ -2019,9 +2019,9 @@ h : a1⁻¹ * a2 ∈ H
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a1 : G
 a2 : G
 h : a1⁻¹ * a2 ∈ H
@@ -2031,9 +2031,9 @@ h : a1⁻¹ * a2 ∈ H
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a1 : G
 a2 : G
 h : a1⁻¹ * a2 ∈ H
@@ -2042,9 +2042,9 @@ h : a1⁻¹ * a2 ∈ H
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a1 : G
 a2 : G
 h : (a1⁻¹ * a2)⁻¹ ∈ H
@@ -2054,9 +2054,9 @@ h : (a1⁻¹ * a2)⁻¹ ∈ H
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a1 : G
 a2 : G
 h : a2⁻¹ * a1 ∈ H
@@ -2064,9 +2064,9 @@ h : a2⁻¹ * a1 ∈ H
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a1 : G
 a2 : G
 h : a2⁻¹ * a1 ∈ H
@@ -2075,9 +2075,9 @@ hn : H.Normal
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a1 : G
 a2 : G
 h : a2⁻¹ * a1 ∈ H
@@ -2087,9 +2087,9 @@ hn : H.Normal
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a1 : G
 a2 : G
 h : a2⁻¹ * a1 ∈ H
@@ -2099,9 +2099,9 @@ hn : ∀ n ∈ H, ∀ (g : G), g * n * g⁻¹ ∈ H
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a1 : G
 a2 : G
 h : a2⁻¹ * a1 ∈ H
@@ -2110,9 +2110,9 @@ hn : a2 * (a2⁻¹ * a1) * a2⁻¹ ∈ H
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a1 : G
 a2 : G
 h : a2⁻¹ * a1 ∈ H
@@ -2121,9 +2121,9 @@ hn : a1 * a2⁻¹ ∈ H
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a1 : G
 a2 : G
 h : a2⁻¹ * a1 ∈ H
@@ -2136,59 +2136,59 @@ hn : a1 * a2⁻¹ ∈ H
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 ⊢ ∀ (a : G ⧸ H), Quotient.lift (fun a =&gt; ⟦a⁻¹⟧) ⋯ a * a = 1"></span>by
     <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 ⊢ ∀ (a : G ⧸ H), Quotient.lift (fun a =&gt; ⟦a⁻¹⟧) ⋯ a * a = 1"></span>intro a
     <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a : G ⧸ H
 ⊢ Quotient.lift (fun a =&gt; ⟦a⁻¹⟧) ⋯ a * a = 1"></span>induction' a using Quotient.ind with a
     <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a : G
 ⊢ Quotient.lift (fun a =&gt; ⟦a⁻¹⟧) ⋯ ⟦a⟧ * ⟦a⟧ = 1"></span>apply Quotient.sound<span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a : G
 ⊢ (fun x1 x2 =&gt; x1 * x2) a⁻¹ a ≈ 1"></span>; <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 a : G
 ⊢ (fun x1 x2 =&gt; x1 * x2) a⁻¹ a ≈ 1"></span>simp
 } := <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 ⊢ QuotientGroup.Quotient.group H =
   have this :=
     { toMonoid := (QuotientGroup.Quotient.group H).toMonoid, inv := Quotient.lift (fun a =&gt; ⟦a⁻¹⟧) ⋯,
@@ -2198,9 +2198,9 @@ inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 ⊢ QuotientGroup.Quotient.group H =
   have this :=
     { toMonoid := (QuotientGroup.Quotient.group H).toMonoid, inv := Quotient.lift (fun a =&gt; ⟦a⁻¹⟧) ⋯,
@@ -2210,20 +2210,20 @@ inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
-x._@.Examples.quotient.2021293417._hygCtx._hyg.225 : G ⧸ H
-x._@.Examples.quotient.2021293417._hygCtx._hyg.226 : G ⧸ H
+inst : H.Normal
+x : G ⧸ H
+x : G ⧸ H
 ⊢ x✝¹ * x✝ = x✝¹ * x✝"></span>; <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293417._hygCtx._hyg.8 : H.Normal
-x._@.Examples.quotient.2021293417._hygCtx._hyg.225 : G ⧸ H
-x._@.Examples.quotient.2021293417._hygCtx._hyg.226 : G ⧸ H
+inst : H.Normal
+x : G ⧸ H
+x : G ⧸ H
 ⊢ x✝¹ * x✝ = x✝¹ * x✝"></span>rfl
 
 /-
@@ -2236,51 +2236,51 @@ example : QuotientGroup.mk' H = show G →* (G ⧸ H) from
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293418._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293418._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 ⊢ ∀ (a b : G), ↑(a * b) = ↑a * ↑b"></span>by <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293418._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293418._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 ⊢ ∀ (a b : G), ↑(a * b) = ↑a * ↑b"></span>intros<span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293418._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293418._hygCtx._hyg.8 : H.Normal
-a._@.Examples.quotient.2021293418._hygCtx._hyg.42 : G
-b._@.Examples.quotient.2021293418._hygCtx._hyg.43 : G
+inst : H.Normal
+a : G
+b : G
 ⊢ ↑(a✝ * b✝) = ↑a✝ * ↑b✝"></span>; <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293418._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293418._hygCtx._hyg.8 : H.Normal
-a._@.Examples.quotient.2021293418._hygCtx._hyg.42 : G
-b._@.Examples.quotient.2021293418._hygCtx._hyg.43 : G
+inst : H.Normal
+a : G
+b : G
 ⊢ ↑(a✝ * b✝) = ↑a✝ * ↑b✝"></span>rfl)
 := <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293418._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293418._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 ⊢ QuotientGroup.mk' H =
   have this := MonoidHom.mk' QuotientGroup.mk ⋯;
   this"></span>by <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293418._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293418._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 ⊢ QuotientGroup.mk' H =
   have this := MonoidHom.mk' QuotientGroup.mk ⋯;
   this"></span>rfl
@@ -2295,26 +2295,26 @@ example : Function.Surjective (QuotientGroup.mk' H) := <span class="goal-marker"
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293419._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293419._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 ⊢ Function.Surjective ⇑(QuotientGroup.mk' H)"></span>by
   <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293419._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293419._hygCtx._hyg.8 : H.Normal
+inst : H.Normal
 ⊢ Function.Surjective ⇑(QuotientGroup.mk' H)"></span>rintro ⟨g⟩
   <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 G : Type u_1
-inst._@.Examples.quotient.2021293419._hygCtx._hyg.3 : Group G
+inst : Group G
 H : Subgroup G
-inst._@.Examples.quotient.2021293419._hygCtx._hyg.8 : H.Normal
-b._@.Examples.quotient.2021293419._hygCtx._hyg.20 : G ⧸ H
+inst : H.Normal
+b : G ⧸ H
 g : G
 ⊢ ∃ a, (QuotientGroup.mk' H) a = Quot.mk (⇑(QuotientGroup.leftRel H)) g"></span>exact ⟨g, rfl⟩
 #check QuotientGroup.mk'_surjective
@@ -2339,10 +2339,10 @@ example (HN : N ≤ ϕ.ker) : QuotientGroup.lift N ϕ HN = <span class="goal-mar
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 HN : N ≤ ϕ.ker
 ⊢ G ⧸ N →* M"></span>show G ⧸ N →* M <span class="goal-marker" data-goal="Goals: 1
@@ -2350,10 +2350,10 @@ HN : N ≤ ϕ.ker
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 HN : N ≤ ϕ.ker
 ⊢ G ⧸ N →* M"></span>by
@@ -2362,10 +2362,10 @@ HN : N ≤ ϕ.ker
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 HN : N ≤ ϕ.ker
 ⊢ G ⧸ N →* M"></span>apply MonoidHom.mk' (<span class="goal-marker" data-goal="Goals: 1
@@ -2373,10 +2373,10 @@ HN : N ≤ ϕ.ker
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 HN : N ≤ ϕ.ker
 ⊢ G ⧸ N → M"></span>by
@@ -2385,10 +2385,10 @@ HN : N ≤ ϕ.ker
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 HN : N ≤ ϕ.ker
 ⊢ G ⧸ N → M"></span>apply Quotient.lift ϕ
@@ -2397,10 +2397,10 @@ HN : N ≤ ϕ.ker
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 HN : N ≤ ϕ.ker
 ⊢ ∀ (a b : G), a ≈ b → ϕ a = ϕ b"></span>intro a <span class="goal-marker" data-goal="Goals: 1
@@ -2408,10 +2408,10 @@ HN : N ≤ ϕ.ker
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 HN : N ≤ ϕ.ker
 a : G
@@ -2420,10 +2420,10 @@ a : G
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 HN : N ≤ ϕ.ker
 a : G
@@ -2434,10 +2434,10 @@ b : G
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 HN : N ≤ ϕ.ker
 a : G
@@ -2449,10 +2449,10 @@ h : a ≈ b
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 HN : N ≤ ϕ.ker
 a : G
@@ -2463,10 +2463,10 @@ h : (QuotientGroup.leftRel N) a b
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 HN : N ≤ ϕ.ker
 a : G
@@ -2477,10 +2477,10 @@ h : (QuotientGroup.leftRel N) a b
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 HN : N ≤ ϕ.ker
 a : G
@@ -2492,10 +2492,10 @@ h : a⁻¹ * b ∈ N
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 HN : N ≤ ϕ.ker
 a : G
@@ -2506,10 +2506,10 @@ h : a⁻¹ * b ∈ N
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 HN : N ≤ ϕ.ker
 a : G
@@ -2521,10 +2521,10 @@ this : a⁻¹ * b ∈ ϕ.ker
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 HN : N ≤ ϕ.ker
 a : G
@@ -2537,10 +2537,10 @@ this : a⁻¹ * b ∈ ϕ.ker
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 HN : N ≤ ϕ.ker
 a : G
@@ -2554,10 +2554,10 @@ this : (ϕ a)⁻¹ * ϕ b = 1
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 HN : N ≤ ϕ.ker
 ⊢ ∀ (a b : G ⧸ N), Quotient.lift ⇑ϕ ⋯ (a * b) = Quotient.lift ⇑ϕ ⋯ a * Quotient.lift ⇑ϕ ⋯ b"></span>intro a <span class="goal-marker" data-goal="Goals: 1
@@ -2565,10 +2565,10 @@ HN : N ≤ ϕ.ker
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 HN : N ≤ ϕ.ker
 a : G ⧸ N
@@ -2578,10 +2578,10 @@ a : G ⧸ N
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 HN : N ≤ ϕ.ker
 a : G ⧸ N
@@ -2592,10 +2592,10 @@ b : G ⧸ N
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 HN : N ≤ ϕ.ker
 b : G ⧸ N
@@ -2606,10 +2606,10 @@ a : G
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 HN : N ≤ ϕ.ker
 a : G
@@ -2620,10 +2620,10 @@ b : G
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 HN : N ≤ ϕ.ker
 a : G
@@ -2634,10 +2634,10 @@ b : G
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 HN : N ≤ ϕ.ker
 a : G
@@ -2649,10 +2649,10 @@ b : G
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 HN : N ≤ ϕ.ker
 a : G
@@ -2664,10 +2664,10 @@ b : G
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 HN : N ≤ ϕ.ker
 a : G
@@ -2678,10 +2678,10 @@ b : G
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 HN : N ≤ ϕ.ker
 ⊢ QuotientGroup.lift N ϕ HN =
@@ -2691,10 +2691,10 @@ HN : N ≤ ϕ.ker
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293420._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 HN : N ≤ ϕ.ker
 ⊢ QuotientGroup.lift N ϕ HN =
@@ -2713,20 +2713,20 @@ example : G ⧸ ϕ.ker →* M := QuotientGroup.lift ϕ.ker ϕ (<span class="goal
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293421._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293421._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293421._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 ⊢ ϕ.ker ≤ ϕ.ker"></span>by <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293421._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293421._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293421._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 ⊢ ϕ.ker ≤ ϕ.ker"></span>simp)
 /- Recall the range restriction of `ϕ`. -/
@@ -2740,20 +2740,20 @@ example : QuotientGroup.rangeKerLift ϕ = <span class="goal-marker" data-goal="G
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293424._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293424._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293424._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 ⊢ G ⧸ ϕ.ker →* ↥ϕ.range"></span>show G ⧸ ϕ.ker →* ϕ.range <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293424._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293424._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293424._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 ⊢ G ⧸ ϕ.ker →* ↥ϕ.range"></span>by
   <span class="goal-marker" data-goal="Goals: 1
@@ -2761,10 +2761,10 @@ inst._@.Examples.quotient.2021293424._hygCtx._hyg.12 : N.Normal
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293424._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293424._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293424._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 ⊢ G ⧸ ϕ.ker →* ↥ϕ.range"></span>let rangeRestricted := MonoidHom.rangeRestrict ϕ
   <span class="goal-marker" data-goal="Goals: 1
@@ -2772,10 +2772,10 @@ inst._@.Examples.quotient.2021293424._hygCtx._hyg.12 : N.Normal
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293424._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293424._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293424._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 rangeRestricted : G →* ↥ϕ.range
   := ϕ.rangeRestrict
@@ -2785,10 +2785,10 @@ rangeRestricted : G →* ↥ϕ.range
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293424._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293424._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293424._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 rangeRestricted : G →* ↥ϕ.range
   := ϕ.rangeRestrict
@@ -2797,10 +2797,10 @@ rangeRestricted : G →* ↥ϕ.range
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293424._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293424._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293424._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 rangeRestricted : G →* ↥ϕ.range
   := ϕ.rangeRestrict
@@ -2809,10 +2809,10 @@ rangeRestricted : G →* ↥ϕ.range
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293424._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293424._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293424._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 rangeRestricted : G →* ↥ϕ.range
   := ϕ.rangeRestrict
@@ -2822,10 +2822,10 @@ rangeRestricted : G →* ↥ϕ.range
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293424._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293424._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293424._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 ⊢ QuotientGroup.rangeKerLift ϕ =
   have this :=
@@ -2836,10 +2836,10 @@ inst._@.Examples.quotient.2021293424._hygCtx._hyg.12 : N.Normal
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293424._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293424._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293424._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 ⊢ QuotientGroup.rangeKerLift ϕ =
   have this :=
@@ -2858,10 +2858,10 @@ example : Function.Injective (QuotientGroup.rangeKerLift ϕ) := <span class="goa
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293425._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293425._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293425._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 ⊢ Function.Injective ⇑(QuotientGroup.rangeKerLift ϕ)"></span>by
   <span class="goal-marker" data-goal="Goals: 1
@@ -2869,40 +2869,40 @@ inst._@.Examples.quotient.2021293425._hygCtx._hyg.12 : N.Normal
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293425._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293425._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293425._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 ⊢ Function.Injective ⇑(QuotientGroup.rangeKerLift ϕ)"></span>rw [<span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293425._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293425._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293425._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 ⊢ Function.Injective ⇑(QuotientGroup.rangeKerLift ϕ)"></span>← MonoidHom.ker_eq_bot_iff, <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293425._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293425._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293425._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 ⊢ (QuotientGroup.rangeKerLift ϕ).ker = ⊥"></span>Subgroup.eq_bot_iff_forall<span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293425._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293425._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293425._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 ⊢ ∀ x ∈ (QuotientGroup.rangeKerLift ϕ).ker, x = 1"></span>]
   <span class="goal-marker" data-goal="Goals: 1
@@ -2910,20 +2910,20 @@ inst._@.Examples.quotient.2021293425._hygCtx._hyg.12 : N.Normal
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293425._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293425._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293425._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 ⊢ ∀ x ∈ (QuotientGroup.rangeKerLift ϕ).ker, x = 1"></span>intro gq <span class="goal-marker" data-goal="Goals: 1
 
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293425._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293425._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293425._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 gq : G ⧸ ϕ.ker
 ⊢ gq ∈ (QuotientGroup.rangeKerLift ϕ).ker → gq = 1"></span>hgq
@@ -2933,10 +2933,10 @@ gq : G ⧸ ϕ.ker
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293425._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293425._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293425._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 gq : G ⧸ ϕ.ker
 hgq : gq ∈ (QuotientGroup.rangeKerLift ϕ).ker
@@ -2946,10 +2946,10 @@ hgq : gq ∈ (QuotientGroup.rangeKerLift ϕ).ker
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293425._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293425._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293425._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 g : G
 hgq : ⟦g⟧ ∈ (QuotientGroup.rangeKerLift ϕ).ker
@@ -2959,10 +2959,10 @@ hgq : ⟦g⟧ ∈ (QuotientGroup.rangeKerLift ϕ).ker
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293425._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293425._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293425._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 g : G
 hgq : ⟦g⟧ ∈ (QuotientGroup.lift ϕ.ker (ϕ.codRestrict ϕ.range ⋯) ⋯).ker
@@ -2972,10 +2972,10 @@ hgq : ⟦g⟧ ∈ (QuotientGroup.lift ϕ.ker (ϕ.codRestrict ϕ.range ⋯) ⋯).
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293425._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293425._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293425._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 g : G
 hgq : ⟨ϕ g, ⋯⟩ = 1
@@ -2984,10 +2984,10 @@ hgq : ⟨ϕ g, ⋯⟩ = 1
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293425._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293425._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293425._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 g : G
 hgq : ↑⟨ϕ g, ⋯⟩ = ↑1
@@ -2996,10 +2996,10 @@ hgq : ↑⟨ϕ g, ⋯⟩ = ↑1
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293425._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293425._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293425._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 g : G
 hgq : ↑⟨ϕ g, ⋯⟩ = ↑1
@@ -3010,10 +3010,10 @@ hgq : ↑⟨ϕ g, ⋯⟩ = ↑1
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293425._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293425._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293425._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 g : G
 hgq : ϕ g = 1
@@ -3023,10 +3023,10 @@ hgq : ϕ g = 1
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293425._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293425._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293425._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 g : G
 hgq : ϕ g = 1
@@ -3036,10 +3036,10 @@ hgq : ϕ g = 1
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293425._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293425._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293425._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 g : G
 hgq : ϕ g = 1
@@ -3048,10 +3048,10 @@ hgq : ϕ g = 1
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293425._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293425._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293425._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 g : G
 hgq : ϕ g = 1
@@ -3060,10 +3060,10 @@ hgq : ϕ g = 1
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293425._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293425._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293425._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 g : G
 hgq : ϕ g = 1
@@ -3073,10 +3073,10 @@ hgq : ϕ g = 1
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293425._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293425._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293425._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 g : G
 hgq : ϕ g = 1
@@ -3087,10 +3087,10 @@ hgq : ϕ g = 1
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293425._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293425._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293425._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 g : G
 hgq : ϕ g = 1
@@ -3102,10 +3102,10 @@ example : Function.Surjective (QuotientGroup.rangeKerLift ϕ) := <span class="go
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293426._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293426._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293426._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 ⊢ Function.Surjective ⇑(QuotientGroup.rangeKerLift ϕ)"></span>by
   <span class="goal-marker" data-goal="Goals: 1
@@ -3113,10 +3113,10 @@ inst._@.Examples.quotient.2021293426._hygCtx._hyg.12 : N.Normal
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293426._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293426._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293426._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 ⊢ Function.Surjective ⇑(QuotientGroup.rangeKerLift ϕ)"></span>unfold QuotientGroup.rangeKerLift MonoidHom.rangeRestrict
   <span class="goal-marker" data-goal="Goals: 1
@@ -3124,10 +3124,10 @@ inst._@.Examples.quotient.2021293426._hygCtx._hyg.12 : N.Normal
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293426._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293426._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293426._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 ⊢ Function.Surjective ⇑(QuotientGroup.lift ϕ.ker (ϕ.codRestrict ϕ.range ⋯) ⋯)"></span>rintro ⟨m, g, rfl⟩
   <span class="goal-marker" data-goal="Goals: 1
@@ -3135,10 +3135,10 @@ inst._@.Examples.quotient.2021293426._hygCtx._hyg.12 : N.Normal
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293426._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293426._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293426._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 g : G
 ⊢ ∃ a, (QuotientGroup.lift ϕ.ker (ϕ.codRestrict ϕ.range ⋯) ⋯) a = ⟨ϕ g, ⋯⟩"></span>use ⟦g⟧<span class="goal-marker" data-goal="Goals: 1
@@ -3146,10 +3146,10 @@ g : G
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293426._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293426._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293426._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 g : G
 ⊢ (QuotientGroup.lift ϕ.ker (ϕ.codRestrict ϕ.range ⋯) ⋯) ⟦g⟧ = ⟨ϕ g, ⋯⟩"></span>; <span class="goal-marker" data-goal="Goals: 1
@@ -3157,10 +3157,10 @@ g : G
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293426._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293426._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293426._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 g : G
 ⊢ (QuotientGroup.lift ϕ.ker (ϕ.codRestrict ϕ.range ⋯) ⋯) ⟦g⟧ = ⟨ϕ g, ⋯⟩"></span>simp
@@ -3185,10 +3185,10 @@ example : QuotientGroup.quotientKerEquivRange ϕ = show G ⧸ ϕ.ker ≃* ϕ.ran
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293427._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293427._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293427._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 ⊢ QuotientGroup.quotientKerEquivRange ϕ =
   have this := MulEquiv.ofBijective (QuotientGroup.rangeKerLift ϕ) ⋯;
@@ -3197,10 +3197,10 @@ inst._@.Examples.quotient.2021293427._hygCtx._hyg.12 : N.Normal
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293427._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293427._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293427._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 ⊢ QuotientGroup.quotientKerEquivRange ϕ =
   have this := MulEquiv.ofBijective (QuotientGroup.rangeKerLift ϕ) ⋯;
@@ -3222,10 +3222,10 @@ example (HN : N ≤ ϕ.ker) : (QuotientGroup.lift N ϕ HN).range = ϕ.range := <
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293428._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293428._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293428._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 HN : N ≤ ϕ.ker
 ⊢ (QuotientGroup.lift N ϕ HN).range = ϕ.range"></span>by <span class="goal-marker" data-goal="Goals: 1
@@ -3233,10 +3233,10 @@ HN : N ≤ ϕ.ker
 Goal 1:
 G : Type u_1
 M : Type u_2
-inst._@.Examples.quotient.2021293428._hygCtx._hyg.4 : Group G
-inst._@.Examples.quotient.2021293428._hygCtx._hyg.7 : Group M
+inst : Group G
+inst : Group M
 N : Subgroup G
-inst._@.Examples.quotient.2021293428._hygCtx._hyg.12 : N.Normal
+inst : N.Normal
 ϕ : G →* M
 HN : N ≤ ϕ.ker
 ⊢ (QuotientGroup.lift N ϕ HN).range = ϕ.range"></span>sorry

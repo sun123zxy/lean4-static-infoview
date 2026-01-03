@@ -19,8 +19,19 @@ def formatGoal (mvarId : MVarId) : MetaM String := do
       if !localDecl.isAuxDecl && !localDecl.isImplementationDetail then
         let name := localDecl.userName
         let type ← instantiateMVars localDecl.type
+
+        -- Simplify names for anonymous instances with macro scopes
+        let displayName :=
+          if name.hasMacroScopes then
+            -- Extract the base name before macro scopes (e.g., "inst" from "inst._@....")
+            let nameStr := name.toString
+            let baseName := (nameStr.splitOn ".").head!
+            baseName
+          else
+            name.toString
+
         let typeStr := toString (← ppExpr type)
-        result := result ++ s!"{name} : {typeStr}\n"
+        result := result ++ s!"{displayName} : {typeStr}\n"
 
         -- Show let bindings
         if let some val := localDecl.value? then

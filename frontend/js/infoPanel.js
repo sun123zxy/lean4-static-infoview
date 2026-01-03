@@ -16,7 +16,8 @@ export function colorizeGoal(text) {
             html += `<div class="goal-label">${line}</div>`;
         }
         // Match hypothesis line "name : type" or "name := value"
-        else if (line.match(/^[^⊢]+:/) || line.trim().startsWith(':=')) {
+        // Skip lines that start with spaces (indented content within types/values)
+        else if ((line.match(/^[^⊢]+:/) || line.trim().startsWith(':=')) && !line.match(/^\s/)) {
             if (line.trim().startsWith(':=')) {
                 // Let-value line
                 html += `<div class="goal-let-value">${escapeHtml(line)}</div>`;
@@ -26,7 +27,8 @@ export function colorizeGoal(text) {
                 if (colonPos > 0) {
                     const name = line.substring(0, colonPos);
                     const type = line.substring(colonPos);
-                    html += `<div class="goal-hyp"><span class="goal-hyp-name">${escapeHtml(name)}</span><span class="goal-hyp-type">${escapeHtml(type)}</span></div>`;
+                    const nameClass = name.trim() === 'inst' ? 'goal-hyp-name inst' : 'goal-hyp-name';
+                    html += `<div class="goal-hyp"><span class="${nameClass}">${escapeHtml(name)}</span><span class="goal-hyp-type">${escapeHtml(type)}</span></div>`;
                 } else {
                     html += `<div>${escapeHtml(line)}</div>`;
                 }

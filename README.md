@@ -18,13 +18,13 @@ If you prefer not to work with Mathlib, you may test with `Examples/logic.lean` 
 
 ### View in the frontend
 
-Open `frontend/index.html` in a web browser. Use the file picker to load the generated HTML file.
+Open `frontend/index.html` in a web server. Use the file picker to load the generated HTML file.
 
 ### Navigation and UI
 
-- **Mouse**: Click on any goal marker (▸) to see the tactic state
-- **Resize Panel**: Drag the vertical divider between panels to adjust width
+- **Mouse**: Click on any goal marker to see the tactic state
 - **Arrow Left/Right**: Navigate to previous/next marker
 - **Arrow Up/Down**: Jump to the leftmost marker on the previous/next line
 - **Page Up/Down**: Same as Arrow Left/Right
 - **Home/End**: Jump to first/last marker
+- **Resize Panel**: Drag the vertical divider between panels to adjust width
