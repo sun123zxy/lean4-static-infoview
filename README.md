@@ -2,7 +2,7 @@
 
 Disclaimer: This project is purely experimental, mainly written by LLM assistants, and may be of poor code quality. Use at your own risk. Currently only tactic state information is extracted and displayed.
 
-[The VSCode extension for Lean 4](https://github.com/leanprover/vscode-lean4) has a dynamic InfoView implementation. This project aims to provide a static alternative. It does not require a backend or a running Lean server, making it particularly useful for posting Lean code on static websites (e.g., blogs) for educational purposes.
+[The VSCode extension for Lean 4](https://github.com/leanprover/vscode-lean4) has a dynamic InfoView implementation. This project aims to provide a static alternative. It does not require a backend or a running Lean server, making it particularly useful for presentation, and hosting Lean code on static websites.
 
 It consists of a Lean program that generates HTML files with embedded tactic state markers, and an HTML/JS frontend that displays the code with interactive goal markers and syntax highlighting.
 

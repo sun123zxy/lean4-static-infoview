@@ -30,7 +30,8 @@
   - Code is split at goal marker boundaries
   - Each segment is highlighted independently to preserve markers
   - Uses vs2015 dark theme via CDN
-  - Custom styling for `sorry` keyword in red- **Resizable Info Panel**: Drag the vertical divider to adjust panel width
+  - Custom styling for `sorry` keyword in red
+  - **Resizable Info Panel**: Drag the vertical divider to adjust panel width
 - **Line-Aware Navigation**: 
   - Arrow Up/Down: Jumps to leftmost marker on previous/next line
   - Arrow Left/Right: Moves to adjacent markers
