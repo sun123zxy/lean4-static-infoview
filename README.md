@@ -19,9 +19,10 @@ lake exe staticInfoView Examples/Basic.lean -o info.html
 
 Open `frontend/index.html` in a web browser. Use the file picker to load the generated HTML file.
 
-### Navigation
+### Navigation and UI
 
 - **Mouse**: Click on any goal marker (▸) to see the tactic state
+- **Resize Panel**: Drag the vertical divider between panels to adjust width
 - **Arrow Left/Right**: Navigate to previous/next marker
 - **Arrow Up/Down**: Jump to the leftmost marker on the previous/next line
 - **Page Up/Down**: Same as Arrow Left/Right

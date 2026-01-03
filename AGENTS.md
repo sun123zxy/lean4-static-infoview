@@ -18,6 +18,7 @@
    - **js/codeDisplay.js**: Injects HTML and sets up click handlers
    - **js/navigation.js**: Marker click handling and keyboard navigation with line-aware movement
    - **js/infoPanel.js**: Info panel rendering with goal syntax highlighting
+   - **js/resize.js**: Drag-to-resize functionality for info panel
 
 3. **lakefile.toml** - Build configuration
 
@@ -26,10 +27,11 @@
 - **HTML Generation**: Direct HTML output from Lean instead of JSON (simpler architecture)
 - **Visible Markers**: Goal markers are inline `<span>` elements with triangle icons (▸)
 - **Click-Only Interaction**: Users can only click markers, not arbitrary text positions
+- **Resizable Info Panel**: Drag the vertical divider to adjust panel width (100px min, 95% max)
 - **Line-Aware Navigation**: 
   - Arrow Up/Down: Jumps to leftmost marker on previous/next line
   - Arrow Left/Right: Moves to adjacent markers
-  - Uses `offsetTop` with tolerance to detect same-line markers
+  - Uses `offsetTop` with 5px tolerance to detect same-line markers
 - **Tactic-Only Extraction**: Focuses exclusively on `TacticInfo.goalsBefore`, ignoring term type information
 - **Pretty Printing**: Uses `withLCtx` with proper local context to show actual variable names instead of internal `_fvar` identifiers
 - **UTF-8 Handling**: Uses `String.next()` for proper multi-byte character advancement
