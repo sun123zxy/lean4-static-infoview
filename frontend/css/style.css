@@ -111,6 +111,29 @@ body {
     padding: 10px 20px;
     background-color: #252526;
     border-bottom: 1px solid #3c3c3c;
+    position: relative;
+}
+
+#app-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #d4d4d4;
+    margin: 0;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#github-link {
+    display: flex;
+    align-items: center;
+    color: #d4d4d4;
+    margin-left: auto;
+    transition: color 0.2s;
+}
+
+#github-link:hover {
+    color: #ffffff;
 }
 
 .toolbar-btn {
@@ -189,43 +212,18 @@ body {
 .goal-marker::before {
     content: '';
     position: absolute;
-    left: -2px;
-    top: 0.1em;
-    width: 2px;
-    height: 1em;
-    background-color: #007acc;
-    transition: all 0.2s ease;
-}
-
-.goal-marker::after {
-    content: '';
-    position: absolute;
-    left: -6px;
-    top: -0.2em;
-    width: 6px;
-    height: 6px;
-    border-top-left-radius: 50%;
-    border-bottom-left-radius: 50%;
-    background-color: #007acc;
-    transition: all 0.2s ease;
+    left: -3px;
+    top: -0.1em;
+    width: 30px;
+    height: 1.4em;
+    background: linear-gradient(to right, rgba(0, 122, 204, .5), rgba(0, 0, 0, 0));
+    border-top-left-radius: 10%;
+    border-bottom-left-radius: 10%;
 }
 
 .goal-marker:hover::before,
-.goal-marker:hover::after {
-    background-color: #3aa6ee;
-}
-
-.goal-marker.active::before,
-.goal-marker.active::after {
-    background-color: #ffc71e;
-    box-shadow: 0 0 6px rgba(255, 199, 30, 0.8);
-}
-
-.info-title {
-    color: #4ec9b0;
-    font-weight: bold;
-    margin-bottom: 10px;
-    font-size: 16px;
+.goal-marker.active::before{
+    background: linear-gradient(to right, rgba(255, 191, 0, 1), rgba(255, 191, 0, 1) 6%, rgba(255, 191, 0, .5) 6%, rgba(0, 0, 0, 0));
 }
 
 .info-message {
@@ -238,7 +236,6 @@ body {
 
 .info-empty {
     color: #858585;
-    font-style: italic;
 }
 
 .line-number {
@@ -304,7 +301,6 @@ body {
 .goal-let-value {
     color: #ce9178;
     margin-left: 20px;
-    font-style: italic;
 }
 
 .goal-target {
