@@ -3,6 +3,10 @@ import Lean
 open Lean Elab Command Meta Tactic
 open System (FilePath)
 
+/-- Escape HTML special characters for attribute values -/
+def escapeHtml (s : String) : String :=
+  s
+
 /-- Format a single goal with its hypotheses and target -/
 def formatGoal (mvarId : MVarId) : MetaM String := do
   let mvarDecl ← mvarId.getDecl
@@ -49,9 +53,9 @@ def formatGoal (mvarId : MVarId) : MetaM String := do
 /-- Collect tactic state information from info trees and generate HTML -/
 def collectInfoFromTrees (trees : PersistentArray InfoTree) (source : String) :
     IO String := do
-  -- Build array of (offset, goalText) pairs
+  -- Collect positions and goal text for each tactic
   let positionsRef ← IO.mkRef #[]
-  let seenRef ← IO.mkRef #[]
+  let seenRef ← IO.mkRef (∅ : Std.HashSet Nat)
 
   for tree in trees do
     let _ ← tree.visitM (m := IO) (α := Unit) (preNode := fun ctx info _ => do
@@ -62,9 +66,8 @@ def collectInfoFromTrees (trees : PersistentArray InfoTree) (source : String) :
 
           -- Check if we've already seen this offset
           let seen ← seenRef.get
-          let key := (offset, "tactic")
-          if !seen.contains key then
-            seenRef.modify (·.push key)
+          if !seen.contains offset then
+            seenRef.modify (·.insert offset)
 
             -- Get goals before this tactic
             let goalsBeforeStr ← ctx.runMetaM {} (do
@@ -75,11 +78,11 @@ def collectInfoFromTrees (trees : PersistentArray InfoTree) (source : String) :
                 let goalsArray := goalsBefore.toArray
                 let mut result := s!"Goals: {goalsArray.size}\n\n"
                 for idx in [:goalsArray.size] do
-                  let mvarId := goalsArray[idx]!
-                  if idx > 0 then
-                    result := result ++ "\n---\n\n"
-                  result := result ++ s!"Goal {idx + 1}:\n"
-                  result := result ++ (← formatGoal mvarId)
+                  if let some mvarId := goalsArray[idx]? then
+                    if idx > 0 then
+                      result := result ++ "\n---\n\n"
+                    result := result ++ s!"Goal {idx + 1}:\n"
+                    result := result ++ (← formatGoal mvarId)
                 return result)
 
             positionsRef.modify (·.push (offset, goalsBeforeStr))
@@ -99,20 +102,17 @@ def collectInfoFromTrees (trees : PersistentArray InfoTree) (source : String) :
     -- Add text before this position
     if currentPos < offset then
       let textSegment := String.Pos.Raw.extract source ⟨currentPos⟩ ⟨offset⟩
-      -- Escape HTML characters
-      let escaped := textSegment.replace "&" "&amp;" |>.replace "<" "&lt;" |>.replace ">" "&gt;"
-      html := html ++ escaped
+      html := html ++ escapeHtml textSegment
 
     -- Insert goal marker
-    let escapedGoal := goalText.replace "&" "&amp;" |>.replace "<" "&lt;" |>.replace ">" "&gt;"
-    html := html ++ s!"<span class=\"goal-marker\" data-goal=\"{escapedGoal}\"></span>"
+    let escapedGoal := escapeHtml goalText
+    html := html ++ s!"<span class=\"goal-marker\" data-goal='{escapedGoal}'></span>"
     currentPos := offset
 
   -- Add remaining text
   if currentPos < source.utf8ByteSize then
     let textSegment := String.Pos.Raw.extract source ⟨currentPos⟩ ⟨source.utf8ByteSize⟩
-    let escaped := textSegment.replace "&" "&amp;" |>.replace "<" "&lt;" |>.replace ">" "&gt;"
-    html := html ++ escaped
+    html := html ++ escapeHtml textSegment
 
   return html
 
