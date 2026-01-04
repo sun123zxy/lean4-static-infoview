@@ -3,6 +3,12 @@ import Lean
 open Lean Elab Command Meta Tactic
 open System (FilePath)
 
+/-- Export options for controlling what information to include -/
+structure ExportOptions where
+  exportGoals : Bool := true
+  exportTerms : Bool := true
+deriving Repr
+
 /-- We won't do any sophisticated HTML escaping here. -/
 def escapeHtml (s : String) : String :=
   s.replace "&" "&amp;"
@@ -55,7 +61,7 @@ def formatGoal (mvarId : MVarId) : MetaM String := do
     return result
 
 /-- Collect tactic state and term type information from info trees and generate HTML -/
-def collectInfoFromTrees (trees : PersistentArray InfoTree) (source : String) :
+def collectInfoFromTrees (trees : PersistentArray InfoTree) (source : String) (options : ExportOptions) :
     IO String := do
   -- Collect positions and goal text for each tactic
   let positionsRef ← IO.mkRef #[]
@@ -67,6 +73,8 @@ def collectInfoFromTrees (trees : PersistentArray InfoTree) (source : String) :
     let _ ← tree.visitM (m := IO) (α := Unit) (preNode := fun ctx info _ => do
       match info with
       | .ofTacticInfo ti =>
+        if !options.exportGoals then
+          return true
         if let some range := ti.stx.getRange? then
           let offset := range.start.byteIdx
           -- Check if we've already seen this offset
@@ -94,6 +102,8 @@ def collectInfoFromTrees (trees : PersistentArray InfoTree) (source : String) :
         return true
 
       | .ofTermInfo ti =>
+        if !options.exportTerms then
+          return true
         if let some range := ti.stx.getRange? then
           -- Extract type information for this term
           let typeStr ← ctx.runMetaM ti.lctx (do
@@ -153,6 +163,10 @@ def collectInfoFromTrees (trees : PersistentArray InfoTree) (source : String) :
 
   -- Generate HTML by processing events
   let mut html := ""
+
+  -- Add metadata span at the beginning with separate attributes
+  html := html ++ s!"<span class=\"meta-info\" data-export-goals='{options.exportGoals}' data-export-terms='{options.exportTerms}' style='display:none;'></span>"
+
   let mut currentPos := 0
   let mut startIndex := 0
   let mut endIndex := 0
@@ -189,7 +203,7 @@ def collectInfoFromTrees (trees : PersistentArray InfoTree) (source : String) :
   return html
 
 /-- Process a Lean file and extract all info tree data -/
-def processFile (fileName : String) (outputFile : Option String := none) : IO Unit := do
+def processFile (fileName : String) (outputFile : Option String := none) (options : ExportOptions := {}) : IO Unit := do
   -- Enable initializers execution, required for frontend-like projects
   unsafe enableInitializersExecution
 
@@ -223,20 +237,49 @@ def processFile (fileName : String) (outputFile : Option String := none) : IO Un
 
   -- Extract and generate HTML from trees
   let trees := s.commandState.infoState.trees.toArray
-  let html ← collectInfoFromTrees trees.toPArray' source
+  let html ← collectInfoFromTrees trees.toPArray' source options
 
   -- Write HTML output
   IO.FS.writeFile outputPath html
   IO.println s!"Generated {outputPath}"
 
 def main (args : List String) : IO Unit := do
-  match args with
-  | [fileName] => processFile fileName none
-  | ["-o", outputFile, fileName] => processFile fileName (some outputFile)
-  | [fileName, "-o", outputFile] => processFile fileName (some outputFile)
-  | _ =>
+  let mut options : ExportOptions := {}
+  let mut outputFile : Option String := none
+  let mut fileName : Option String := none
+  let mut i := 0
+
+  while i < args.length do
+    let arg := args[i]!
+    if arg == "-o" then
+      i := i + 1
+      if i < args.length then
+        outputFile := some args[i]!
+      else
+        IO.println "Error: -o requires an output filename"
+        return
+    else if arg == "-g" then
+      -- Only export goals
+      options := { exportGoals := true, exportTerms := false }
+    else if arg == "-t" then
+      -- Only export terms
+      options := { exportGoals := false, exportTerms := true }
+    else if arg.startsWith "-" then
+      IO.println s!"Error: Unknown option {arg}"
+      return
+    else
+      fileName := some arg
+    i := i + 1
+
+  match fileName with
+  | some file => processFile file outputFile options
+  | none =>
     IO.println "Usage: staticInfoView [options] <lean-file>"
     IO.println "Options:"
+    IO.println "  -g           Export only goal/tactic information"
+    IO.println "  -t           Export only term type information"
     IO.println "  -o <file>    Specify output file (default: <input>.html)"
+    IO.println "If neither -g nor -t is specified, both are exported."
     IO.println "Example: staticInfoView Examples/Basic.lean"
-    IO.println "         staticInfoView -o output.html Examples/Basic.lean"
+    IO.println "         staticInfoView -g -o output.html Examples/Basic.lean"
+    IO.println "         staticInfoView -t Examples/Basic.lean"

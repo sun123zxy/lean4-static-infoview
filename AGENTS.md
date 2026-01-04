@@ -3,20 +3,22 @@
 ### Components Implemented
 
 1. **Main.lean** - Lean program for extracting info trees and generating HTML
+   - `ExportOptions`: Structure controlling what information to export (goals, terms, or both)
    - `formatGoal`: Formats goals with proper variable names using `withLCtx` for correct pretty-printing
-   - `collectInfoFromTrees`: Traverses InfoTree nodes to extract both tactic states and term types
+   - `collectInfoFromTrees`: Traverses InfoTree nodes to extract tactic states and/or term types based on options
    - `processFile`: Main pipeline that parses, elaborates, and generates HTML with inline markers
-   - Extracts tactic state information (goals, hypotheses, targets) and term type information
+   - `main`: Command-line argument parsing supporting `-g` (goals only), `-t` (terms only), and `-o` (output file)
    - Uses event-based HTML generation to handle nested term spans correctly
-   - Outputs plain HTML with goal markers: `<span class="goal-marker" data-goal="{goal}">▸</span>`
+   - Outputs meta information span: `<span class="meta-info" data-export-goals='...' data-export-terms='...'>`
+   - Outputs goal markers: `<span class="goal-marker" data-goal="{goal}"></span>`
    - Outputs nested term markers: `<span class="term-marker" data-type="{type}">...</span>`
 
 2. **Frontend** - Modular HTML/CSS/JS interface (in `frontend/` directory)
-   - **index.html**: Split-panel layout (code view | info panel) with file picker
-   - **css/style.css**: VS Code-inspired dark theme with marker styles and exponential opacity for nested terms
+   - **index.html**: Split-panel layout (code view | info panel) with file picker and display toggles
+   - **css/style.css**: VS Code-inspired dark theme with marker styles, exponential opacity for nested terms, and toggle controls
    - **js/main.js**: Entry point and initialization
-   - **js/state.js**: Minimal state management (currentMarker)
-   - **js/dataLoader.js**: HTML file loading and validation
+   - **js/state.js**: State management (currentMarker, exportedGoals, exportedTerms, displayGoals)
+   - **js/dataLoader.js**: HTML file loading, meta information parsing, toggle controls, and marker visibility
    - **js/codeDisplay.js**: Direct HTML injection without syntax highlighting
    - **js/navigation.js**: Goal marker click handling, term marker hover handling, keyboard navigation
    - **js/infoPanel.js**: Info panel rendering with goal syntax highlighting and term type display
@@ -27,6 +29,10 @@
 ### Key Technical Details
 
 #### HTML Generation (Main.lean)
+- **Command-Line Options**: Supports `-g` (goals only), `-t` (terms only), `-o` (output file)
+- **Export Options**: `ExportOptions` structure controls what information to include in output
+- **Meta Information**: Hidden span at beginning of HTML with `data-export-goals` and `data-export-terms` attributes
+- **Conditional Processing**: InfoTree traversal conditionally processes TacticInfo and TermInfo based on options
 - **Event-Based Generation**: Uses start/end events to properly order nested term span tags
   - Start events: `(position, "start", marker_html)`
   - End events: `(position, "end", start_position)`
@@ -54,6 +60,10 @@
 #### Frontend Architecture
 - **No Syntax Highlighting**: Direct HTML injection for performance and simplicity
 - **ES6 Modules**: Clean imports/exports with separate concerns
+- **Meta Information Parsing**: Extracts `data-export-goals` and `data-export-terms` from hidden span
+- **Display Toggles**: Bottom-right UI controls showing what information is available
+  - Goals toggle: Functional - can show/hide goal markers if exported
+  - Terms toggle: Informational only - indicates if terms are available
 - **CSS Custom Properties**: Dynamic opacity calculation for nested term highlighting
 - **Event Handling**: 
   - `mouseover` for term hover (fires when coming from child elements)
@@ -74,6 +84,18 @@
 - Draggable vertical divider between code and info panels
 - Min-width constraints to prevent collapse
 - Smooth transitions on hover/resize
+
+#### Export Metadata and Display Controls
+- **Meta Span**: Hidden `<span class="meta-info">` at beginning of HTML
+  - `data-export-goals`: Boolean indicating if goals were exported
+  - `data-export-terms`: Boolean indicating if terms were exported
+- **Toggle UI**: Bottom-right corner display indicators
+  - Goals: Toggleable checkbox (enabled if goals exported, disabled otherwise)
+  - Terms: Read-only checkbox (always disabled, shows availability)
+- **State Management**: Tracks both exported and display state separately
+  - `exportedGoals`/`exportedTerms`: What's in the file (from meta info)
+  - `displayGoals`: User preference for showing/hiding goals
+- **Visibility Control**: `updateMarkerVisibility()` shows/hides goal markers based on toggle state
 
 ### HTML Format
 
@@ -160,6 +182,178 @@ hba : b ≤ a
 5. **Hover Propagation**: `stopPropagation()` ensures only innermost term is selected
 6. **Opacity Calculation**: CSS `calc()` with custom properties enables dynamic nested highlighting
 
+### Planned Enhancement: Command Message Markers
+
+#### Implementation Plan for CommandInfo Support
+
+**User Requirements:**
+- Informational toggle only (like terms, not functional like goals)
+- Hover-only interaction (no click events)
+- Export all three marker types by default
+- Must handle nesting carefully to avoid conflicts with term markers
+
+#### Backend Changes (Main.lean)
+
+1. **Add `exportCommands` to ExportOptions**
+   ```lean
+   structure ExportOptions where
+     exportGoals : Bool := true
+     exportTerms : Bool := true
+     exportCommands : Bool := true  -- NEW
+   ```
+
+2. **Update `collectInfoFromTrees` to handle CommandInfo**
+   - Add conditional branch for `.ofCommandInfo info`
+   - Extract command syntax and any associated messages
+   - Generate `<span class="command-marker" data-message="{msg}"></span>` at command positions
+   - **Nesting consideration**: Commands occur at statement/declaration level, typically before any term markers
+   - Commands should NOT use event-based generation (they don't nest with terms)
+   - Insert command markers as simple inline spans at the start position of the command
+
+3. **Update meta information span**
+   - Add `data-export-commands='true/false'` attribute
+   - Example: `<span class="meta-info" data-export-goals='true' data-export-terms='true' data-export-commands='true'>`
+
+4. **Add command-line flag `-c`**
+   - Update `main` function argument parsing
+   - `-c`: Export only commands
+   - Can be combined: `-g -c` (goals and commands only)
+   - Default: All three types exported
+
+#### Frontend Changes
+
+1. **state.js**
+   ```javascript
+   // Add to global state
+   exportedCommands: false,  // Whether commands are in the file
+   // Note: No displayCommands - toggle is informational only
+   ```
+
+2. **dataLoader.js**
+   - Update `parseMetaInfo()`:
+     ```javascript
+     state.exportedCommands = metaSpan.dataset.exportCommands === 'true';
+     ```
+   - Update `updateToggleControls()`:
+     ```javascript
+     // Commands toggle: always disabled (informational)
+     commandsToggle.checked = state.exportedCommands;
+     commandsToggle.disabled = true;
+     commandsToggle.parentElement.style.opacity = state.exportedCommands ? '1' : '0.5';
+     ```
+   - No changes needed to `updateMarkerVisibility()` (informational toggle doesn't control visibility)
+
+3. **navigation.js**
+   - Add hover handler for command markers:
+     ```javascript
+     // Listen on code container for command-marker hover
+     document.querySelector('.code-display').addEventListener('mouseover', (e) => {
+       const marker = e.target.closest('.command-marker');
+       if (marker && !e.target.closest('.term-marker')) {
+         // Only trigger if not inside a term marker (precedence)
+         const message = marker.dataset.message;
+         showCommandInfo(message);
+         highlightCommandMarker(marker);
+       }
+     });
+     ```
+   - **Interaction priority**: If hover is on both command and term markers, term takes precedence
+   - Use `stopPropagation()` if needed to prevent event bubbling conflicts
+
+4. **infoPanel.js**
+   - Add 'command' type handling:
+     ```javascript
+     function renderInfo(marker) {
+       const type = marker.classList.contains('goal-marker') ? 'goal' :
+                    marker.classList.contains('term-marker') ? 'term' : 'command';
+       
+       if (type === 'command') {
+         const message = marker.dataset.message;
+         infoPanel.innerHTML = `<div class="command-info">${escapeHtml(message)}</div>`;
+       }
+       // ... existing goal and term handling
+     }
+     ```
+
+5. **style.css**
+   - Add command marker styles:
+     ```css
+     .command-marker {
+       /* Purple/magenta theme to distinguish from goals (blue) and terms (cyan) */
+       border-bottom: 1px dotted #c586c0;  /* VS Code purple */
+       cursor: help;
+       z-index: 1;  /* Same as goals, below terms */
+     }
+     
+     .command-marker:hover {
+       background-color: rgba(197, 134, 192, 0.1);  /* Light purple highlight */
+       border-bottom-color: #d7ba7d;  /* Gold on hover */
+     }
+     
+     .command-marker.active {
+       background-color: rgba(197, 134, 192, 0.2);
+       border-bottom-width: 2px;
+     }
+     
+     .command-info {
+       color: #c586c0;  /* Purple text */
+       font-family: 'Consolas', 'Monaco', monospace;
+       white-space: pre-wrap;
+     }
+     ```
+
+6. **index.html**
+   - Add third checkbox to toggles container:
+     ```html
+     <div class="display-toggles">
+       <label><input type="checkbox" id="toggle-goals"> Goals</label>
+       <label><input type="checkbox" id="toggle-terms" disabled> Terms</label>
+       <label><input type="checkbox" id="toggle-commands" disabled> Commands</label>
+     </div>
+     ```
+
+#### Key Technical Considerations
+
+1. **Nesting and Z-Index**
+   - Commands: z-index 1 (same as goals, below terms)
+   - Terms: z-index 2 (on top)
+   - Commands typically occur at top-level declarations, unlikely to overlap with terms
+   - If overlap occurs, term markers should be visually dominant
+
+2. **Hover Interaction Precedence**
+   - When mouse is over overlapping markers: term > command > goal
+   - Use `e.target.closest('.term-marker')` to check if inside a term marker
+   - Prevent command hover if already inside a term marker
+
+3. **Event Generation for Commands**
+   - Commands should use simple inline span insertion (like goals)
+   - Do NOT use event-based generation (commands don't nest)
+   - Insert at command start position only
+
+4. **CommandInfo Extraction**
+   - Access via `.ofCommandInfo info`
+   - Relevant fields:
+     - `info.stx`: Full command syntax
+     - May need to extract any elaboration messages
+     - Position from `info.stx.getPos?` and `info.stx.getTailPos?`
+
+5. **Default Export Behavior**
+   - All three types exported by default (no flags = export all)
+   - `-g` alone: goals only
+   - `-t` alone: terms only
+   - `-c` alone: commands only
+   - Combinations allowed: `-g -t`, `-g -c`, `-t -c`, `-g -t -c`
+
+#### Testing Plan
+
+1. Test command marker generation on various Lean files
+2. Verify hover works correctly (command messages displayed)
+3. Test interaction with term markers (precedence correct)
+4. Verify toggle displays correct state (informational only)
+5. Test command-line flags: default, `-c`, `-g -c`, etc.
+6. Check z-index layering with overlapping markers
+7. Verify meta information span includes all three attributes
+
 ### Potential Enhancements
 
 #### Available InfoTree Node Types Not Yet Implemented
@@ -174,16 +368,11 @@ hba : b ≤ a
    - Field names and types when accessing structures
    - **Use case**: Enhanced hover showing structure field details
 
-3. **CommandInfo** (`ofCommandInfo`)
-   - Information about top-level commands
-   - Declarations, definitions, theorems
-   - **Use case**: Table of contents navigation, jump to definition
-
-4. **UserWidgetInfo** (`ofUserWidgetInfo`)
+3. **UserWidgetInfo** (`ofUserWidgetInfo`)
    - Custom widgets defined by users
    - **Use case**: Render custom proof state displays if present
 
-5. **CustomInfo** (`ofCustomInfo`)
+4. **CustomInfo** (`ofCustomInfo`)
    - Extension point for custom information
 
 #### Unused TacticInfo Fields

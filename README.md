@@ -17,15 +17,32 @@ Currently the following info types are extracted and displayed:
 
 ### Generating static info HTML
 
+Generate HTML files with embedded tactic and term information:
+
 ```bash
+# Export both goals and terms (default)
 lake exe staticInfoView Examples/quotient.lean -o info.html
+
+# Export only goals/tactic information
+lake exe staticInfoView -g Examples/logic.lean -o goals_only.html
+
+# Export only term type information
+lake exe staticInfoView -t Examples/logic.lean -o terms_only.html
 ```
+
+**Command-line options:**
+- `-g` - Export only goal/tactic information
+- `-t` - Export only term type information  
+- `-o <file>` - Specify output file (default: `<input>.html`)
+- If neither `-g` nor `-t` is specified, both are exported
 
 If you prefer not to work with Mathlib, you may test with `Examples/logic.lean` and remove the Mathlib dependency from `lakefile.toml`.
 
 ### View in the frontend
 
 Open `frontend/index.html` in a web server. Use the file picker to load the generated HTML file.
+
+The frontend will automatically detect what information is available in the file and display it in the bottom-right corner.
 
 ### Navigation and UI
 
@@ -44,8 +61,15 @@ Open `frontend/index.html` in a web server. Use the file picker to load the gene
 
 #### Panel Management
 - **Resize**: Drag the vertical divider between panels to adjust width
+- **Info Panel**: Automatically updates to show tactic state or term type information
+
+#### Display Indicators
+- Bottom-right corner shows what information is available:
+  - **Goals checkbox**: Toggleable - show/hide goal markers (enabled if goals were exported)
+  - **Terms checkbox**: Informational only - indicates if term information is available
 
 ## TODO
 
 - Support command messages
 - Make the executable standalone
+- Highlight is temporarily disabled
