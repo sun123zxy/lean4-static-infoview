@@ -5,11 +5,10 @@ open System (FilePath)
 
 /-- Export options for controlling what information to include -/
 structure ExportOptions where
-  exportGoals : Bool := true
-  exportTerms : Bool := true
+  exportGoals : Bool := false
+  exportTerms : Bool := false
 deriving Repr
 
-/-- We won't do any sophisticated HTML escaping here. -/
 def escapeHtml (s : String) : String :=
   s.replace "&" "&amp;"
    |>.replace "<" "&lt;"
@@ -250,10 +249,10 @@ def main (args : List String) : IO Unit := do
         return
     else if arg == "-g" then
       -- Only export goals
-      options := { exportGoals := true, exportTerms := false }
+      options := { options with exportGoals := true }
     else if arg == "-t" then
       -- Only export terms
-      options := { exportGoals := false, exportTerms := true }
+      options := { options with exportTerms := true }
     else if arg.startsWith "-" then
       IO.println s!"Error: Unknown option {arg}"
       return
@@ -269,7 +268,5 @@ def main (args : List String) : IO Unit := do
     IO.println "  -g           Export only goal/tactic information"
     IO.println "  -t           Export only term type information"
     IO.println "  -o <file>    Specify output file (default: <input>.html)"
-    IO.println "If neither -g nor -t is specified, both are exported."
     IO.println "Example: staticInfoView Examples/Basic.lean"
-    IO.println "         staticInfoView -g -o output.html Examples/Basic.lean"
-    IO.println "         staticInfoView -t Examples/Basic.lean"
+    IO.println "         staticInfoView -g -t -o info.html Examples/Basic.lean"

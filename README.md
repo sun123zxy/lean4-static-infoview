@@ -20,21 +20,18 @@ Currently the following info types are extracted and displayed:
 Generate HTML files with embedded tactic and term information:
 
 ```bash
-# Export both goals and terms (default)
-lake exe staticInfoView Examples/quotient.lean -o info.html
-
-# Export only goals/tactic information
-lake exe staticInfoView -g Examples/logic.lean -o goals_only.html
-
-# Export only term type information
-lake exe staticInfoView -t Examples/logic.lean -o terms_only.html
+lake exe staticInfoView -g -t Examples/ineq.lean -o frontend/info.html
 ```
 
-**Command-line options:**
-- `-g` - Export only goal/tactic information
-- `-t` - Export only term type information  
-- `-o <file>` - Specify output file (default: `<input>.html`)
-- If neither `-g` nor `-t` is specified, both are exported
+```default
+Usage: staticInfoView [options] <lean-file>
+Options:
+  -g           Export only goal/tactic information
+  -t           Export only term type information
+  -o <file>    Specify output file (default: <input>.html)
+Example: staticInfoView Examples/Basic.lean
+         staticInfoView -g -t Examples/ineq.lean -o info.html
+```
 
 If you prefer not to work with Mathlib, you may test with `Examples/logic.lean` and remove the Mathlib dependency from `lakefile.toml`.
 
@@ -72,4 +69,3 @@ The frontend will automatically detect what information is available in the file
 
 - Support command messages
 - Make the executable standalone
-- Highlight is temporarily disabled
