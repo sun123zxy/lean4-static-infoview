@@ -26,6 +26,64 @@ export function setupMarkerClickHandlers() {
         });
     });
     
+    // Set up hover handlers for term markers
+    const termMarkers = document.querySelectorAll('.term-marker');
+    termMarkers.forEach(termMarker => {
+        const handleTermHover = (e) => {
+            // Stop propagation so only the innermost term is highlighted
+            e.stopPropagation();
+            
+            const termType = termMarker.getAttribute('data-type');
+            const termText = termMarker.textContent;
+            
+            if (termType) {
+                // Set opacity factor for this term
+                termMarker.style.setProperty('--opacity-factor', '1');
+                
+                // hierarchy: find all parent term markers
+                let parent = termMarker.parentElement;
+                let opacityFactor = 1.0;
+                while (parent && parent !== document.body) {
+                    if (parent.classList.contains('term-marker')) {
+                        const parentType = parent.getAttribute('data-type');
+                        if (parentType) {
+                            // Each level gets half the opacity of the previous
+                            parent.style.setProperty('--opacity-factor', opacityFactor.toString());
+                            opacityFactor *= 0.5;
+                        }
+                    }
+                    parent = parent.parentElement;
+                }
+                
+                // Show term text and type in info panel
+                updateInfoPanel({ text: termText, type: termType}, 'term');
+            }
+        };
+        
+        // Use mouseover instead of mouseenter - it fires even when coming from child elements
+        termMarker.addEventListener('mouseover', handleTermHover);
+        
+        termMarker.addEventListener('mouseleave', () => {
+            // Remove opacity factor from this term
+            termMarker.style.removeProperty('--opacity-factor');
+            
+            // Remove opacity factors from all parents
+            let parent = termMarker.parentElement;
+            while (parent && parent !== document.body) {
+                if (parent.classList.contains('term-marker')) {
+                    parent.style.removeProperty('--opacity-factor');
+                }
+                parent = parent.parentElement;
+            }
+            
+            // Restore goal info if there's an active marker
+            if (state.currentMarker) {
+                const goalText = state.currentMarker.getAttribute('data-goal');
+                updateInfoPanel(goalText, 'goal');
+            }
+        });
+    });
+    
     // Auto-select first marker
     if (markers.length > 0) {
         selectMarker(markers[0]);

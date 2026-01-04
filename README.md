@@ -6,7 +6,12 @@ It does not require a backend or a running Lean server. Static files with embedd
 
 It consists of a Lean program that generates HTML files with embedded tactic state markers, and an HTML/JS frontend that displays the code with interactive goal markers and syntax highlighting.
 
-**Disclaimer:** This project is purely experimental, in early stages, mainly written by LLM assistants, and potentially of poor code quality. Use at your own risk. Currently only tactic state information is extracted and displayed.
+**Disclaimer:** This project is purely experimental, in early stages, mainly written by LLM assistants, and potentially of poor code quality. Use at your own risk.
+
+Currently only the following info types are extracted and displayed:
+
+- tactic state information
+- term type information
 
 ## Usage
 
@@ -24,7 +29,8 @@ Open `frontend/index.html` in a web server. Use the file picker to load the gene
 
 ### Navigation and UI
 
-- **Mouse**: Click on any goal marker to see the tactic state
+- **Mouse Click**: Click on any goal marker to see the tactic state
+- **Mouse Hover**: Hover over term markers to see type information
 - **Arrow Left/Right**: Navigate to previous/next marker
 - **Arrow Up/Down**: Jump to the leftmost marker on the previous/next line
 - **Page Up/Down**: Same as Arrow Left/Right
@@ -33,5 +39,5 @@ Open `frontend/index.html` in a web server. Use the file picker to load the gene
 
 ## TODO
 
-- Support term type info and `#check` command messages
+- Support command messages
 - Make the executable standalone

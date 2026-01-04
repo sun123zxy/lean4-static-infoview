@@ -54,19 +54,20 @@ def formatGoal (mvarId : MVarId) : MetaM String := do
 
     return result
 
-/-- Collect tactic state information from info trees and generate HTML -/
+/-- Collect tactic state and term type information from info trees and generate HTML -/
 def collectInfoFromTrees (trees : PersistentArray InfoTree) (source : String) :
     IO String := do
   -- Collect positions and goal text for each tactic
   let positionsRef ← IO.mkRef #[]
   let seenRef ← IO.mkRef (∅ : Std.HashSet Nat)
+  -- Collect term ranges and types
+  let termRangesRef ← IO.mkRef #[]
 
   for tree in trees do
     let _ ← tree.visitM (m := IO) (α := Unit) (preNode := fun ctx info _ => do
       match info with
       | .ofTacticInfo ti =>
         if let some range := ti.stx.getRange? then
-          -- IO.println s!"Found tactic at range {range.start.byteIdx} {range.stop.byteIdx}"
           let offset := range.start.byteIdx
           -- Check if we've already seen this offset
           let seen ← seenRef.get
@@ -92,31 +93,98 @@ def collectInfoFromTrees (trees : PersistentArray InfoTree) (source : String) :
             positionsRef.modify (·.push (offset, goalsBeforeStr))
         return true
 
+      | .ofTermInfo ti =>
+        if let some range := ti.stx.getRange? then
+          -- Extract type information for this term
+          let typeStr ← ctx.runMetaM ti.lctx (do
+            let expr ← instantiateMVars ti.expr
+            let type ← inferType expr
+            let typeStr := toString (← ppExpr type)
+            return typeStr)
+
+          termRangesRef.modify (·.push (range.start.byteIdx, range.stop.byteIdx, typeStr))
+        return true
+
       | _ => return true) (fun _ _ _ _ => pure ())
 
   let positions ← positionsRef.get
-  -- Sort by offset
+  let termRanges ← termRangesRef.get
+
+  -- Sort goal markers by offset
   let sortedPositions := positions.qsort (fun a b => a.1 < b.1)
 
-  -- Generate HTML with plain text and markers
+  -- Deduplicate term ranges - keep only unique (start, end) pairs
+  let mut seenRanges : Std.HashSet (Nat × Nat) := ∅
+  let mut uniqueTerms := #[]
+  for (termStart, termEnd, termType) in termRanges do
+    let key := (termStart, termEnd)
+    -- Skip invalid or zero-length ranges
+    if termStart < termEnd && !seenRanges.contains key then
+      seenRanges := seenRanges.insert key
+      uniqueTerms := uniqueTerms.push (termStart, termEnd, termType)
+
+  -- Sort term ranges by start position, then by end position (longer ranges first for nesting)
+  let sortedTerms := uniqueTerms.qsort (fun a b =>
+    if a.1 == b.1 then b.2.1 < a.2.1  -- same start, longer range first
+    else a.1 < b.1)
+
+  -- Build start and end events
+  -- Start events: (position, type data) - for opening spans
+  -- End events: (position, start position) - for closing spans (start pos used for ordering)
+  let mut startEvents : Array (Nat × String) := #[]
+  let mut endEvents : Array (Nat × Nat) := #[]
+
+  -- Add goal marker events as start events
+  for (offset, goalText) in sortedPositions do
+    startEvents := startEvents.push (offset, s!"<goal>{escapeHtml goalText}")
+
+  -- Add term start/end events
+  for (termStart, termEnd, termType) in sortedTerms do
+    startEvents := startEvents.push (termStart, s!"<term>{escapeHtml termType}")
+    endEvents := endEvents.push (termEnd, termStart)
+
+  -- Sort start events by position
+  let sortedStarts := startEvents.qsort (fun a b => a.1 < b.1)
+
+  -- Sort end events by position, then by start position (later starts close first)
+  let sortedEnds := endEvents.qsort (fun a b =>
+    if a.1 == b.1 then b.2 < a.2  -- same end position: close inner spans first (later start)
+    else a.1 < b.1)
+
+  -- Generate HTML by processing events
   let mut html := ""
   let mut currentPos := 0
+  let mut startIndex := 0
+  let mut endIndex := 0
 
-  for (offset, goalText) in sortedPositions do
-    -- Add text before this position
-    if currentPos < offset then
-      let textSegment := String.Pos.Raw.extract source ⟨currentPos⟩ ⟨offset⟩
-      html := html ++ escapeHtml textSegment
+  while currentPos < source.rawEndPos.byteIdx do
+    -- Process all END events at this position (close spans)
+    while endIndex < sortedEnds.size do
+      let (endPos, _) := sortedEnds[endIndex]!
+      if endPos != currentPos then
+        break
+      html := html ++ "</span>"
+      endIndex := endIndex + 1
 
-    -- Insert goal marker
-    let escapedGoal := escapeHtml goalText
-    html := html ++ s!"<span class=\"goal-marker\" data-goal='{escapedGoal}'></span>"
-    currentPos := offset
+    -- Process all START events at this position (open spans or insert markers)
+    while startIndex < sortedStarts.size do
+      let (startPos, eventData) := sortedStarts[startIndex]!
+      if startPos != currentPos then
+        break
 
-  -- Add remaining text
-  if currentPos < source.rawEndPos.byteIdx then
-    let textSegment := String.Pos.Raw.extract source ⟨currentPos⟩ ⟨source.rawEndPos.byteIdx⟩
-    html := html ++ escapeHtml textSegment
+      if eventData.startsWith "<goal>" then
+        let goalText := eventData.drop 6
+        html := html ++ s!"<span class=\"goal-marker\" data-goal='{goalText}'></span>"
+      else if eventData.startsWith "<term>" then
+        let termType := eventData.drop 6
+        html := html ++ s!"<span class=\"term-marker\" data-type='{termType}'>"
+
+      startIndex := startIndex + 1
+
+    -- Finally, add the character at current position
+    let char := String.Pos.Raw.get source ⟨currentPos⟩
+    html := html ++ escapeHtml (String.ofList [char])
+    currentPos := String.Pos.Raw.next source ⟨currentPos⟩ |>.byteIdx
 
   return html
 

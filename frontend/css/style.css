@@ -228,27 +228,56 @@ body {
     box-shadow: -.3em 0 .5em rgba(255, 191, 0, 0.3);
 }
 
+/* Term Marker Styles */
+.term-marker {
+    display: inline;
+    border-bottom: 1px dotted rgba(78, 201, 176, 0.3);
+    cursor: help;
+    transition: all 0.2s ease;
+}
+
+.term-marker:hover {
+    background-color: rgba(78, 201, 176, calc(0.25 * var(--opacity-factor, 0.5)));
+    border-bottom: 2px solid rgba(78, 201, 176, var(--opacity-factor, 1));
+    border-radius: 2px;
+}
+
+/* Info Panel Message Styles */
 .info-message {
     margin-bottom: 10px;
     padding: 10px;
     background-color: #2d2d30;
     border-radius: 4px;
     border-left: 3px solid #007acc;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    line-height: 1.6;
 }
 
-.line-number {
-    display: inline-block;
-    width: 40px;
+.info-message.term-info {
+    border-left-color: #4ec9b0;
+}
+
+/* Term Display Styles */
+.term-display {
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.term-label,
+.term-type-label {
     color: #858585;
-    user-select: none;
-    text-align: right;
-    margin-right: 15px;
 }
 
-.code-line {
-    display: block;
+.term-text {
+    color: #d4d4d4;
 }
 
+.term-type-value {
+    color: #4ec9b0;
+}
+
+/* Instructions Overlay */
 #instructions {
     position: absolute;
     top: 10px;
@@ -261,13 +290,7 @@ body {
     max-width: 300px;
 }
 
-/* Tactic state display */
-.info-message {
-    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-    line-height: 1.6;
-}
-
-/* Goal syntax highlighting */
+/* Goal Syntax Highlighting */
 .goal-header {
     color: #4ec9b0;
     font-weight: bold;
@@ -320,12 +343,4 @@ body {
     color: #858585;
     text-align: center;
     margin: 8px 0;
-}
-
-.keyword {
-    color: #569cd6;
-}
-
-.string {
-    color: #ce9178;
 }

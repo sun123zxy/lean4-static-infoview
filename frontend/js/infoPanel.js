@@ -61,17 +61,31 @@ function escapeHtml(text) {
     return div.innerHTML;
 }
 
-export function updateInfoPanel(goalText) {
+export function updateInfoPanel(content, type = 'goal') {
     const infoContent = document.getElementById('info-content');
     
-    if (goalText && goalText.trim()) {
-        infoContent.innerHTML = '';
-        
-        const msgDiv = document.createElement('div');
-        msgDiv.className = 'info-message';
-        msgDiv.innerHTML = colorizeGoal(goalText);
-        infoContent.appendChild(msgDiv);
-    } else {
+    if (!content || (typeof content === 'string' && !content.trim())) {
         infoContent.innerHTML = '<div class="info-empty">No information available at this position</div>';
+        return;
     }
+    
+    infoContent.innerHTML = '';
+    const msgDiv = document.createElement('div');
+    
+    if (type === 'term') {
+        // Display term and its type information
+        msgDiv.className = 'info-message term-info';
+        msgDiv.innerHTML = `
+            <div class="term-display">
+                <span class="term-label">Term:</span> <span class="term-text">${escapeHtml(content.text)}</span><br>
+                <span class="term-type-label">Type:</span> <span class="term-type-value">${escapeHtml(content.type)}</span>
+            </div>
+        `;
+    } else {
+        // Display goal information
+        msgDiv.className = 'info-message';
+        msgDiv.innerHTML = colorizeGoal(content);
+    }
+    
+    infoContent.appendChild(msgDiv);
 }
