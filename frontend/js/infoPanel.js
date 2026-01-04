@@ -99,10 +99,10 @@ export function updateInfoPanel(content, type = 'goal') {
         msgDiv.className = 'info-message term-info';
         msgDiv.innerHTML = `
             <div class="term-display">
-                <span class="term-label">Term:</span> <span class="term-text">${escapeHtml(content.text)}</span><br>
-                <span class="term-type-label">Type:</span> <span class="term-type-value">${escapeHtml(content.type)}</span>
-            </div>
-        `;
+                <span class="term-label">Term:</span> <span class="term-text">${hljs.highlight(content.text, { language: 'lean', ignoreIllegals: true }).value}</span><br>
+                <span class="term-type-label">Type:</span> <span class="term-type-value">${hljs.highlight(content.type, { language: 'lean', ignoreIllegals: true }).value}</span>
+            </div>`
+            
     } else {
         // Display goal information
         msgDiv.className = 'info-message';
