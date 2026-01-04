@@ -120,9 +120,6 @@ def collectInfoFromTrees (trees : PersistentArray InfoTree) (source : String) (o
   let positions ← positionsRef.get
   let termRanges ← termRangesRef.get
 
-  -- Sort goal markers by offset
-  let sortedPositions := positions.qsort (fun a b => a.1 < b.1)
-
   -- Deduplicate term ranges - keep only unique (start, end) pairs
   let mut seenRanges : Std.HashSet (Nat × Nat) := ∅
   let mut uniqueTerms := #[]
@@ -133,33 +130,26 @@ def collectInfoFromTrees (trees : PersistentArray InfoTree) (source : String) (o
       seenRanges := seenRanges.insert key
       uniqueTerms := uniqueTerms.push (termStart, termEnd, termType)
 
-  -- Sort term ranges by start position, then by end position (longer ranges first for nesting)
-  let sortedTerms := uniqueTerms.qsort (fun a b =>
-    if a.1 == b.1 then b.2.1 < a.2.1  -- same start, longer range first
-    else a.1 < b.1)
-
   -- Build start and end events
   -- Start events: (position, type data) - for opening spans
-  -- End events: (position, start position) - for closing spans (start pos used for ordering)
+  -- End events: just positions where spans close (all </span> tags are identical)
   let mut startEvents : Array (Nat × String) := #[]
-  let mut endEvents : Array (Nat × Nat) := #[]
+  let mut endEvents : Array Nat := #[]
 
   -- Add goal marker events as start events
-  for (offset, goalText) in sortedPositions do
+  for (offset, goalText) in positions do
     startEvents := startEvents.push (offset, s!"<goal>{escapeHtml goalText}")
 
   -- Add term start/end events
-  for (termStart, termEnd, termType) in sortedTerms do
+  for (termStart, termEnd, termType) in uniqueTerms do
     startEvents := startEvents.push (termStart, s!"<term>{escapeHtml termType}")
-    endEvents := endEvents.push (termEnd, termStart)
+    endEvents := endEvents.push termEnd
 
   -- Sort start events by position
   let sortedStarts := startEvents.qsort (fun a b => a.1 < b.1)
 
-  -- Sort end events by position, then by start position (later starts close first)
-  let sortedEnds := endEvents.qsort (fun a b =>
-    if a.1 == b.1 then b.2 < a.2  -- same end position: close inner spans first (later start)
-    else a.1 < b.1)
+  -- Sort end events by position (order doesn't matter for same position - all </span> are identical)
+  let sortedEnds := endEvents.qsort (fun a b => a < b)
 
   -- Generate HTML by processing events
   let mut html := ""
@@ -174,7 +164,7 @@ def collectInfoFromTrees (trees : PersistentArray InfoTree) (source : String) (o
   while currentPos < source.rawEndPos.byteIdx do
     -- Process all END events at this position (close spans)
     while endIndex < sortedEnds.size do
-      let (endPos, _) := sortedEnds[endIndex]!
+      let endPos := sortedEnds[endIndex]!
       if endPos != currentPos then
         break
       html := html ++ "</span>"
