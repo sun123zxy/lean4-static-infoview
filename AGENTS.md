@@ -24,8 +24,7 @@
 
 ### Key Technical Details
 
-- **HTML Generation**: Direct HTML output from Lean instead of JSON (simpler architecture)
-- **No HTML Escaping**: The generated HTML is plain text without escaping special characters. The browser is expected to handle display correctly.
+- **HTML Generation**: Direct HTML output from Lean, embedding goal markers as `<span>` elements with `data-goal` attributes. Escapes HTML special characters in Lean code to ensure valid markup.
 - **Visible Markers**: Goal markers are inline `<span>` elements without visible icon content
 - **Click-Only Interaction**: Users can only click markers, not arbitrary text positions- **Syntax Highlighting**: Uses [highlight.js](https://highlightjs.org/) with [highlightjs-lean](https://github.com/leanprover-community/highlightjs-lean)
   - Code is split at goal marker boundaries
@@ -49,10 +48,17 @@
 Generated HTML contains plain text with inline goal markers:
 
 ```html
-theorem mp : p → (p → q) → q := <span class="goal-marker" data-goal="Goals: 1
+example : min a b ≤ a := <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
-p : Prop
-q : Prop
-⊢ p → (p → q) → q">▸</span>by ...
+a : ℚ
+b : ℚ
+c : ℚ
+⊢ min a b ≤ a'></span>by <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+⊢ min a b ≤ a'></span>exact min_le_left a b
 ```

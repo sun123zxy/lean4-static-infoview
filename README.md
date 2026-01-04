@@ -1,10 +1,12 @@
 # Lean 4 Static InfoView
 
-Disclaimer: This project is purely experimental, mainly written by LLM assistants, and may be of poor code quality. Use at your own risk. Currently only tactic state information is extracted and displayed.
+[The VSCode extension for Lean 4](https://github.com/leanprover/vscode-lean4) has a dynamic InfoView implementation. This project aims to provide a static alternative.
 
-[The VSCode extension for Lean 4](https://github.com/leanprover/vscode-lean4) has a dynamic InfoView implementation. This project aims to provide a static alternative. It does not require a backend or a running Lean server, making it particularly useful for presentation, and hosting Lean code on static websites.
+It does not require a backend or a running Lean server. Static files with embedded tactic state information is generated in advance, and then can be imported and viewed in a web browser frontend. This makes it lightweight and easy to deploy, particularly useful for sharing, presentation, and hosting Lean code on static websites like GitHub Pages.
 
 It consists of a Lean program that generates HTML files with embedded tactic state markers, and an HTML/JS frontend that displays the code with interactive goal markers and syntax highlighting.
+
+**Disclaimer:** This project is purely experimental, in early stages, mainly written by LLM assistants, and potentially of poor code quality. Use at your own risk. Currently only tactic state information is extracted and displayed.
 
 ## Usage
 
@@ -28,3 +30,8 @@ Open `frontend/index.html` in a web server. Use the file picker to load the gene
 - **Page Up/Down**: Same as Arrow Left/Right
 - **Home/End**: Jump to first/last marker
 - **Resize Panel**: Drag the vertical divider between panels to adjust width
+
+## TODO
+
+- Support term type info and `#check` command messages
+- Make the executable standalone
