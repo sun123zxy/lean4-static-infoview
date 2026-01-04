@@ -1,7 +1,19 @@
 // ============================================================================
 // Info Panel Management and Goal Syntax Highlighting
 // ============================================================================
+//
+// Handles:
+// - Colorizing goal state output (hypotheses, turnstile, targets)
+// - Displaying term type information
+// - Managing info panel content updates
+// ============================================================================
 
+/**
+ * Colorizes goal state text with syntax highlighting
+ * Applies VS Code dark theme colors to different components
+ * @param {string} text - Raw goal state text
+ * @returns {string} HTML with syntax highlighting
+ */
 export function colorizeGoal(text) {
     const lines = text.split('\n');
     let html = '';
@@ -55,12 +67,22 @@ export function colorizeGoal(text) {
     return html;
 }
 
+/**
+ * Escapes HTML special characters
+ * @param {string} text - Text to escape
+ * @returns {string} HTML-safe text
+ */
 function escapeHtml(text) {
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
 }
 
+/**
+ * Updates the info panel with goal state or term type information
+ * @param {string|Object} content - Goal text string or {text, type} object for terms
+ * @param {string} type - 'goal' or 'term'
+ */
 export function updateInfoPanel(content, type = 'goal') {
     const infoContent = document.getElementById('info-content');
     

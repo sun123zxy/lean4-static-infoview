@@ -8,7 +8,7 @@ It consists of a Lean program that generates HTML files with embedded tactic sta
 
 **Disclaimer:** This project is purely experimental, in early stages, mainly written by LLM assistants, and potentially of poor code quality. Use at your own risk.
 
-Currently only the following info types are extracted and displayed:
+Currently the following info types are extracted and displayed:
 
 - tactic state information
 - term type information
@@ -29,13 +29,21 @@ Open `frontend/index.html` in a web server. Use the file picker to load the gene
 
 ### Navigation and UI
 
-- **Mouse Click**: Click on any goal marker to see the tactic state
-- **Mouse Hover**: Hover over term markers to see type information
-- **Arrow Left/Right**: Navigate to previous/next marker
+#### Goal Markers
+- **Click**: Click on any goal marker (blue gradient bar) to display the tactic state
+- **Visual Feedback**: Markers turn yellow on hover and when active
+
+#### Term Type Information
+- **Hover**: Hover over any underlined term to see its type
+- **Nested Terms**: Parent terms are highlighted with decreasing opacity
+
+#### Keyboard Navigation
+- **Arrow Left/Right** or **Page Up/Down**: Navigate to previous/next goal marker
 - **Arrow Up/Down**: Jump to the leftmost marker on the previous/next line
-- **Page Up/Down**: Same as Arrow Left/Right
 - **Home/End**: Jump to first/last marker
-- **Resize Panel**: Drag the vertical divider between panels to adjust width
+
+#### Panel Management
+- **Resize**: Drag the vertical divider between panels to adjust width
 
 ## TODO
 

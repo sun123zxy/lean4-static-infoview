@@ -201,12 +201,15 @@ body {
 }
 
 /* Goal Marker Styles */
+/* Blue gradient bar indicator for tactic positions */
+/* z-index: 1 - beneath term markers */
 .goal-marker {
     display: inline;
     width: 0;
     position: relative;
     cursor: pointer;
     user-select: none;
+    z-index: 1;
 }
 
 .goal-marker::before {
@@ -229,15 +232,22 @@ body {
 }
 
 /* Term Marker Styles */
+/* Dotted underline for hoverable terms with type information */
+/* Uses --opacity-factor CSS variable for dynamic nested highlighting */
+/* z-index: 2 - above goal markers */
 .term-marker {
     display: inline;
+    position: relative;
     border-bottom: 1px dotted rgba(78, 201, 176, 0.3);
     cursor: help;
     transition: all 0.2s ease;
+    z-index: 2;
 }
 
+/* Hover state applies to both directly hovered and parent terms */
+/* Opacity controlled by --opacity-factor: 1.0, 0.5, 0.25, 0.125... */
 .term-marker:hover {
-    background-color: rgba(78, 201, 176, calc(0.25 * var(--opacity-factor, 0.5)));
+    background-color: rgba(78, 201, 176, calc(0.5 * var(--opacity-factor, 1)));
     border-bottom: 2px solid rgba(78, 201, 176, var(--opacity-factor, 1));
     border-radius: 2px;
 }

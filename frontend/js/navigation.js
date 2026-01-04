@@ -1,13 +1,23 @@
 // ============================================================================
-// Navigation and Marker Selection
+// Navigation and Marker Interaction
+// ============================================================================
+// 
+// Handles:
+// - Goal marker click interactions and keyboard navigation
+// - Term marker hover interactions with exponential opacity for nested terms
+// - Info panel updates for both goal states and term types
 // ============================================================================
 
 import { state } from './state.js';
 import { updateInfoPanel } from './infoPanel.js';
 
+/**
+ * Sets up click and hover handlers for goal and term markers
+ */
 export function setupMarkerClickHandlers() {
     const markers = document.querySelectorAll('.goal-marker');
     
+    // Goal marker click handlers
     markers.forEach(marker => {
         marker.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -26,48 +36,44 @@ export function setupMarkerClickHandlers() {
         });
     });
     
-    // Set up hover handlers for term markers
+    // Term marker hover handlers
+    // Uses mouseover (not mouseenter) to detect hover transitions between nested terms
     const termMarkers = document.querySelectorAll('.term-marker');
     termMarkers.forEach(termMarker => {
         const handleTermHover = (e) => {
-            // Stop propagation so only the innermost term is highlighted
+            // Stop propagation ensures only the innermost term responds
             e.stopPropagation();
             
             const termType = termMarker.getAttribute('data-type');
             const termText = termMarker.textContent;
             
             if (termType) {
-                // Set opacity factor for this term
-                termMarker.style.setProperty('--opacity-factor', '1');
-                
-                // hierarchy: find all parent term markers
-                let parent = termMarker.parentElement;
+                // Set opacity factors: 1.0 for hovered term, 0.5, 0.25, 0.125... for parents
                 let opacityFactor = 1.0;
-                while (parent && parent !== document.body) {
-                    if (parent.classList.contains('term-marker')) {
-                        const parentType = parent.getAttribute('data-type');
-                        if (parentType) {
-                            // Each level gets half the opacity of the previous
-                            parent.style.setProperty('--opacity-factor', opacityFactor.toString());
+                let me = termMarker;
+                do {
+                    if (me.classList.contains('term-marker')) {
+                        const myType = me.getAttribute('data-type');
+                        if (myType) {
+                            me.style.setProperty('--opacity-factor', opacityFactor.toString());
                             opacityFactor *= 0.5;
                         }
                     }
-                    parent = parent.parentElement;
-                }
+                    me = me.parentElement;
+                } while (me && me !== document.body);
                 
                 // Show term text and type in info panel
                 updateInfoPanel({ text: termText, type: termType}, 'term');
             }
         };
         
-        // Use mouseover instead of mouseenter - it fires even when coming from child elements
+        // mouseover fires when transitioning from child to parent, mouseenter doesn't
         termMarker.addEventListener('mouseover', handleTermHover);
         
         termMarker.addEventListener('mouseleave', () => {
-            // Remove opacity factor from this term
+            // Clean up opacity factors from this term and all parents
             termMarker.style.removeProperty('--opacity-factor');
             
-            // Remove opacity factors from all parents
             let parent = termMarker.parentElement;
             while (parent && parent !== document.body) {
                 if (parent.classList.contains('term-marker')) {
@@ -76,7 +82,7 @@ export function setupMarkerClickHandlers() {
                 parent = parent.parentElement;
             }
             
-            // Restore goal info if there's an active marker
+            // Restore goal state display if a goal marker is active
             if (state.currentMarker) {
                 const goalText = state.currentMarker.getAttribute('data-goal');
                 updateInfoPanel(goalText, 'goal');
@@ -84,34 +90,47 @@ export function setupMarkerClickHandlers() {
         });
     });
     
-    // Auto-select first marker
+    // Auto-select first marker on load
     if (markers.length > 0) {
         selectMarker(markers[0]);
     }
 }
 
+/**
+ * Selects a goal marker and displays its tactic state
+ */
 function selectMarker(marker) {
-    // Remove active class from previous marker
+    // Remove active styling from previous marker
     if (state.currentMarker) {
         state.currentMarker.classList.remove('active');
     }
     
-    // Add active class to new marker
+    // Apply active styling to new marker
     marker.classList.add('active');
     state.currentMarker = marker;
     
-    // Scroll into view
+    // Scroll marker into view
     marker.scrollIntoView({ block: 'center', behavior: 'smooth' });
     
-    // Update info panel with goal text from data attribute
+    // Display tactic state from data attribute
     const goalText = marker.getAttribute('data-goal');
     updateInfoPanel(goalText);
 }
 
+/**
+ * Gets the vertical position of an element for line-aware navigation
+ */
 function getYPosition(element) {
     return element.offsetTop;
 }
 
+/**
+ * Finds the leftmost marker on a different line
+ * @param {Array} markers - Array of goal marker elements
+ * @param {number} currentIndex - Current marker index
+ * @param {string} direction - 'next' or 'previous'
+ * @returns {number} Index of target marker
+ */
 function findMarkerOnDifferentLine(markers, currentIndex, direction) {
     const currentY = getYPosition(markers[currentIndex]);
     const tolerance = 5; // pixels tolerance for same line
@@ -149,6 +168,10 @@ function findMarkerOnDifferentLine(markers, currentIndex, direction) {
     return currentIndex; // Stay at current if no marker found on different line
 }
 
+/**
+ * Sets up keyboard navigation for goal markers
+ * Supports: Arrow keys, Page Up/Down, Home/End
+ */
 export function setupKeyboardNavigation() {
     document.addEventListener('keydown', (e) => {
         if (!state.currentMarker) return;
