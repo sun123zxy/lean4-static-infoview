@@ -1,45 +1,119 @@
+/-
+- Inequality `PartialOrder`
+- `abs`, `min` and `max`
+- The Art of Capturing Premises (TAOCP)
+- Wheelchair tactics
+-/
+
 import Mathlib
+
+/-
+## Inequality
+
+### Basics
+
+Inequality is determined by a partial order `PartialOrder`.
+A partial order is a relation with reflexivity, antisymmetry, and transitivity.
+In Lean, a relation means `α → α → Prop` for some type `α`,
+capturing the fact that each `a ≤ b` gives a proposition.
+-/
+
+section
 
 variable (a b c d : ℚ)
 
-example : a < b ↔ a ≤ b ∧ a ≠ b<span class="goal-marker" data-goal='Goals: 1
+/-
+`PartialOrder` makes `LE`(`≤`) and `LT`(`&lt;`) available in the context.
+-/
+#check PartialOrder
+
+#check a ≤ b
+#check a &lt; b
+#check b ≥ a
+#check b &gt; a
+
+#check le_refl
+#check le_antisymm
+#check le_trans
+
+#check lt_irrefl
+#check lt_asymm
+#check lt_trans
+
+/- `&lt;` is determined by `≤` -/
+#check lt_iff_le_not_ge
+
+/- `≥`, `&gt;` are just aliases of `≤`, `&lt;` -/
+example : (a &lt; b) = (b &gt; a) := <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℚ
 b : ℚ
 c : ℚ
 d : ℚ
-⊢ a < b ↔ a ≤ b ∧ a ≠ b'></span> := b<span class="goal-marker" data-goal='Goals: 1
+⊢ (a &lt; b) = (b &gt; a)'></span>by <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℚ
 b : ℚ
 c : ℚ
 d : ℚ
-⊢ a < b ↔ a ≤ b ∧ a ≠ b'></span>y
- <span class="goal-marker" data-goal='Goals: 1
+⊢ (a &lt; b) = (b &gt; a)'></span>rfl
+example : (a ≤ b) = (b ≥ a) := <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℚ
 b : ℚ
 c : ℚ
 d : ℚ
-⊢ a < b ↔ a ≤ b ∧ a ≠ b'></span> rw [lt_iff_le_n<span class="goal-marker" data-goal='Goals: 1
+⊢ (a ≤ b) = (b ≥ a)'></span>by <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℚ
 b : ℚ
 c : ℚ
 d : ℚ
-⊢ a ≤ b ∧ ¬b ≤ a ↔ a ≤ b ∧ a ≠ b'></span>ot_g<span class="goal-marker" data-goal='Goals: 1
+⊢ (a ≤ b) = (b ≥ a)'></span>rfl
+
+example : a &lt; b ↔ a ≤ b ∧ a ≠ b := <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℚ
 b : ℚ
 c : ℚ
 d : ℚ
-⊢ a ≤ b ∧ ¬b ≤ a ↔ a ≤ b ∧ a ≠ b'></span>e]
-  construc<span class="goal-marker" data-goal='Goals: 2
+⊢ a &lt; b ↔ a ≤ b ∧ a ≠ b'></span>by
+  <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+⊢ a &lt; b ↔ a ≤ b ∧ a ≠ b'></span>rw [<span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+⊢ a &lt; b ↔ a ≤ b ∧ a ≠ b'></span>lt_iff_le_not_ge<span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+⊢ a ≤ b ∧ ¬b ≤ a ↔ a ≤ b ∧ a ≠ b'></span>]
+  <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+⊢ a ≤ b ∧ ¬b ≤ a ↔ a ≤ b ∧ a ≠ b'></span>constructor
+  <span class="goal-marker" data-goal='Goals: 2
 
 Goal 1:
 a : ℚ
@@ -54,35 +128,22 @@ a : ℚ
 b : ℚ
 c : ℚ
 d : ℚ
-⊢ a ≤ b ∧ a ≠ b → a ≤ b ∧ ¬b ≤ a'></span>tor<span class="goal-marker" data-goal='Goals: 1
+⊢ a ≤ b ∧ a ≠ b → a ≤ b ∧ ¬b ≤ a'></span>· <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℚ
 b : ℚ
 c : ℚ
 d : ℚ
-⊢ a ≤ b ∧ ¬b ≤ a → a ≤ b ∧ a ≠ b'></span>
-  ·<span class="goal-marker" data-goal='Goals: 1
+⊢ a ≤ b ∧ ¬b ≤ a → a ≤ b ∧ a ≠ b'></span>intro <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℚ
 b : ℚ
 c : ℚ
 d : ℚ
-⊢ a ≤ b ∧ ¬b ≤ a → a ≤ b ∧ a ≠ b'></span> intro ⟨hab, hnba⟩
-    constructor
-    · exact hab
-    · intro h
-      rw [h] at hnba
-      apply hnba
-      exact le_refl b
-  · intro ⟨hab, hnab⟩
-    constructor
-    · exact hab
-    · intro hba
-      apply hnab
-      exact le_antisymm hab hba
-<span class="goal-marker" data-goal='Goals: 1
+⊢ a ≤ b ∧ ¬b ≤ a → a ≤ b ∧ a ≠ b'></span>⟨hab, hnba⟩
+    <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℚ
@@ -91,7 +152,8 @@ c : ℚ
 d : ℚ
 hab : a ≤ b
 hnba : ¬b ≤ a
-⊢ a ≤ b ∧ a ≠ b'></span><span class="goal-marker" data-goal='Goals: 2
+⊢ a ≤ b ∧ a ≠ b'></span>constructor
+    <span class="goal-marker" data-goal='Goals: 2
 
 Goal 1:
 a : ℚ
@@ -110,7 +172,7 @@ c : ℚ
 d : ℚ
 hab : a ≤ b
 hnba : ¬b ≤ a
-⊢ a ≠ b'></span>tor<span class="goal-marker" data-goal='Goals: 1
+⊢ a ≠ b'></span>· <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℚ
@@ -119,8 +181,8 @@ c : ℚ
 d : ℚ
 hab : a ≤ b
 hnba : ¬b ≤ a
-⊢ a ≤ b'></span>
-    · exact<span class="goal-marker" data-goal='Goals: 1
+⊢ a ≤ b'></span>exact hab
+    <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℚ
@@ -129,7 +191,7 @@ c : ℚ
 d : ℚ
 hab : a ≤ b
 hnba : ¬b ≤ a
-⊢ a ≠ b'></span> ha<span class="goal-marker" data-goal='Goals: 1
+⊢ a ≠ b'></span>· <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℚ
@@ -138,18 +200,8 @@ c : ℚ
 d : ℚ
 hab : a ≤ b
 hnba : ¬b ≤ a
-⊢ a ≠ b'></span>b
-    · intr<span class="goal-marker" data-goal='Goals: 1
-
-Goal 1:
-a : ℚ
-b : ℚ
-c : ℚ
-d : ℚ
-hab : a ≤ b
-hnba : ¬b ≤ a
-h : a = b
-⊢ False'></span>o h<span class="goal-marker" data-goal='Goals: 1
+⊢ a ≠ b'></span>intro h
+      <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℚ
@@ -159,8 +211,17 @@ d : ℚ
 hab : a ≤ b
 hnba : ¬b ≤ a
 h : a = b
-⊢ False'></span>
-<span class="goal-marker" data-goal='Goals: 1
+⊢ False'></span>rw [<span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+hab : a ≤ b
+hnba : ¬b ≤ a
+h : a = b
+⊢ False'></span>h<span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℚ
@@ -170,7 +231,8 @@ d : ℚ
 hab : a ≤ b
 hnba : ¬b ≤ b
 h : a = b
-⊢ False'></span>      rw [h] at <span class="goal-marker" data-goal='Goals: 1
+⊢ False'></span>] at hnba
+      <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℚ
@@ -180,8 +242,8 @@ d : ℚ
 hab : a ≤ b
 hnba : ¬b ≤ b
 h : a = b
-⊢ False'></span>hnba
-      apply<span class="goal-marker" data-goal='Goals: 1
+⊢ False'></span>apply hnba
+      <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℚ
@@ -191,30 +253,30 @@ d : ℚ
 hab : a ≤ b
 hnba : ¬b ≤ b
 h : a = b
-⊢ b ≤ b'></span> hnba
-      exact<span class="goal-marker" data-goal='Goals: 1
+⊢ b ≤ b'></span>exact le_refl b
+  <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℚ
 b : ℚ
 c : ℚ
 d : ℚ
-⊢ a ≤ b ∧ a ≠ b → a ≤ b ∧ ¬b ≤ a'></span> le<span class="goal-marker" data-goal='Goals: 1
+⊢ a ≤ b ∧ a ≠ b → a ≤ b ∧ ¬b ≤ a'></span>· <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℚ
 b : ℚ
 c : ℚ
 d : ℚ
-⊢ a ≤ b ∧ a ≠ b → a ≤ b ∧ ¬b ≤ a'></span>_refl <span class="goal-marker" data-goal='Goals: 1
+⊢ a ≤ b ∧ a ≠ b → a ≤ b ∧ ¬b ≤ a'></span>intro <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℚ
 b : ℚ
 c : ℚ
 d : ℚ
-⊢ a ≤ b ∧ a ≠ b → a ≤ b ∧ ¬b ≤ a'></span>b
-  · intro ⟨hab<span class="goal-marker" data-goal='Goals: 1
+⊢ a ≤ b ∧ a ≠ b → a ≤ b ∧ ¬b ≤ a'></span>⟨hab, hnab⟩
+    <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℚ
@@ -223,8 +285,8 @@ c : ℚ
 d : ℚ
 hab : a ≤ b
 hnab : a ≠ b
-⊢ a ≤ b ∧ ¬b ≤ a'></span>, hnab⟩
-    c<span class="goal-marker" data-goal='Goals: 2
+⊢ a ≤ b ∧ ¬b ≤ a'></span>constructor
+    <span class="goal-marker" data-goal='Goals: 2
 
 Goal 1:
 a : ℚ
@@ -243,7 +305,7 @@ c : ℚ
 d : ℚ
 hab : a ≤ b
 hnab : a ≠ b
-⊢ ¬b ≤ a'></span>ons<span class="goal-marker" data-goal='Goals: 1
+⊢ ¬b ≤ a'></span>· <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℚ
@@ -252,12 +314,8 @@ c : ℚ
 d : ℚ
 hab : a ≤ b
 hnab : a ≠ b
-⊢ a ≤ b'></span>tructor
-    · exact hab
-    · intro hba
-      apply hnab
-      exact le_antisymm hab hba
-<span class="goal-marker" data-goal='Goals: 1
+⊢ a ≤ b'></span>exact hab
+    <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℚ
@@ -266,7 +324,7 @@ c : ℚ
 d : ℚ
 hab : a ≤ b
 hnab : a ≠ b
-⊢ ¬b ≤ a'></span><span class="goal-marker" data-goal='Goals: 1
+⊢ ¬b ≤ a'></span>· <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℚ
@@ -275,19 +333,8 @@ c : ℚ
 d : ℚ
 hab : a ≤ b
 hnab : a ≠ b
-⊢ ¬b ≤ a'></span>xact hab
-    ·<span class="goal-marker" data-goal='Goals: 1
-
-Goal 1:
-a : ℚ
-b : ℚ
-c : ℚ
-d : ℚ
-hab : a ≤ b
-hnab : a ≠ b
-hba : b ≤ a
-⊢ False'></span> intro hba
-     <span class="goal-marker" data-goal='Goals: 1
+⊢ ¬b ≤ a'></span>intro hba
+      <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℚ
@@ -297,5 +344,2451 @@ d : ℚ
 hab : a ≤ b
 hnab : a ≠ b
 hba : b ≤ a
-⊢ a = b'></span> apply hnab
-      exact le_antisymm hab hba
+⊢ False'></span>apply hnab
+      <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+hab : a ≤ b
+hnab : a ≠ b
+hba : b ≤ a
+⊢ a = b'></span>exact le_antisymm hab hba
+#check lt_of_le_of_ne -- this have a related theorem
+
+/-
+A linearly ordered commutative ring is a commutative ring
+with a total order s.t addition and multiplication are strictly monotone, e.g. `ℚ`.
+
+In Lean this reads `[CommRing R] [LinearOrder R] [IsStrictOrderedRing R]`.
+
+We will work with `ℚ` as an example afterwards.
+
+[TODO] For some reason, `LinearOrder ℚ` is constructed using classical logic.
+Don&#39;t be surprised if `#print axioms ...` shows some classical axioms.
+-/
+
+/-
+### Pure partial order reasoning
+-/
+
+/- `norm_num` tactic solves numerical equalities and inequalities automatically. -/
+#help tactic norm_num
+example : (22 / 7 : ℚ) &lt; 4 := <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+⊢ 22 / 7 &lt; 4'></span>by <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+⊢ 22 / 7 &lt; 4'></span>norm_num
+
+-- [EXR]
+example (hab : a ≤ b) (hba : b ≤ a) : a = b := <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+hab : a ≤ b
+hba : b ≤ a
+⊢ a = b'></span>by
+  <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+hab : a ≤ b
+hba : b ≤ a
+⊢ a = b'></span>apply le_antisymm
+  <span class="goal-marker" data-goal='Goals: 2
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+hab : a ≤ b
+hba : b ≤ a
+⊢ a ≤ b
+---
+
+Goal 2:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+hab : a ≤ b
+hba : b ≤ a
+⊢ b ≤ a'></span>· <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+hab : a ≤ b
+hba : b ≤ a
+⊢ a ≤ b'></span>exact hab
+  <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+hab : a ≤ b
+hba : b ≤ a
+⊢ b ≤ a'></span>· <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+hab : a ≤ b
+hba : b ≤ a
+⊢ b ≤ a'></span>exact hba
+
+/- `grw` rewrites like `rw`, but works for inequalities. -/
+#help tactic grw
+example (hab : a ≤ b) (hbc : b &lt; c) : a &lt; c := <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+hab : a ≤ b
+hbc : b &lt; c
+⊢ a &lt; c'></span>by
+  <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+hab : a ≤ b
+hbc : b &lt; c
+⊢ a &lt; c'></span>grw [<span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+hab : a ≤ b
+hbc : b &lt; c
+⊢ a &lt; c'></span>hab<span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+hab : a ≤ b
+hbc : b &lt; c
+⊢ b &lt; c'></span>]
+  <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+hab : a ≤ b
+hbc : b &lt; c
+⊢ b &lt; c'></span>exact hbc
+example (hab : a ≤ b) (hbc : b &lt; c) : a &lt; c := <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+hab : a ≤ b
+hbc : b &lt; c
+⊢ a &lt; c'></span>by
+  <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+hab : a ≤ b
+hbc : b &lt; c
+⊢ a &lt; c'></span>grw [<span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+hab : a ≤ b
+hbc : b &lt; c
+⊢ a &lt; c'></span>← hab<span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+hab : a ≤ b
+hbc : a &lt; c
+⊢ a &lt; c'></span>] at hbc
+  <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+hab : a ≤ b
+hbc : a &lt; c
+⊢ a &lt; c'></span>exact hbc
+#check lt_of_le_of_lt -- this have a name
+
+/- `calc` is a term / tactic for proving inequalities by chaining. -/
+#help tactic calc
+example (hab : a ≤ b) (hbc : b &lt; c) : a &lt; c := <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+hab : a ≤ b
+hbc : b &lt; c
+⊢ a &lt; c'></span>by
+  <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+hab : a ≤ b
+hbc : b &lt; c
+⊢ a &lt; c'></span>calc
+    <span class="goal-marker" data-goal='No goals'></span>a ≤ b := hab
+    _ &lt; c := hbc
+
+/-
+### Linear order reasoning
+
+A linear order is a partial order with `le_total`: either `a ≤ b` or `b ≤ a`.
+-/
+#check le_total
+
+/- [EXR] Use this to prove the trichotomy of `&lt;` and `=`. -/
+example : a &lt; b ∨ a = b ∨ a &gt; b := <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+⊢ a &lt; b ∨ a = b ∨ a &gt; b'></span>by
+  <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+⊢ a &lt; b ∨ a = b ∨ a &gt; b'></span>rcases le_total a b with (hle | h)
+  <span class="goal-marker" data-goal='Goals: 2
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+hle : a ≤ b
+⊢ a &lt; b ∨ a = b ∨ a &gt; b
+---
+
+Goal 2:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+h : b ≤ a
+⊢ a &lt; b ∨ a = b ∨ a &gt; b'></span>· <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+hle : a ≤ b
+⊢ a &lt; b ∨ a = b ∨ a &gt; b'></span>by_cases heq : a = b
+    <span class="goal-marker" data-goal='Goals: 2
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+hle : a ≤ b
+heq : a = b
+⊢ a &lt; b ∨ a = b ∨ a &gt; b
+---
+
+Goal 2:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+hle : a ≤ b
+heq : ¬a = b
+⊢ a &lt; b ∨ a = b ∨ a &gt; b'></span>· <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+hle : a ≤ b
+heq : a = b
+⊢ a &lt; b ∨ a = b ∨ a &gt; b'></span>right<span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+hle : a ≤ b
+heq : a = b
+⊢ a = b ∨ a &gt; b'></span>; <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+hle : a ≤ b
+heq : a = b
+⊢ a = b ∨ a &gt; b'></span>left<span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+hle : a ≤ b
+heq : a = b
+⊢ a = b'></span>; <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+hle : a ≤ b
+heq : a = b
+⊢ a = b'></span>exact heq
+    <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+hle : a ≤ b
+heq : ¬a = b
+⊢ a &lt; b ∨ a = b ∨ a &gt; b'></span>· <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+hle : a ≤ b
+heq : ¬a = b
+⊢ a &lt; b ∨ a = b ∨ a &gt; b'></span>left
+      <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+hle : a ≤ b
+heq : ¬a = b
+⊢ a &lt; b'></span>apply lt_of_le_of_ne
+      <span class="goal-marker" data-goal='Goals: 2
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+hle : a ≤ b
+heq : ¬a = b
+⊢ a ≤ b
+---
+
+Goal 2:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+hle : a ≤ b
+heq : ¬a = b
+⊢ a ≠ b'></span>· <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+hle : a ≤ b
+heq : ¬a = b
+⊢ a ≤ b'></span>exact hle
+      <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+hle : a ≤ b
+heq : ¬a = b
+⊢ a ≠ b'></span>· <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+hle : a ≤ b
+heq : ¬a = b
+⊢ a ≠ b'></span>exact heq
+  <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+h : b ≤ a
+⊢ a &lt; b ∨ a = b ∨ a &gt; b'></span>· -- do it similarly
+    <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+h : b ≤ a
+⊢ a &lt; b ∨ a = b ∨ a &gt; b'></span>sorry
+#check eq_or_lt_of_le -- this have a name
+
+/-
+### Monotonicity of `+`
+
+It&#39;s important to recognize that the (strict) monotonicity of `+` is a nontrivial theorem.
+That is a part of the meaning of `IsStrictOrderedRing`.
+-/
+#synth IsStrictOrderedRing ℚ
+
+#check add_le_add_left
+#check add_le_add_right
+
+#check add_lt_add_left
+#check add_lt_add_right
+
+/-
+Luckily, `grw` recognizes these theorems and applies them automatically.
+-/
+
+/- transposition of `≤` -/
+example (h : a + b ≤ c) : a ≤ c - b := <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+h : a + b ≤ c
+⊢ a ≤ c - b'></span>by
+  <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+h : a + b ≤ c
+⊢ a ≤ c - b'></span>grw [<span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+h : a + b ≤ c
+⊢ a ≤ c - b'></span>← h<span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+h : a + b ≤ c
+⊢ a ≤ a + b - b'></span>]
+  <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+h : a + b ≤ c
+⊢ a ≤ a + b - b'></span>simp
+
+/- monotonicity of `+` -/
+example : a + c ≤ b + c ↔ a ≤ b := <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+⊢ a + c ≤ b + c ↔ a ≤ b'></span>by
+  <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+⊢ a + c ≤ b + c ↔ a ≤ b'></span>constructor
+  <span class="goal-marker" data-goal='Goals: 2
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+⊢ a + c ≤ b + c → a ≤ b
+---
+
+Goal 2:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+⊢ a ≤ b → a + c ≤ b + c'></span>· <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+⊢ a + c ≤ b + c → a ≤ b'></span>intro h
+    <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+h : a + c ≤ b + c
+⊢ a ≤ b'></span>calc
+      <span class="goal-marker" data-goal='No goals'></span>a = (a + c) - c := <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+h : a + c ≤ b + c
+⊢ a = a + c - c'></span>by <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+h : a + c ≤ b + c
+⊢ a = a + c - c'></span>simp
+      _ ≤ (b + c) - c := <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+h : a + c ≤ b + c
+⊢ a + c - c ≤ b + c - c'></span>by <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+h : a + c ≤ b + c
+⊢ a + c - c ≤ b + c - c'></span>grw [<span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+h : a + c ≤ b + c
+⊢ a + c - c ≤ b + c - c'></span>h<span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+h : a + c ≤ b + c
+⊢ b + c - c ≤ b + c - c'></span>]
+      _ = b := <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+h : a + c ≤ b + c
+⊢ b + c - c = b'></span>by <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+h : a + c ≤ b + c
+⊢ b + c - c = b'></span>simp
+  <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+⊢ a ≤ b → a + c ≤ b + c'></span>· <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+⊢ a ≤ b → a + c ≤ b + c'></span>intro h
+    <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+h : a ≤ b
+⊢ a + c ≤ b + c'></span>grw [<span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+h : a ≤ b
+⊢ a + c ≤ b + c'></span>h<span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+h : a ≤ b
+⊢ b + c ≤ b + c'></span>]
+#check add_le_add_iff_right -- this have a name
+
+/- strict monotonicity of `+` -/
+example : a &lt; b ↔ a + c &lt; b + c := <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+⊢ a &lt; b ↔ a + c &lt; b + c'></span>by
+  <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+⊢ a &lt; b ↔ a + c &lt; b + c'></span>constructor
+  <span class="goal-marker" data-goal='Goals: 2
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+⊢ a &lt; b → a + c &lt; b + c
+---
+
+Goal 2:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+⊢ a + c &lt; b + c → a &lt; b'></span>· <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+⊢ a &lt; b → a + c &lt; b + c'></span>contrapose!
+    <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+⊢ b + c ≤ a + c → b ≤ a'></span>intro h
+    <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+h : b + c ≤ a + c
+⊢ b ≤ a'></span>rw [<span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+h : b + c ≤ a + c
+⊢ b ≤ a'></span>add_le_add_iff_right<span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+h : b ≤ a
+⊢ b ≤ a'></span>] at h
+    <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+h : b ≤ a
+⊢ b ≤ a'></span>exact h
+  <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+⊢ a + c &lt; b + c → a &lt; b'></span>· <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+⊢ a + c &lt; b + c → a &lt; b'></span>contrapose!
+    <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+⊢ b ≤ a → b + c ≤ a + c'></span>intro h
+    <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+h : b ≤ a
+⊢ b + c ≤ a + c'></span>grw [<span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+h : b ≤ a
+⊢ b + c ≤ a + c'></span>h<span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+h : b ≤ a
+⊢ a + c ≤ a + c'></span>]
+#check add_lt_add_iff_right -- this have a name
+
+-- [EXR]
+example (h : a + b &lt; c + d) : a - d &lt; c - b := <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+h : a + b &lt; c + d
+⊢ a - d &lt; c - b'></span>by
+  <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+h : a + b &lt; c + d
+⊢ a - d &lt; c - b'></span>sorry
+
+/-
+### Automation
+
+Tired of these? Use automation!
+-/
+
+/-
+#### `linarith`
+
+`linarith` is a powerful tactic that solves linear inequalities automatically.
+It uses hypotheses in the context and basic properties of linear orders
+to deduce the goal.
+
+`linarith only [h1, h2, ...]` use only hypotheses `h1`, `h2`, ... to solve the goal.
+-/
+#help tactic linarith
+
+example : a &lt; b ↔ a - c &lt; b - c := <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+⊢ a &lt; b ↔ a - c &lt; b - c'></span>by
+  <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+⊢ a &lt; b ↔ a - c &lt; b - c'></span>constructor
+  <span class="goal-marker" data-goal='Goals: 2
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+⊢ a &lt; b → a - c &lt; b - c
+---
+
+Goal 2:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+⊢ a - c &lt; b - c → a &lt; b'></span>all_goals
+    <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+⊢ a &lt; b → a - c &lt; b - c'></span>intro
+    <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+a : a &lt; b
+⊢ a - c &lt; b - c'></span>linarith
+
+example (h : a + b &lt; c + d) : a - d &lt; c - b := <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+h : a + b &lt; c + d
+⊢ a - d &lt; c - b'></span>by
+  <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+h : a + b &lt; c + d
+⊢ a - d &lt; c - b'></span>linarith
+
+example (h : a &gt; 0) : (2 / 3) * a &gt; 0 := <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+h : a &gt; 0
+⊢ 2 / 3 * a &gt; 0'></span>by
+  <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+h : a &gt; 0
+⊢ 2 / 3 * a &gt; 0'></span>linarith
+
+example (h : (-5 / 3) * a &gt; 0) : 4 * a &lt; 0 := <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+h : -5 / 3 * a &gt; 0
+⊢ 4 * a &lt; 0'></span>by
+  <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+h : -5 / 3 * a &gt; 0
+⊢ 4 * a &lt; 0'></span>linarith
+
+/- Note the limitations of `linarith`. -/
+
+/- It only works for linear inequalities, not polynomial ones. -/
+example : a ^ 2 ≥ 0 := <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+⊢ a ^ 2 ≥ 0'></span>by <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+⊢ a ^ 2 ≥ 0'></span>sorry -- linarith fails here
+
+/- though some of polynomial inequalities can be solved by `nlinarith` -/
+#help tactic nlinarith
+example : a ^ 2 ≥ 0 := <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+⊢ a ^ 2 ≥ 0'></span>by <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+⊢ a ^ 2 ≥ 0'></span>nlinarith
+#check sq_nonneg -- this have a name
+
+/-
+It solve all inequalities in a dense linear order.
+
+It does solve some inequalities in discrete linear orders like `ℤ`,
+but no guarantee for all of them.
+-/
+example (n m : ℤ) (h : n &lt; m) : n + 1 ≤ m := <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+n : ℤ
+m : ℤ
+h : n &lt; m
+⊢ n + 1 ≤ m'></span>by <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+n : ℤ
+m : ℤ
+h : n &lt; m
+⊢ n + 1 ≤ m'></span>linarith
+example (n m : ℤ) (h : n &lt; m) : n + (1/2 : ℚ) ≤ m := <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+n : ℤ
+m : ℤ
+h : n &lt; m
+⊢ ↑n + 1 / 2 ≤ ↑m'></span>by <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+n : ℤ
+m : ℤ
+h : n &lt; m
+⊢ ↑n + 1 / 2 ≤ ↑m'></span>sorry -- linarith fails here
+
+/-
+It won&#39;t recognize inequalities involving `min`, `max`, `abs`, etc.
+It won&#39;t recognize some basic `simp` transformations, either.
+-/
+example (h : a * (min 1 2) &gt; 0) : (id a) ≥ 0 := <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+h : a * min 1 2 &gt; 0
+⊢ id a ≥ 0'></span>by
+  <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+h : a * min 1 2 &gt; 0
+⊢ id a ≥ 0'></span>simp at *
+  <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+h : 0 &lt; a
+⊢ 0 ≤ a'></span>linarith -- direct `linarith` will fail
+
+/- [EXR] ℚ admits a dense linear order -/
+example (hab : a &lt; b) : ∃ c : ℚ, a &lt; c ∧ c &lt; b := <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+hab : a &lt; b
+⊢ ∃ c, a &lt; c ∧ c &lt; b'></span>by
+  <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+hab : a &lt; b
+⊢ ∃ c, a &lt; c ∧ c &lt; b'></span>use (a + b) / 2
+  <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+hab : a &lt; b
+⊢ a &lt; (a + b) / 2 ∧ (a + b) / 2 &lt; b'></span>constructor
+  <span class="goal-marker" data-goal='Goals: 2
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+hab : a &lt; b
+⊢ a &lt; (a + b) / 2
+---
+
+Goal 2:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+hab : a &lt; b
+⊢ (a + b) / 2 &lt; b'></span>all_goals <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+hab : a &lt; b
+⊢ a &lt; (a + b) / 2'></span>linarith
+
+/-
+#### `simp`
+
+`add_lt_add_iff_right`-like theorems are registered for `simp`,
+so sometimes `simp` can reduce things like:
+-/
+example (h : a + b &lt; c + b) : a &lt; c := <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+h : a + b &lt; c + b
+⊢ a &lt; c'></span>by
+  <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+h : a + b &lt; c + b
+⊢ a &lt; c'></span>simp at h
+  <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+h : a &lt; c
+⊢ a &lt; c'></span>exact h
+
+/-
+#### `apply_fun`
+
+Sometimes you would like to `apply_fun` at an inequality.
+This requires you to manually show the monotonicity of the function.
+-/
+
+example (h : a + b &lt; c + d) : a - d &lt; c - b := <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+h : a + b &lt; c + d
+⊢ a - d &lt; c - b'></span>by
+  <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+h : a + b &lt; c + d
+⊢ a - d &lt; c - b'></span>apply_fun (· - b - d) at h
+  <span class="goal-marker" data-goal='Goals: 2
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+h : (fun x =&gt; x - b - d) (a + b) &lt; (fun x =&gt; x - b - d) (c + d)
+⊢ a - d &lt; c - b
+---
+
+Goal 2:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+h : a + b &lt; c + d
+⊢ StrictMono fun x =&gt; x - b - d'></span>· <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+h : (fun x =&gt; x - b - d) (a + b) &lt; (fun x =&gt; x - b - d) (c + d)
+⊢ a - d &lt; c - b'></span>ring_nf at *
+    <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+h : a - d &lt; c - b
+⊢ a - d &lt; c - b'></span>exact h
+  <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+h : a + b &lt; c + d
+⊢ StrictMono fun x =&gt; x - b - d'></span>· <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+h : a + b &lt; c + d
+⊢ StrictMono fun x =&gt; x - b - d'></span>unfold StrictMono
+    <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+h : a + b &lt; c + d
+⊢ ∀ ⦃a b_1 : ℚ⦄, a &lt; b_1 → (fun x =&gt; x - b - d) a &lt; (fun x =&gt; x - b - d) b_1'></span>simp
+
+/- [EXR] Mimick the above example. -/
+example (h : a + c ≤ b) : a ≤ b - c := <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+h : a + c ≤ b
+⊢ a ≤ b - c'></span>by
+  <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+h : a + c ≤ b
+⊢ a ≤ b - c'></span>apply_fun (· - c) at h
+  <span class="goal-marker" data-goal='Goals: 2
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+h : (fun x =&gt; x - c) (a + c) ≤ (fun x =&gt; x - c) b
+⊢ a ≤ b - c
+---
+
+Goal 2:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+h : a + c ≤ b
+⊢ Monotone fun x =&gt; x - c'></span>· <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+h : (fun x =&gt; x - c) (a + c) ≤ (fun x =&gt; x - c) b
+⊢ a ≤ b - c'></span>ring_nf at *
+    <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+h : a ≤ b - c
+⊢ a ≤ b - c'></span>exact h
+  <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+h : a + c ≤ b
+⊢ Monotone fun x =&gt; x - c'></span>· <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+h : a + c ≤ b
+⊢ Monotone fun x =&gt; x - c'></span>unfold Monotone
+    <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+d : ℚ
+h : a + c ≤ b
+⊢ ∀ ⦃a b : ℚ⦄, a ≤ b → (fun x =&gt; x - c) a ≤ (fun x =&gt; x - c) b'></span>simp
+
+/-
+### Monotonicity of `*`
+
+[TODO] It&#39;s not needed in the course so far, so we skip it for now.
+-/
+
+end
+
+/-
+## `abs`, `min`, `max` and TAOCP
+
+A mature formalizer finds their theorems by themselves.
+The art of capturing premises includes, but not limited to:
+
+- `exact?`
+- name guessing
+- natural language search engine: LeanSearch, LeanExplore, etc.
+- mathlib documentation
+- AI copilot completion
+-/
+section
+
+variable (a b c : ℚ)
+
+#check abs
+
+/- [EXR] Find all the below by yourself -/
+
+example : |a| ≥ 0 := <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+⊢ |a| ≥ 0'></span>by <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+⊢ |a| ≥ 0'></span>exact abs_nonneg a
+example : |-a| = |a| := <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+⊢ |(-a)| = |a|'></span>by <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+⊢ |(-a)| = |a|'></span>exact abs_neg a
+example : |a * b| = |a| * |b| := <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+⊢ |a * b| = |a| * |b|'></span>by <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+⊢ |a * b| = |a| * |b|'></span>exact abs_mul a b
+example : |a + b| ≤ |a| + |b| := <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+⊢ |a + b| ≤ |a| + |b|'></span>by <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+⊢ |a + b| ≤ |a| + |b|'></span>exact abs_add_le a b
+example : |a| - |b| ≤ |a - b| := <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+⊢ |a| - |b| ≤ |a - b|'></span>by <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+⊢ |a| - |b| ≤ |a - b|'></span>exact abs_sub_abs_le_abs_sub a b
+example : |a| ≤ b ↔ -b ≤ a ∧ a ≤ b := <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+⊢ |a| ≤ b ↔ -b ≤ a ∧ a ≤ b'></span>by <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+⊢ |a| ≤ b ↔ -b ≤ a ∧ a ≤ b'></span>exact abs_le
+example : |a| ≥ b ↔ a ≤ -b ∨ b ≤ a := <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+⊢ |a| ≥ b ↔ a ≤ -b ∨ b ≤ a'></span>by <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+⊢ |a| ≥ b ↔ a ≤ -b ∨ b ≤ a'></span>exact le_abs&#39;
+
+example (h : a ≥ 0) : |a| = a := <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h : a ≥ 0
+⊢ |a| = a'></span>by <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h : a ≥ 0
+⊢ |a| = a'></span>exact abs_of_nonneg h
+example (h : a ≤ 0) : |a| = -a := <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h : a ≤ 0
+⊢ |a| = -a'></span>by <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h : a ≤ 0
+⊢ |a| = -a'></span>exact abs_of_nonpos h
+example (h : b ≥ 0) : |a| = b ↔ a = b ∨ a = -b := <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h : b ≥ 0
+⊢ |a| = b ↔ a = b ∨ a = -b'></span>by <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h : b ≥ 0
+⊢ |a| = b ↔ a = b ∨ a = -b'></span>exact abs_eq h
+
+/-
+A mindless way to prove these linear inequalities involving `abs` is
+to eliminate all `abs` by casing on the sign of the arguments,
+then use `linarith`.
+-/
+example : |a - c| ≤ |a - b| + |b - c| := <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+⊢ |a - c| ≤ |a - b| + |b - c|'></span>by
+  <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+⊢ |a - c| ≤ |a - b| + |b - c|'></span>all_goals <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+⊢ |a - c| ≤ |a - b| + |b - c|'></span>rcases le_total 0 (a - b) with h1 | h1
+  <span class="goal-marker" data-goal='Goals: 2
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ a - b
+⊢ |a - c| ≤ |a - b| + |b - c|
+---
+
+Goal 2:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : a - b ≤ 0
+⊢ |a - c| ≤ |a - b| + |b - c|'></span>all_goals
+    <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ a - b
+⊢ |a - c| ≤ |a - b| + |b - c|'></span>try <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ a - b
+⊢ |a - c| ≤ |a - b| + |b - c|'></span>rw [<span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ a - b
+⊢ |a - c| ≤ |a - b| + |b - c|'></span>abs_of_nonneg h1<span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ a - b
+⊢ |a - c| ≤ a - b + |b - c|'></span>]
+    <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ a - b
+⊢ |a - c| ≤ a - b + |b - c|'></span>try <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ a - b
+⊢ |a - c| ≤ a - b + |b - c|'></span>rw [<span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ a - b
+⊢ |a - c| ≤ a - b + |b - c|'></span>abs_of_nonpos h1<span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : a - b ≤ 0
+⊢ |a - c| ≤ -(a - b) + |b - c|'></span>]
+  <span class="goal-marker" data-goal='Goals: 2
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ a - b
+⊢ |a - c| ≤ a - b + |b - c|
+---
+
+Goal 2:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : a - b ≤ 0
+⊢ |a - c| ≤ -(a - b) + |b - c|'></span>all_goals <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ a - b
+⊢ |a - c| ≤ a - b + |b - c|'></span>rcases le_total 0 (b - c) with h2 | h2
+  <span class="goal-marker" data-goal='Goals: 4
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ a - b
+h2 : 0 ≤ b - c
+⊢ |a - c| ≤ a - b + |b - c|
+---
+
+Goal 2:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ a - b
+h2 : b - c ≤ 0
+⊢ |a - c| ≤ a - b + |b - c|
+---
+
+Goal 3:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : a - b ≤ 0
+h2 : 0 ≤ b - c
+⊢ |a - c| ≤ -(a - b) + |b - c|
+---
+
+Goal 4:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : a - b ≤ 0
+h2 : b - c ≤ 0
+⊢ |a - c| ≤ -(a - b) + |b - c|'></span>all_goals
+    <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ a - b
+h2 : 0 ≤ b - c
+⊢ |a - c| ≤ a - b + |b - c|'></span>try <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ a - b
+h2 : 0 ≤ b - c
+⊢ |a - c| ≤ a - b + |b - c|'></span>rw [<span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ a - b
+h2 : 0 ≤ b - c
+⊢ |a - c| ≤ a - b + |b - c|'></span>abs_of_nonneg h2<span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ a - b
+h2 : 0 ≤ b - c
+⊢ |a - c| ≤ a - b + (b - c)'></span>]
+    <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ a - b
+h2 : 0 ≤ b - c
+⊢ |a - c| ≤ a - b + (b - c)'></span>try <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ a - b
+h2 : 0 ≤ b - c
+⊢ |a - c| ≤ a - b + (b - c)'></span>rw [<span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ a - b
+h2 : 0 ≤ b - c
+⊢ |a - c| ≤ a - b + (b - c)'></span>abs_of_nonpos h2<span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ a - b
+h2 : b - c ≤ 0
+⊢ |a - c| ≤ a - b + -(b - c)'></span>]
+  <span class="goal-marker" data-goal='Goals: 4
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ a - b
+h2 : 0 ≤ b - c
+⊢ |a - c| ≤ a - b + (b - c)
+---
+
+Goal 2:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ a - b
+h2 : b - c ≤ 0
+⊢ |a - c| ≤ a - b + -(b - c)
+---
+
+Goal 3:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : a - b ≤ 0
+h2 : 0 ≤ b - c
+⊢ |a - c| ≤ -(a - b) + (b - c)
+---
+
+Goal 4:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : a - b ≤ 0
+h2 : b - c ≤ 0
+⊢ |a - c| ≤ -(a - b) + -(b - c)'></span>all_goals <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ a - b
+h2 : 0 ≤ b - c
+⊢ |a - c| ≤ a - b + (b - c)'></span>rcases le_total 0 (a - c) with h3 | h3
+  <span class="goal-marker" data-goal='Goals: 8
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ a - b
+h2 : 0 ≤ b - c
+h3 : 0 ≤ a - c
+⊢ |a - c| ≤ a - b + (b - c)
+---
+
+Goal 2:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ a - b
+h2 : 0 ≤ b - c
+h3 : a - c ≤ 0
+⊢ |a - c| ≤ a - b + (b - c)
+---
+
+Goal 3:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ a - b
+h2 : b - c ≤ 0
+h3 : 0 ≤ a - c
+⊢ |a - c| ≤ a - b + -(b - c)
+---
+
+Goal 4:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ a - b
+h2 : b - c ≤ 0
+h3 : a - c ≤ 0
+⊢ |a - c| ≤ a - b + -(b - c)
+---
+
+Goal 5:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : a - b ≤ 0
+h2 : 0 ≤ b - c
+h3 : 0 ≤ a - c
+⊢ |a - c| ≤ -(a - b) + (b - c)
+---
+
+Goal 6:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : a - b ≤ 0
+h2 : 0 ≤ b - c
+h3 : a - c ≤ 0
+⊢ |a - c| ≤ -(a - b) + (b - c)
+---
+
+Goal 7:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : a - b ≤ 0
+h2 : b - c ≤ 0
+h3 : 0 ≤ a - c
+⊢ |a - c| ≤ -(a - b) + -(b - c)
+---
+
+Goal 8:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : a - b ≤ 0
+h2 : b - c ≤ 0
+h3 : a - c ≤ 0
+⊢ |a - c| ≤ -(a - b) + -(b - c)'></span>all_goals
+    <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ a - b
+h2 : 0 ≤ b - c
+h3 : 0 ≤ a - c
+⊢ |a - c| ≤ a - b + (b - c)'></span>try <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ a - b
+h2 : 0 ≤ b - c
+h3 : 0 ≤ a - c
+⊢ |a - c| ≤ a - b + (b - c)'></span>rw [<span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ a - b
+h2 : 0 ≤ b - c
+h3 : 0 ≤ a - c
+⊢ |a - c| ≤ a - b + (b - c)'></span>abs_of_nonneg h3<span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ a - b
+h2 : 0 ≤ b - c
+h3 : 0 ≤ a - c
+⊢ a - c ≤ a - b + (b - c)'></span>]
+    <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ a - b
+h2 : 0 ≤ b - c
+h3 : 0 ≤ a - c
+⊢ a - c ≤ a - b + (b - c)'></span>try <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ a - b
+h2 : 0 ≤ b - c
+h3 : 0 ≤ a - c
+⊢ a - c ≤ a - b + (b - c)'></span>rw [<span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ a - b
+h2 : 0 ≤ b - c
+h3 : 0 ≤ a - c
+⊢ a - c ≤ a - b + (b - c)'></span>abs_of_nonpos h3<span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ a - b
+h2 : 0 ≤ b - c
+h3 : a - c ≤ 0
+⊢ -(a - c) ≤ a - b + (b - c)'></span>]
+
+  <span class="goal-marker" data-goal='Goals: 8
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ a - b
+h2 : 0 ≤ b - c
+h3 : 0 ≤ a - c
+⊢ a - c ≤ a - b + (b - c)
+---
+
+Goal 2:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ a - b
+h2 : 0 ≤ b - c
+h3 : a - c ≤ 0
+⊢ -(a - c) ≤ a - b + (b - c)
+---
+
+Goal 3:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ a - b
+h2 : b - c ≤ 0
+h3 : 0 ≤ a - c
+⊢ a - c ≤ a - b + -(b - c)
+---
+
+Goal 4:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ a - b
+h2 : b - c ≤ 0
+h3 : a - c ≤ 0
+⊢ -(a - c) ≤ a - b + -(b - c)
+---
+
+Goal 5:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : a - b ≤ 0
+h2 : 0 ≤ b - c
+h3 : 0 ≤ a - c
+⊢ a - c ≤ -(a - b) + (b - c)
+---
+
+Goal 6:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : a - b ≤ 0
+h2 : 0 ≤ b - c
+h3 : a - c ≤ 0
+⊢ -(a - c) ≤ -(a - b) + (b - c)
+---
+
+Goal 7:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : a - b ≤ 0
+h2 : b - c ≤ 0
+h3 : 0 ≤ a - c
+⊢ a - c ≤ -(a - b) + -(b - c)
+---
+
+Goal 8:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : a - b ≤ 0
+h2 : b - c ≤ 0
+h3 : a - c ≤ 0
+⊢ -(a - c) ≤ -(a - b) + -(b - c)'></span>all_goals <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ a - b
+h2 : 0 ≤ b - c
+h3 : 0 ≤ a - c
+⊢ a - c ≤ a - b + (b - c)'></span>linarith
+
+/- combine brute-force method with theorem-finding -/
+example : |(|a| - |b|)| ≤ |a - b| := <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+⊢ ||a| - |b|| ≤ |a - b|'></span>by
+  <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+⊢ ||a| - |b|| ≤ |a - b|'></span>rcases le_total 0 (|a| - |b|) with h1 | h1
+  <span class="goal-marker" data-goal='Goals: 2
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ |a| - |b|
+⊢ ||a| - |b|| ≤ |a - b|
+---
+
+Goal 2:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : |a| - |b| ≤ 0
+⊢ ||a| - |b|| ≤ |a - b|'></span>all_goals
+    <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ |a| - |b|
+⊢ ||a| - |b|| ≤ |a - b|'></span>try <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ |a| - |b|
+⊢ ||a| - |b|| ≤ |a - b|'></span>rw [<span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ |a| - |b|
+⊢ ||a| - |b|| ≤ |a - b|'></span>abs_of_nonneg h1<span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ |a| - |b|
+⊢ |a| - |b| ≤ |a - b|'></span>]
+    <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ |a| - |b|
+⊢ |a| - |b| ≤ |a - b|'></span>try <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ |a| - |b|
+⊢ |a| - |b| ≤ |a - b|'></span>rw [<span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ |a| - |b|
+⊢ |a| - |b| ≤ |a - b|'></span>abs_of_nonpos h1<span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : |a| - |b| ≤ 0
+⊢ -(|a| - |b|) ≤ |a - b|'></span>]
+  <span class="goal-marker" data-goal='Goals: 2
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ |a| - |b|
+⊢ |a| - |b| ≤ |a - b|
+---
+
+Goal 2:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : |a| - |b| ≤ 0
+⊢ -(|a| - |b|) ≤ |a - b|'></span>· <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ |a| - |b|
+⊢ |a| - |b| ≤ |a - b|'></span>apply abs_sub_abs_le_abs_sub
+  <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : |a| - |b| ≤ 0
+⊢ -(|a| - |b|) ≤ |a - b|'></span>· <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : |a| - |b| ≤ 0
+⊢ -(|a| - |b|) ≤ |a - b|'></span>simp only [neg_sub] -- use `simp only` to supress unwanted lemmas
+    <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : |a| - |b| ≤ 0
+⊢ |b| - |a| ≤ |a - b|'></span>grw [<span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : |a| - |b| ≤ 0
+⊢ |b| - |a| ≤ |a - b|'></span>abs_sub_abs_le_abs_sub<span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : |a| - |b| ≤ 0
+⊢ |b - a| ≤ |a - b|'></span>]
+    <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : |a| - |b| ≤ 0
+⊢ |b - a| ≤ |a - b|'></span>rw [<span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : |a| - |b| ≤ 0
+⊢ |b - a| ≤ |a - b|'></span>← abs_neg<span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : |a| - |b| ≤ 0
+⊢ |(-(b - a))| ≤ |a - b|'></span>]
+    <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : |a| - |b| ≤ 0
+⊢ |(-(b - a))| ≤ |a - b|'></span>simp
+
+-- [EXR]
+example : |(|a| - |b|)| ≤ |a + b| := <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+⊢ ||a| - |b|| ≤ |a + b|'></span>by
+  <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+⊢ ||a| - |b|| ≤ |a + b|'></span>rcases le_total 0 (|a| - |b|) with h1 | h1
+  <span class="goal-marker" data-goal='Goals: 2
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ |a| - |b|
+⊢ ||a| - |b|| ≤ |a + b|
+---
+
+Goal 2:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : |a| - |b| ≤ 0
+⊢ ||a| - |b|| ≤ |a + b|'></span>all_goals
+    <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ |a| - |b|
+⊢ ||a| - |b|| ≤ |a + b|'></span>try <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ |a| - |b|
+⊢ ||a| - |b|| ≤ |a + b|'></span>rw [<span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ |a| - |b|
+⊢ ||a| - |b|| ≤ |a + b|'></span>abs_of_nonneg h1<span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ |a| - |b|
+⊢ |a| - |b| ≤ |a + b|'></span>]
+    <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ |a| - |b|
+⊢ |a| - |b| ≤ |a + b|'></span>try <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ |a| - |b|
+⊢ |a| - |b| ≤ |a + b|'></span>rw [<span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ |a| - |b|
+⊢ |a| - |b| ≤ |a + b|'></span>abs_of_nonpos h1<span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : |a| - |b| ≤ 0
+⊢ -(|a| - |b|) ≤ |a + b|'></span>]
+  <span class="goal-marker" data-goal='Goals: 2
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ |a| - |b|
+⊢ |a| - |b| ≤ |a + b|
+---
+
+Goal 2:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : |a| - |b| ≤ 0
+⊢ -(|a| - |b|) ≤ |a + b|'></span>· <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ |a| - |b|
+⊢ |a| - |b| ≤ |a + b|'></span>haveI := abs_sub_abs_le_abs_sub a (-b)
+    <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : 0 ≤ |a| - |b|
+this : |a| - |(-b)| ≤ |a - -b|
+⊢ |a| - |b| ≤ |a + b|'></span>simp at *
+    <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : |b| ≤ |a|
+this : |a| ≤ |a + b| + |b|
+⊢ |a| ≤ |a + b| + |b|'></span>exact this
+  <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : |a| - |b| ≤ 0
+⊢ -(|a| - |b|) ≤ |a + b|'></span>· <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : |a| - |b| ≤ 0
+⊢ -(|a| - |b|) ≤ |a + b|'></span>haveI := abs_sub_abs_le_abs_sub b (-a)
+    <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : |a| - |b| ≤ 0
+this : |b| - |(-a)| ≤ |b - -a|
+⊢ -(|a| - |b|) ≤ |a + b|'></span>simp at *
+    <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : |a| ≤ |b|
+this : |b| ≤ |b + a| + |a|
+⊢ |b| ≤ |a + b| + |a|'></span>grw [<span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : |a| ≤ |b|
+this : |b| ≤ |b + a| + |a|
+⊢ |b| ≤ |a + b| + |a|'></span>this<span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : |a| ≤ |b|
+this : |b| ≤ |b + a| + |a|
+⊢ |b + a| + |a| ≤ |a + b| + |a|'></span>]
+    <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : |a| ≤ |b|
+this : |b| ≤ |b + a| + |a|
+⊢ |b + a| + |a| ≤ |a + b| + |a|'></span>ring_nf
+    <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+h1 : |a| ≤ |b|
+this : |b| ≤ |b + a| + |a|
+⊢ |b + a| + |a| ≤ |b + a| + |a|'></span>simp
+
+/-
+[EXR]
+Get familiar with `min`, `max` and solve the following by yourself.
+-/
+example : min a b ≤ a := <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+⊢ min a b ≤ a'></span>by <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+⊢ min a b ≤ a'></span>exact min_le_left a b
+example : min a b + max a b = a + b := <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+⊢ min a b + max a b = a + b'></span>by <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℚ
+b : ℚ
+c : ℚ
+⊢ min a b + max a b = a + b'></span>exact min_add_max a b
+
+end
+
+/-
+## Wheelchair tactics
+
+You have seen some all-in-one tactics like `simp`, `ring` and `linarith`.
+There are even more powerful tactics that save your effort.
+Do try them when you feel tired of trivial steps.
+-/
+
+#help tactic simp
+#help tactic dsimp
+#help tactic simp_rw
+#help tactic field_simp
+
+#help tactic group
+#help tactic abel
+#help tactic ring
+#help tactic module
+
+#help tactic linarith
+#help tactic nlinarith
+
+#help tactic omega
+#help tactic aesop
+#help tactic grind
+#help tactic tauto
+
+/-
+A tactic cheatsheet is available at
+[lean-tactics.pdf](https://leanprover-community.github.io/papers/lean-tactics.pdf)
+-/

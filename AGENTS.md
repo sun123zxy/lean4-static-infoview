@@ -25,7 +25,8 @@
 ### Key Technical Details
 
 - **HTML Generation**: Direct HTML output from Lean instead of JSON (simpler architecture)
-- **Visible Markers**: Goal markers are inline `<span>` elements with triangle icons (▸)
+- **No HTML Escaping**: The generated HTML is plain text without escaping special characters. The browser is expected to handle display correctly.
+- **Visible Markers**: Goal markers are inline `<span>` elements without visible icon content
 - **Click-Only Interaction**: Users can only click markers, not arbitrary text positions- **Syntax Highlighting**: Uses [highlight.js](https://highlightjs.org/) with [highlightjs-lean](https://github.com/leanprover-community/highlightjs-lean)
   - Code is split at goal marker boundaries
   - Each segment is highlighted independently to preserve markers

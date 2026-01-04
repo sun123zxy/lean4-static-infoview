@@ -41,10 +41,11 @@ export function colorizeGoal(text) {
         }
         // Separator or other lines
         else if (line.trim() === '---') {
-            html += `<div class="goal-separator">${line}</div>`;
+            // do nothing
         }
         else if (line.trim() === '') {
-            html += '<div>&nbsp;</div>';
+            // html += '<div>&nbsp;</div>';
+            // do nothing
         }
         else {
             html += `<div>${escapeHtml(line)}</div>`;

@@ -3,9 +3,13 @@ import Lean
 open Lean Elab Command Meta Tactic
 open System (FilePath)
 
-/-- Escape HTML special characters for attribute values -/
+/-- We won't do any sophisticated HTML escaping here. -/
 def escapeHtml (s : String) : String :=
-  s
+  s.replace "&" "&amp;"
+   |>.replace "<" "&lt;"
+   |>.replace ">" "&gt;"
+   |>.replace "\"" "&quot;"
+   |>.replace "'" "&#39;"
 
 /-- Format a single goal with its hypotheses and target -/
 def formatGoal (mvarId : MVarId) : MetaM String := do
@@ -62,8 +66,8 @@ def collectInfoFromTrees (trees : PersistentArray InfoTree) (source : String) :
       match info with
       | .ofTacticInfo ti =>
         if let some range := ti.stx.getRange? then
+          -- IO.println s!"Found tactic at range {range.start.byteIdx} {range.stop.byteIdx}"
           let offset := range.start.byteIdx
-
           -- Check if we've already seen this offset
           let seen ← seenRef.get
           if !seen.contains offset then
@@ -110,8 +114,8 @@ def collectInfoFromTrees (trees : PersistentArray InfoTree) (source : String) :
     currentPos := offset
 
   -- Add remaining text
-  if currentPos < source.utf8ByteSize then
-    let textSegment := String.Pos.Raw.extract source ⟨currentPos⟩ ⟨source.utf8ByteSize⟩
+  if currentPos < source.rawEndPos.byteIdx then
+    let textSegment := String.Pos.Raw.extract source ⟨currentPos⟩ ⟨source.rawEndPos.byteIdx⟩
     html := html ++ escapeHtml textSegment
 
   return html
@@ -131,7 +135,9 @@ def processFile (fileName : String) (outputFile : Option String := none) : IO Un
   -- Initialize Lean environment
   initSearchPath (← findSysroot)
 
-  let source ← IO.FS.readFile fileName
+  -- This make sure that the file is read with LF line endings
+  -- Can cause severe offsets otherwise on Windows
+  let source := String.crlfToLf (← IO.FS.readFile fileName)
   let inputCtx := Parser.mkInputContext source fileName
 
   let (header, parserState, messages) ← Parser.parseHeader inputCtx
