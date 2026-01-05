@@ -56,8 +56,8 @@ Since the Lean version must match, it's also reasonable to integrate static Info
 ```default
 Usage: staticInfoView [options] <lean-file>
 Options:
-  -g           Export only goal/tactic information
-  -t           Export only term type information
+  -g           Export goal/tactic information
+  -t           Export term type information
   -o <file>    Specify output file (default: <input>.html)
 
 Examples:

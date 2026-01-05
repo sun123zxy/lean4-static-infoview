@@ -267,8 +267,8 @@ def main (args : List String) : IO Unit := do
   | none =>
     IO.println "Usage: staticInfoView [options] <lean-file>"
     IO.println "Options:"
-    IO.println "  -g           Export only goal/tactic information"
-    IO.println "  -t           Export only term type information"
+    IO.println "  -g           Export goal/tactic information"
+    IO.println "  -t           Export term type information"
     IO.println "  -o <file>    Specify output file (default: <input>.html)"
     IO.println ""
     IO.println "Examples: "
