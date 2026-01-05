@@ -15,54 +15,88 @@
  * @returns {string} HTML with syntax highlighting
  */
 export function colorizeGoal(text) {
-    const lines = text.split('\n');
     let html = '';
     
-    for (let line of lines) {
-        // Match "Goals: N" header
-        if (line.match(/^Goals: \d+$/)) {
-            html += `<div class="goal-header">${line}</div>`;
+    // Split text into individual goals using "Goal n:" and "---" as separators
+    const goalRegex = /^(Goals?: \d+|Goal \d+:)/m;
+    const lines = text.split('\n');
+    
+    let currentGoal = null;
+    let headerLine = '';
+    
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        
+        // Match "Goals: N" header or "Goal N:" label
+        if (line.match(/^Goals?: \d+$/)) {
+            headerLine = line;
+            html += `<div class="goal-header">${escapeHtml(line)}</div>`;
+            continue;
         }
-        // Match "Goal N:" label
-        else if (line.match(/^Goal \d+:$/)) {
-            html += `<div class="goal-label">${line}</div>`;
-        }
-        // Match hypothesis line "name : type" or "name := value"
-        // Skip lines that start with spaces (indented content within types/values)
-        else if ((line.match(/^[^⊢]+:/) || line.trim().startsWith(':=')) && !line.match(/^\s/)) {
-            if (line.trim().startsWith(':=')) {
-                // Let-value line
-                html += `<div class="goal-let-value">${escapeHtml(line)}</div>`;
-            } else {
-                // Hypothesis: "name : type"
-                const colonPos = line.indexOf(':');
-                if (colonPos > 0) {
-                    const name = line.substring(0, colonPos);
-                    const type = line.substring(colonPos);
-                    const nameClass = name.trim() === 'inst' ? 'goal-hyp-name inst' : 'goal-hyp-name';
-                    html += `<div class="goal-hyp"><span class="${nameClass}">${escapeHtml(name)}</span><span class="goal-hyp-type">${escapeHtml(type)}</span></div>`;
-                } else {
-                    html += `<div>${escapeHtml(line)}</div>`;
-                }
+        
+        if (line.match(/^Goal \d+:$/)) {
+            // Process previous goal if exists
+            if (currentGoal !== null) {
+                html += processGoal(currentGoal);
             }
+            // Start new goal
+            html += `<div class="goal-label">${escapeHtml(line)}</div>`;
+            currentGoal = '';
+            continue;
         }
-        // Match goal line with turnstile "⊢"
-        else if (line.includes('⊢')) {
-            const parts = line.split('⊢');
-            html += `<div class="goal-target"><span class="goal-vdash">⊢</span> <span class="goal-type">${escapeHtml(parts[1] || '')}</span></div>`;
+        
+        // Separator between goals
+        if (line.trim() === '---') {
+            if (currentGoal !== null) {
+                html += processGoal(currentGoal);
+                currentGoal = '';
+            }
+            continue;
         }
-        // Separator or other lines
-        else if (line.trim() === '---') {
-            // do nothing
-        }
-        else if (line.trim() === '') {
-            // html += '<div>&nbsp;</div>';
-            // do nothing
-        }
-        else {
-            html += `<div>${escapeHtml(line)}</div>`;
+        
+        // Accumulate goal content
+        if (currentGoal !== null) {
+            currentGoal += (currentGoal ? '\n' : '') + line;
         }
     }
+    
+    // Process last goal
+    if (currentGoal !== null && currentGoal.trim()) {
+        html += processGoal(currentGoal);
+    }
+    
+    return html;
+}
+
+/**
+ * Processes a single goal by separating hypotheses and target with ⊢
+ * @param {string} goalText - Text of a single goal
+ * @returns {string} HTML with highlighted hypotheses and target
+ */
+function processGoal(goalText) {
+    // Split by turnstile to separate hypotheses from target
+    const vdashIndex = goalText.indexOf('⊢');
+    
+    if (vdashIndex === -1) {
+        // No turnstile, treat entire text as hypotheses
+        const highlighted = hljs.highlight(goalText.trim(), { language: 'lean', ignoreIllegals: true }).value.replace(/\n/g, '<br>');
+        return `<div class="goal-hypotheses">${highlighted}</div>`;
+    }
+    
+    const hypotheses = goalText.substring(0, vdashIndex).trim();
+    const target = goalText.substring(vdashIndex + 1).trim();
+    
+    let html = '';
+    
+    // Highlight hypotheses
+    if (hypotheses) {
+        const hypothesesHighlighted = hljs.highlight(hypotheses, { language: 'lean', ignoreIllegals: true }).value.replace(/\n/g, '<br>');
+        html += `<div class="goal-hypotheses">${hypothesesHighlighted}</div>`;
+    }
+    
+    // Add turnstile and target
+    const targetHighlighted = hljs.highlight(target, { language: 'lean', ignoreIllegals: true }).value.replace(/\n/g, '<br>');
+    html += `<div class="goal-target"><span class="goal-vdash">⊢</span> ${targetHighlighted}</div>`;
     
     return html;
 }

@@ -353,27 +353,9 @@ body {
     margin-bottom: 6px;
 }
 
-.goal-hyp {
+.goal-hypotheses {
     margin-left: 4px;
-    margin-bottom: 2px;
-}
-
-.goal-hyp-name {
-    color: #9cdcfe;
-    font-weight: 500;
-}
-
-.goal-hyp-name.inst {
-    color: #858585;
-}
-
-.goal-hyp-type {
-    color: #d4d4d4;
-}
-
-.goal-let-value {
-    color: #ce9178;
-    margin-left: 20px;
+    margin-bottom: 6px;
 }
 
 .goal-target {
@@ -385,10 +367,4 @@ body {
     color: #c586c0;
     font-weight: bold;
     font-size: 16px;
-}
-
-.goal-separator {
-    color: #858585;
-    text-align: center;
-    margin: 8px 0;
 }
