@@ -61,7 +61,7 @@ function updateToggleControls(hasGoals, hasTerms) {
  * @param {string} html - The HTML content to process
  * @param {string} filename - Name of the loaded file
  */
-export function processHtmlData(html, filename = 'info.html') {
+export function processHtmlData(html, filename = 'output.html') {
     // Reset state
     resetState();
     state.currentFile = filename;
@@ -81,19 +81,19 @@ export function processHtmlData(html, filename = 'info.html') {
 }
 
 /**
- * Load the default info.html file from the frontend directory
+ * Load the default output.html file from the frontend directory
  */
 export async function loadDefaultFile() {
     try {
-        const response = await fetch('info.html');
+        const response = await fetch('output.html');
         if (!response.ok) {
             throw new Error('File not found');
         }
         const html = await response.text();
-        processHtmlData(html, 'info.html');
+        processHtmlData(html, 'output.html');
     } catch (error) {
-        console.error('Error loading info.html:', error);
-        alert('Error: Could not load info.html. Generate it first with: lake exe staticInfoView <file.lean>');
+        console.error('Error loading output.html:', error);
+        alert('Error: Could not load output.html. Generate it first with: lake exe staticInfoView <file.lean>');
     }
 }
 

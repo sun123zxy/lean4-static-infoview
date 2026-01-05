@@ -97,10 +97,12 @@ export function updateInfoPanel(content, type = 'goal') {
     if (type === 'term') {
         // Display term and its type information
         msgDiv.className = 'info-message term-info';
+        const termHighlighted = hljs.highlight(content.text, { language: 'lean', ignoreIllegals: true }).value.replace(/\n/g, '<br>');
+        const typeHighlighted = hljs.highlight(content.type, { language: 'lean', ignoreIllegals: true }).value.replace(/\n/g, '<br>');
         msgDiv.innerHTML = `
             <div class="term-display">
-                <span class="term-label">Term:</span> <span class="term-text">${hljs.highlight(content.text, { language: 'lean', ignoreIllegals: true }).value}</span><br>
-                <span class="term-type-label">Type:</span> <span class="term-type-value">${hljs.highlight(content.type, { language: 'lean', ignoreIllegals: true }).value}</span>
+                <div class="term-label">Term:</div> <div class="term-text">${termHighlighted}</div><br>
+                <div class="term-type-label">Type:</div> <div class="term-type-value">${typeHighlighted}</div>
             </div>`
             
     } else {
