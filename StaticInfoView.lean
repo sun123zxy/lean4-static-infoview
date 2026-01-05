@@ -203,7 +203,8 @@ def processFile (fileName : String) (outputFile : Option String := none) (option
       -- Extract basename without path and replace .lean with .html
       let baseName := FilePath.mk fileName |>.fileName.getD fileName
       baseName.stripSuffix ".lean" ++ ".html"
-  -- Initialize Lean environment
+
+  -- Initialize Lean environment - uses LEAN_PATH environment variable (should be set by lake env)
   initSearchPath (← findSysroot)
 
   -- This make sure that the file is read with LF line endings
@@ -261,12 +262,14 @@ def main (args : List String) : IO Unit := do
     i := i + 1
 
   match fileName with
-  | some file => processFile file outputFile options
+  | some file =>
+    processFile file outputFile options
   | none =>
     IO.println "Usage: staticInfoView [options] <lean-file>"
     IO.println "Options:"
     IO.println "  -g           Export only goal/tactic information"
     IO.println "  -t           Export only term type information"
     IO.println "  -o <file>    Specify output file (default: <input>.html)"
-    IO.println "Example: staticInfoView Examples/Basic.lean"
-    IO.println "         staticInfoView -g -t -o info.html Examples/Basic.lean"
+    IO.println ""
+    IO.println "Examples: "
+    IO.println "  staticInfoView path/to/FileToBeAnalyzed.lean -o output.html -g -t"

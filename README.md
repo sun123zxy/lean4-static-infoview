@@ -2,26 +2,56 @@
 
 [The VSCode extension for Lean 4](https://github.com/leanprover/vscode-lean4) has a dynamic InfoView implementation. This project aims to provide a static alternative.
 
-It does not require a backend or a running Lean server. Static files with embedded tactic state information is generated in advance, and then can be imported and viewed in a web browser frontend. This makes it lightweight and easy to deploy, particularly useful for sharing, presentation, and hosting Lean code on static websites like GitHub Pages.
+- [Demo](https://sun123zxy.github.io/lean4-static-infoview/)
 
-It consists of a Lean program that generates HTML files with embedded tactic state markers, and an HTML/JS frontend that displays the code with interactive goal markers and syntax highlighting.
+It does not require a backend or a running Lean server. With our parser executable, you analyze a Lean source file offline to extract information such as tactic states and term types into a static HTML file. It can then be loaded and viewed in a web browser frontend. This makes it lightweight and easy to deploy, particularly useful for sharing, presentation, and hosting Lean code on static websites like GitHub Pages.
 
-**Disclaimer:** This project is purely experimental, in early stages, mainly written by LLM assistants, and potentially of poor code quality. Use at your own risk.
+It consists of a Lean program that generates HTML files with embedded tactic state markers, and an HTML/JS frontend that displays the code with interactive goal markers and syntax highlighting. The parser executable is designed to be non-intrusive, so you don't have to modify your existing Lean projects to use it.
 
 Currently the following info types are extracted and displayed:
 
 - tactic state information
 - term type information
 
-## Usage
+**Disclaimer:** This project is purely experimental, in early stages, mainly written with LLM, and potentially of poor code quality. Use at your own risk.
 
-### Generating static info HTML
+## Usage (Non-intrusive)
 
-Generate HTML files with embedded tactic and term information:
+Please ensure that **the project to be analyzed uses the same Lean version as this repository.**
+
+### Building the Executable
+
+First, clone this repository and build the executable:
 
 ```bash
-lake exe staticInfoView -g -t Examples/ineq.lean -o frontend/info.html
+lake build
 ```
+
+The built executable can be found at `.lake/build/staticInfoView`.
+
+> Note that it is not a standalone binary, as our project relies `supportInterpreter = true` feature and hence depends on Lean's runtime libraries. The executable is supposed to be run with correct library paths set up by Lake. You can run it via Lake commands such as via `lake env` or `lake exe`. Alternatively, you can manually add Lean's PATH into your PATH.
+
+### Parsing a Lean File
+
+Now switch the current directory to the project to be analyzed. Run the following command:
+
+```bash
+lake env /path/to/lean4-static-infoview/.lake/build/staticInfoView path/to/FileToBeAnalyzed.lean -o output.html -g -t
+```
+
+> This will run the executable in the context of your project, so that dependencies can be resolved correctly. That's why the Lean version of the parser and your project must match.
+
+The generated `output.html` is an HTML file marked up with extracted information such as tactic state and term type information.
+
+### Viewing in the Frontend
+
+Now you can run our `frontend/` in a web server and use the file picker to load the generated HTML file.
+
+## Usage (Intrusive)
+
+Since the Lean version must match, it's also reasonable to integrate static InfoView directly into your own Lean project. Simply copy `StaticInfoView.lean` into your project, and refer to our `lakefile.toml` to modify your lakefile accordingly.
+
+## Command Line Options
 
 ```default
 Usage: staticInfoView [options] <lean-file>
@@ -29,43 +59,7 @@ Options:
   -g           Export only goal/tactic information
   -t           Export only term type information
   -o <file>    Specify output file (default: <input>.html)
-Example: staticInfoView Examples/Basic.lean
-         staticInfoView -g -t Examples/ineq.lean -o info.html
+
+Examples:
+  staticInfoView path/to/FileToBeAnalyzed.lean -o output.html -g -t
 ```
-
-If you prefer not to work with Mathlib, you may test with `Examples/logic.lean` and remove the Mathlib dependency from `lakefile.toml`.
-
-### View in the frontend
-
-Open `frontend/index.html` in a web server. Use the file picker to load the generated HTML file.
-
-The frontend will automatically detect what information is available in the file and display it in the bottom-right corner.
-
-### Navigation and UI
-
-#### Goal Markers
-- **Click**: Click on any goal marker (blue gradient bar) to display the tactic state
-- **Visual Feedback**: Markers turn yellow on hover and when active
-
-#### Term Type Information
-- **Hover**: Hover over any underlined term to see its type
-- **Nested Terms**: Parent terms are highlighted with decreasing opacity
-
-#### Keyboard Navigation
-- **Arrow Left/Right** or **Page Up/Down**: Navigate to previous/next goal marker
-- **Arrow Up/Down**: Jump to the leftmost marker on the previous/next line
-- **Home/End**: Jump to first/last marker
-
-#### Panel Management
-- **Resize**: Drag the vertical divider between panels to adjust width
-- **Info Panel**: Automatically updates to show tactic state or term type information
-
-#### Display Indicators
-- Bottom-right corner shows what information is available:
-  - **Goals checkbox**: Toggleable - show/hide goal markers (enabled if goals were exported)
-  - **Terms checkbox**: Informational only - indicates if term information is available
-
-## TODO
-
-- Support command messages
-- Make the executable standalone
