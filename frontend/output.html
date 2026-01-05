@@ -13,6 +13,8 @@ Anyway, don&#39;t worry too much about it for now.
 
 import Mathlib
 
+section
+
 def <span class="term-marker" data-type='(ℕ → ℝ) → ℝ → Prop'>TendsTo</span> (<span class="term-marker" data-type='ℕ → ℝ'>a</span> : <span class="term-marker" data-type='Type'><span class="term-marker" data-type='Type'>ℕ</span> → <span class="term-marker" data-type='Type'>ℝ</span></span>) (<span class="term-marker" data-type='ℝ'>t</span> : <span class="term-marker" data-type='Type'>ℝ</span>) : <span class="term-marker" data-type='Type'>Prop</span> :=
   <span class="term-marker" data-type='Prop'>∀ <span class="term-marker" data-type='Type'>ε</span> &gt; <span class="term-marker" data-type='ℝ'>0</span>, <span class="term-marker" data-type='Prop'>∃ <span class="term-marker" data-type='ℕ'>n₀</span> : <span class="term-marker" data-type='Type'>ℕ</span>, <span class="term-marker" data-type='Prop'>∀ <span class="term-marker" data-type='Type'>n</span>, <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='Prop'><span class="term-marker" data-type='ℕ'>n₀</span> ≤ <span class="term-marker" data-type='ℕ'>n</span></span> → <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='ℝ'>|<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℕ → ℝ'>a</span> <span class="term-marker" data-type='ℕ'>n</span></span> - <span class="term-marker" data-type='ℝ'>t</span></span>|</span> &lt; <span class="term-marker" data-type='ℝ'>ε</span></span></span></span></span></span>
 
@@ -50,14 +52,14 @@ Goal 1:
 c : ℝ
 ε : ℝ
 hε : ε &gt; 0
-⊢ ∀ (n : ℕ), 1 ≤ n → |(fun x =&gt; c) n - c| &lt; ε'></span>intro <span class="term-marker" data-type='ℕ'>n</span> <span class="term-marker" data-type='1 ≤ n'><span class="goal-marker" data-goal='Goals: 1
+⊢ ∀ (n : ℕ), 1 ≤ n → |(fun x =&gt; c) n - c| &lt; ε'></span>intro <span class="term-marker" data-type='ℕ'>n</span> <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 c : ℝ
 ε : ℝ
 hε : ε &gt; 0
 n : ℕ
-⊢ 1 ≤ n → |(fun x =&gt; c) n - c| &lt; ε'></span>hn</span>
+⊢ 1 ≤ n → |(fun x =&gt; c) n - c| &lt; ε'></span><span class="term-marker" data-type='1 ≤ n'>hn</span>
   <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
@@ -69,7 +71,7 @@ hn : 1 ≤ n
 ⊢ |(fun x =&gt; c) n - c| &lt; ε'></span>simp [<span class="term-marker" data-type='ε &gt; 0'>hε</span>]
 
 /- `-` commutes with `tendsTo` -/
-theorem <span class="term-marker" data-type='∀ {a : ℕ → ℝ} {t : ℝ}, TendsTo a t → TendsTo (fun n =&gt; -a n) (-t)'>tendsTo_neg</span> {<span class="term-marker" data-type='ℕ → ℝ'>a</span> : <span class="term-marker" data-type='Type'><span class="term-marker" data-type='Type'>ℕ</span> → <span class="term-marker" data-type='Type'>ℝ</span></span>} {<span class="term-marker" data-type='ℝ'>t</span> : <span class="term-marker" data-type='Type'>ℝ</span>} (<span class="term-marker" data-type='TendsTo a t'>ha</span> : <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='(ℕ → ℝ) → ℝ → Prop'>TendsTo</span> <span class="term-marker" data-type='ℕ → ℝ'>a</span> <span class="term-marker" data-type='ℝ'>t</span></span>) : <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='(ℕ → ℝ) → ℝ → Prop'>TendsTo</span> <span class="term-marker" data-type='ℕ → ℝ'>(<span class="term-marker" data-type='ℕ → ℝ'>fun <span class="term-marker" data-type='Type'>n</span> ↦ <span class="term-marker" data-type='ℝ'>-<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℕ → ℝ'>a</span> <span class="term-marker" data-type='ℕ'>n</span></span></span></span>)</span> <span class="term-marker" data-type='ℝ'>(<span class="term-marker" data-type='ℝ'>-<span class="term-marker" data-type='ℝ'>t</span></span>)</span></span> := <span class="goal-marker" data-goal='Goals: 1
+theorem <span class="term-marker" data-type='∀ {a : ℕ → ℝ} {t : ℝ}, TendsTo a t → TendsTo (fun n =&gt; -a n) (-t)'>tendsTo_neg</span> {<span class="term-marker" data-type='ℕ → ℝ'>a</span> : <span class="term-marker" data-type='Type'><span class="term-marker" data-type='Type'>ℕ</span> → <span class="term-marker" data-type='Type'>ℝ</span></span>} {<span class="term-marker" data-type='ℝ'>t</span> : <span class="term-marker" data-type='Type'>ℝ</span>} (<span class="term-marker" data-type='TendsTo a t'>ha</span> : <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='(ℕ → ℝ) → ℝ → Prop'>TendsTo</span> <span class="term-marker" data-type='ℕ → ℝ'>a</span> <span class="term-marker" data-type='ℝ'>t</span></span>) : <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='(ℕ → ℝ) → ℝ → Prop'>TendsTo</span> <span class="term-marker" data-type='ℕ → ℝ'>(<span class="term-marker" data-type='ℕ → ℝ'>fun <span class="term-marker" data-type='Type'>n</span> ↦ <span class="term-marker" data-type='ℝ'>-<span class="term-marker" data-type='ℕ → ℝ'><span class="term-marker" data-type='ℝ'>a</span> <span class="term-marker" data-type='ℕ'>n</span></span></span></span>)</span> <span class="term-marker" data-type='ℝ'>(<span class="term-marker" data-type='ℝ'>-<span class="term-marker" data-type='ℝ'>t</span></span>)</span></span> := <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℕ → ℝ
@@ -89,14 +91,14 @@ Goal 1:
 a : ℕ → ℝ
 t : ℝ
 ha : TendsTo a t
-⊢ ∀ ε &gt; 0, ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |(fun n =&gt; -a n) n - -t| &lt; ε'></span>intro <span class="term-marker" data-type='ℝ'>ε</span> <span class="term-marker" data-type='ε &gt; 0'><span class="goal-marker" data-goal='Goals: 1
+⊢ ∀ ε &gt; 0, ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |(fun n =&gt; -a n) n - -t| &lt; ε'></span>intro <span class="term-marker" data-type='ℝ'>ε</span> <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℕ → ℝ
 t : ℝ
 ha : TendsTo a t
 ε : ℝ
-⊢ ε &gt; 0 → ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |(fun n =&gt; -a n) n - -t| &lt; ε'></span>hε</span>
+⊢ ε &gt; 0 → ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |(fun n =&gt; -a n) n - -t| &lt; ε'></span><span class="term-marker" data-type='ε &gt; 0'>hε</span>
   <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
@@ -115,7 +117,7 @@ t : ℝ
 hε : ε &gt; 0
 ha : ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |a n - t| &lt; ε
 ⊢ ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |(fun n =&gt; -a n) n - -t| &lt; ε'></span>rcases <span class="term-marker" data-type='∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |a n - t| &lt; ε'>ha</span> with <span class="term-marker" data-type='∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |a n - t| &lt; ε'>⟨<span class="term-marker" data-type='ℕ'>n₀</span>, <span class="term-marker" data-type='∀ (n : ℕ), n₀ ≤ n → |a n - t| &lt; ε'>hn₀</span>⟩</span>
-  <span class="goal-marker" data-goal='Goals: 1
+  <span class="term-marker" data-type='Prop'><span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℕ → ℝ
@@ -124,7 +126,7 @@ t : ℝ
 hε : ε &gt; 0
 n₀ : ℕ
 hn₀ : ∀ (n : ℕ), n₀ ≤ n → |a n - t| &lt; ε
-⊢ ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |(fun n =&gt; -a n) n - -t| &lt; ε'></span><span class="term-marker" data-type='Prop'>use <span class="term-marker" data-type='ℕ'>n₀</span></span>
+⊢ ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |(fun n =&gt; -a n) n - -t| &lt; ε'></span>use <span class="term-marker" data-type='ℕ'>n₀</span></span>
   <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
@@ -192,7 +194,7 @@ n₀ : ℕ
 n : ℕ
 hn : n₀ ≤ n
 hn₀ : |a n - t| &lt; ε
-⊢ |-a n + t| &lt; ε'></span>← <span class="term-marker" data-type='∀ (a : ℝ), |(-a)| = |a|'>abs_neg</span>, <span class="goal-marker" data-goal='Goals: 1
+⊢ |-a n + t| &lt; ε'></span>← <span class="term-marker" data-type='∀ (a : ℝ), |(-a)| = |a|'>abs_neg</span>, <span class="term-marker" data-type='∀ (a b : ℝ), a + b = b + a'><span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℕ → ℝ
@@ -203,7 +205,7 @@ n₀ : ℕ
 n : ℕ
 hn : n₀ ≤ n
 hn₀ : |a n - t| &lt; ε
-⊢ |(-(-a n + t))| &lt; ε'></span><span class="term-marker" data-type='∀ (a b : ℝ), a + b = b + a'>add_comm</span><span class="goal-marker" data-goal='Goals: 1
+⊢ |(-(-a n + t))| &lt; ε'></span>add_comm</span><span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℕ → ℝ
@@ -277,7 +279,7 @@ hn₀ : |a n - t| &lt; ε
 
 /- `+` commutes with `tendsTo` -/
 theorem <span class="term-marker" data-type='∀ {a b : ℕ → ℝ} {A B : ℝ}, TendsTo a A → TendsTo b B → TendsTo (fun n =&gt; a n + b n) (A + B)'>tendsTo_add</span> {<span class="term-marker" data-type='ℕ → ℝ'>a</span> <span class="term-marker" data-type='ℕ → ℝ'>b</span> : <span class="term-marker" data-type='Type'><span class="term-marker" data-type='Type'>ℕ</span> → <span class="term-marker" data-type='Type'>ℝ</span></span>} {<span class="term-marker" data-type='ℝ'>A</span> : <span class="term-marker" data-type='Type'>ℝ</span>} {<span class="term-marker" data-type='ℝ'>B</span> : <span class="term-marker" data-type='Type'>ℝ</span>} (<span class="term-marker" data-type='TendsTo a A'>ha</span> : <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='(ℕ → ℝ) → ℝ → Prop'>TendsTo</span> <span class="term-marker" data-type='ℕ → ℝ'>a</span> <span class="term-marker" data-type='ℝ'>A</span></span>) (<span class="term-marker" data-type='TendsTo b B'>hb</span> : <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='(ℕ → ℝ) → ℝ → Prop'>TendsTo</span> <span class="term-marker" data-type='ℕ → ℝ'>b</span> <span class="term-marker" data-type='ℝ'>B</span></span>) :
-    <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='(ℕ → ℝ) → ℝ → Prop'>TendsTo</span> <span class="term-marker" data-type='ℕ → ℝ'>(<span class="term-marker" data-type='ℕ → ℝ'>fun <span class="term-marker" data-type='Type'>n</span> =&gt; <span class="term-marker" data-type='ℕ → ℝ'><span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>a</span> <span class="term-marker" data-type='ℕ'>n</span></span> + <span class="term-marker" data-type='ℕ → ℝ'><span class="term-marker" data-type='ℝ'>b</span> <span class="term-marker" data-type='ℕ'>n</span></span></span></span>)</span> <span class="term-marker" data-type='ℝ'>(<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>A</span> + <span class="term-marker" data-type='ℝ'>B</span></span>)</span></span> := <span class="goal-marker" data-goal='Goals: 1
+    <span class="term-marker" data-type='(ℕ → ℝ) → ℝ → Prop'><span class="term-marker" data-type='Prop'>TendsTo</span> <span class="term-marker" data-type='ℕ → ℝ'>(<span class="term-marker" data-type='ℕ → ℝ'>fun <span class="term-marker" data-type='Type'>n</span> =&gt; <span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℕ → ℝ'>a</span> <span class="term-marker" data-type='ℕ'>n</span></span> + <span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℕ → ℝ'>b</span> <span class="term-marker" data-type='ℕ'>n</span></span></span></span>)</span> <span class="term-marker" data-type='ℝ'>(<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>A</span> + <span class="term-marker" data-type='ℝ'>B</span></span>)</span></span> := <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℕ → ℝ
@@ -318,7 +320,7 @@ ha : TendsTo a A
 hb : TendsTo b B
 ε : ℝ
 hε : ε &gt; 0
-⊢ ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |(fun n =&gt; a n + b n) n - (A + B)| &lt; ε'></span>specialize <span class="term-marker" data-type='∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |a n - A| &lt; ε / 2'><span class="term-marker" data-type='TendsTo a A'>ha</span> <span class="term-marker" data-type='ℝ'>(<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>ε</span> / <span class="term-marker" data-type='ℝ'>2</span></span>)</span> (<span class="goal-marker" data-goal='Goals: 1
+⊢ ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |(fun n =&gt; a n + b n) n - (A + B)| &lt; ε'></span>specialize <span class="term-marker" data-type='TendsTo a A'><span class="term-marker" data-type='∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |a n - A| &lt; ε / 2'>ha</span> <span class="term-marker" data-type='ℝ'>(<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>ε</span> / <span class="term-marker" data-type='ℝ'>2</span></span>)</span> (<span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℕ → ℝ
@@ -352,7 +354,7 @@ hb : TendsTo b B
 ε : ℝ
 hε : ε &gt; 0
 ha : ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |a n - A| &lt; ε / 2
-⊢ ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |(fun n =&gt; a n + b n) n - (A + B)| &lt; ε'></span>specialize <span class="term-marker" data-type='TendsTo b B'><span class="term-marker" data-type='∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |b n - B| &lt; ε / 2'>hb</span> <span class="term-marker" data-type='ℝ'>(<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>ε</span> / <span class="term-marker" data-type='ℝ'>2</span></span>)</span> (<span class="goal-marker" data-goal='Goals: 1
+⊢ ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |(fun n =&gt; a n + b n) n - (A + B)| &lt; ε'></span>specialize <span class="term-marker" data-type='∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |b n - B| &lt; ε / 2'><span class="term-marker" data-type='TendsTo b B'>hb</span> <span class="term-marker" data-type='ℝ'>(<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>ε</span> / <span class="term-marker" data-type='ℝ'>2</span></span>)</span> (<span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℕ → ℝ
@@ -504,7 +506,7 @@ m₀ : ℕ
 hb : ∀ (n : ℕ), m₀ ≤ n → |b n - B| &lt; ε / 2
 n : ℕ
 hn : n₀ ≤ n ∧ m₀ ≤ n
-⊢ |(fun n =&gt; a n + b n) n - (A + B)| &lt; ε'></span>specialize <span class="term-marker" data-type='∀ (n : ℕ), n₀ ≤ n → |a n - A| &lt; ε / 2'><span class="term-marker" data-type='|a n - A| &lt; ε / 2'>ha</span> <span class="term-marker" data-type='ℕ'>n</span> (<span class="goal-marker" data-goal='Goals: 1
+⊢ |(fun n =&gt; a n + b n) n - (A + B)| &lt; ε'></span>specialize <span class="term-marker" data-type='|a n - A| &lt; ε / 2'><span class="term-marker" data-type='∀ (n : ℕ), n₀ ≤ n → |a n - A| &lt; ε / 2'>ha</span> <span class="term-marker" data-type='ℕ'>n</span> (<span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℕ → ℝ
@@ -534,7 +536,7 @@ m₀ : ℕ
 hb : ∀ (n : ℕ), m₀ ≤ n → |b n - B| &lt; ε / 2
 n : ℕ
 hn : n₀ ≤ n ∧ m₀ ≤ n
-⊢ n₀ ≤ n'></span>linarith only [<span class="term-marker" data-type='n₀ ≤ n ∧ m₀ ≤ n'><span class="term-marker" data-type='n₀ ≤ n'>hn</span>.<span class="term-marker" data-type='∀ {a b : Prop}, a ∧ b → a'>left</span></span>]</span>)</span>
+⊢ n₀ ≤ n'></span>linarith only [<span class="term-marker" data-type='n₀ ≤ n'><span class="term-marker" data-type='n₀ ≤ n ∧ m₀ ≤ n'>hn</span>.<span class="term-marker" data-type='∀ {a b : Prop}, a ∧ b → a'>left</span></span>]</span>)</span>
   <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
@@ -550,7 +552,7 @@ hb : ∀ (n : ℕ), m₀ ≤ n → |b n - B| &lt; ε / 2
 n : ℕ
 hn : n₀ ≤ n ∧ m₀ ≤ n
 ha : |a n - A| &lt; ε / 2
-⊢ |(fun n =&gt; a n + b n) n - (A + B)| &lt; ε'></span>specialize <span class="term-marker" data-type='∀ (n : ℕ), m₀ ≤ n → |b n - B| &lt; ε / 2'><span class="term-marker" data-type='|b n - B| &lt; ε / 2'>hb</span> <span class="term-marker" data-type='ℕ'>n</span> (<span class="goal-marker" data-goal='Goals: 1
+⊢ |(fun n =&gt; a n + b n) n - (A + B)| &lt; ε'></span>specialize <span class="term-marker" data-type='|b n - B| &lt; ε / 2'><span class="term-marker" data-type='∀ (n : ℕ), m₀ ≤ n → |b n - B| &lt; ε / 2'>hb</span> <span class="term-marker" data-type='ℕ'>n</span> (<span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℕ → ℝ
@@ -565,7 +567,7 @@ hb : ∀ (n : ℕ), m₀ ≤ n → |b n - B| &lt; ε / 2
 n : ℕ
 hn : n₀ ≤ n ∧ m₀ ≤ n
 ha : |a n - A| &lt; ε / 2
-⊢ m₀ ≤ n'></span>by <span class="term-marker" data-type='Lean.Meta.Simp.Config'><span class="goal-marker" data-goal='Goals: 1
+⊢ m₀ ≤ n'></span>by <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℕ → ℝ
@@ -580,7 +582,7 @@ hb : ∀ (n : ℕ), m₀ ≤ n → |b n - B| &lt; ε / 2
 n : ℕ
 hn : n₀ ≤ n ∧ m₀ ≤ n
 ha : |a n - A| &lt; ε / 2
-⊢ m₀ ≤ n'></span>linarith only [<span class="term-marker" data-type='n₀ ≤ n ∧ m₀ ≤ n'><span class="term-marker" data-type='m₀ ≤ n'>hn</span>.<span class="term-marker" data-type='∀ {a b : Prop}, a ∧ b → b'>right</span></span>]</span>)</span>
+⊢ m₀ ≤ n'></span><span class="term-marker" data-type='Lean.Meta.Simp.Config'>linarith only [<span class="term-marker" data-type='n₀ ≤ n ∧ m₀ ≤ n'><span class="term-marker" data-type='m₀ ≤ n'>hn</span>.<span class="term-marker" data-type='∀ {a b : Prop}, a ∧ b → b'>right</span></span>]</span>)</span>
   <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
@@ -741,7 +743,7 @@ hb : -(ε / 2) &lt; b n - B ∧ b n - B &lt; ε / 2
 ⊢ a n + b n - (A + B) &lt; ε'></span>linarith only [<span class="term-marker" data-type='-(ε / 2) &lt; a n - A ∧ a n - A &lt; ε / 2'>ha</span>, <span class="term-marker" data-type='-(ε / 2) &lt; b n - B ∧ b n - B &lt; ε / 2'>hb</span>]
 
 /- [EXR] `-` commutes with `tendsTo` -/
-theorem <span class="term-marker" data-type='∀ {a b : ℕ → ℝ} {A B : ℝ}, TendsTo a A → TendsTo b B → TendsTo (fun n =&gt; a n - b n) (A - B)'>tendsTo_sub</span> {<span class="term-marker" data-type='ℕ → ℝ'>a</span> <span class="term-marker" data-type='ℕ → ℝ'>b</span> : <span class="term-marker" data-type='Type'><span class="term-marker" data-type='Type'>ℕ</span> → <span class="term-marker" data-type='Type'>ℝ</span></span>} {<span class="term-marker" data-type='ℝ'>A</span> <span class="term-marker" data-type='ℝ'>B</span> : <span class="term-marker" data-type='Type'>ℝ</span>} (<span class="term-marker" data-type='TendsTo a A'>ha</span> : <span class="term-marker" data-type='(ℕ → ℝ) → ℝ → Prop'><span class="term-marker" data-type='Prop'>TendsTo</span> <span class="term-marker" data-type='ℕ → ℝ'>a</span> <span class="term-marker" data-type='ℝ'>A</span></span>) (<span class="term-marker" data-type='TendsTo b B'>hb</span> : <span class="term-marker" data-type='(ℕ → ℝ) → ℝ → Prop'><span class="term-marker" data-type='Prop'>TendsTo</span> <span class="term-marker" data-type='ℕ → ℝ'>b</span> <span class="term-marker" data-type='ℝ'>B</span></span>) :
+theorem <span class="term-marker" data-type='∀ {a b : ℕ → ℝ} {A B : ℝ}, TendsTo a A → TendsTo b B → TendsTo (fun n =&gt; a n - b n) (A - B)'>tendsTo_sub</span> {<span class="term-marker" data-type='ℕ → ℝ'>a</span> <span class="term-marker" data-type='ℕ → ℝ'>b</span> : <span class="term-marker" data-type='Type'><span class="term-marker" data-type='Type'>ℕ</span> → <span class="term-marker" data-type='Type'>ℝ</span></span>} {<span class="term-marker" data-type='ℝ'>A</span> <span class="term-marker" data-type='ℝ'>B</span> : <span class="term-marker" data-type='Type'>ℝ</span>} (<span class="term-marker" data-type='TendsTo a A'>ha</span> : <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='(ℕ → ℝ) → ℝ → Prop'>TendsTo</span> <span class="term-marker" data-type='ℕ → ℝ'>a</span> <span class="term-marker" data-type='ℝ'>A</span></span>) (<span class="term-marker" data-type='TendsTo b B'>hb</span> : <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='(ℕ → ℝ) → ℝ → Prop'>TendsTo</span> <span class="term-marker" data-type='ℕ → ℝ'>b</span> <span class="term-marker" data-type='ℝ'>B</span></span>) :
     <span class="term-marker" data-type='(ℕ → ℝ) → ℝ → Prop'><span class="term-marker" data-type='Prop'>TendsTo</span> <span class="term-marker" data-type='ℕ → ℝ'>(<span class="term-marker" data-type='ℕ → ℝ'>fun <span class="term-marker" data-type='Type'>n</span> =&gt; <span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℕ → ℝ'><span class="term-marker" data-type='ℝ'>a</span> <span class="term-marker" data-type='ℕ'>n</span></span> - <span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℕ → ℝ'>b</span> <span class="term-marker" data-type='ℕ'>n</span></span></span></span>)</span> <span class="term-marker" data-type='ℝ'>(<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>A</span> - <span class="term-marker" data-type='ℝ'>B</span></span>)</span></span> := <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
@@ -752,7 +754,7 @@ B : ℝ
 ha : TendsTo a A
 hb : TendsTo b B
 ⊢ TendsTo (fun n =&gt; a n - b n) (A - B)'></span>by
-  <span class="term-marker" data-type='TendsTo (fun n =&gt; a n - b n) (A - B)'><span class="goal-marker" data-goal='Goals: 1
+  <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℕ → ℝ
@@ -761,7 +763,7 @@ A : ℝ
 B : ℝ
 ha : TendsTo a A
 hb : TendsTo b B
-⊢ TendsTo (fun n =&gt; a n - b n) (A - B)'></span>haveI := <span class="term-marker" data-type='TendsTo (fun n =&gt; a n + -b n) (A + -B)'><span class="term-marker" data-type='∀ {a b : ℕ → ℝ} {A B : ℝ}, TendsTo a A → TendsTo b B → TendsTo (fun n =&gt; a n + b n) (A + B)'>tendsTo_add</span> <span class="term-marker" data-type='TendsTo a A'>ha</span> <span class="term-marker" data-type='TendsTo (fun n =&gt; -b n) (-B)'>(<span class="term-marker" data-type='∀ {a : ℕ → ℝ} {t : ℝ}, TendsTo a t → TendsTo (fun n =&gt; -a n) (-t)'><span class="term-marker" data-type='TendsTo (fun n =&gt; -b n) (-B)'>tendsTo_neg</span> <span class="term-marker" data-type='TendsTo b B'>hb</span></span>)</span></span></span>
+⊢ TendsTo (fun n =&gt; a n - b n) (A - B)'></span><span class="term-marker" data-type='TendsTo (fun n =&gt; a n - b n) (A - B)'>haveI := <span class="term-marker" data-type='TendsTo (fun n =&gt; a n + -b n) (A + -B)'><span class="term-marker" data-type='∀ {a b : ℕ → ℝ} {A B : ℝ}, TendsTo a A → TendsTo b B → TendsTo (fun n =&gt; a n + b n) (A + B)'>tendsTo_add</span> <span class="term-marker" data-type='TendsTo a A'>ha</span> <span class="term-marker" data-type='TendsTo (fun n =&gt; -b n) (-B)'>(<span class="term-marker" data-type='∀ {a : ℕ → ℝ} {t : ℝ}, TendsTo a t → TendsTo (fun n =&gt; -a n) (-t)'><span class="term-marker" data-type='TendsTo (fun n =&gt; -b n) (-B)'>tendsTo_neg</span> <span class="term-marker" data-type='TendsTo b B'>hb</span></span>)</span></span></span>
   -- [TODO] `congr` closes the goal directly here. Find out why.
   <span class="goal-marker" data-goal='Goals: 1
 
@@ -790,10 +792,10 @@ this : TendsTo (fun n =&gt; a n - b n) (A - B)
 `≤` version of `TendsTo` is equivalent to the usual `TendsTo`.
 -/
 def <span class="term-marker" data-type='(ℕ → ℝ) → ℝ → Prop'>TendsTo_le</span> (<span class="term-marker" data-type='ℕ → ℝ'>a</span> : <span class="term-marker" data-type='Type'><span class="term-marker" data-type='Type'>ℕ</span> → <span class="term-marker" data-type='Type'>ℝ</span></span>) (<span class="term-marker" data-type='ℝ'>t</span> : <span class="term-marker" data-type='Type'>ℝ</span>) : <span class="term-marker" data-type='Type'>Prop</span> :=
-  <span class="term-marker" data-type='Prop'>∀ <span class="term-marker" data-type='Type'>ε</span> &gt; <span class="term-marker" data-type='ℝ'>0</span>, <span class="term-marker" data-type='Prop'>∃ <span class="term-marker" data-type='ℕ'>n₀</span> : <span class="term-marker" data-type='Type'>ℕ</span>, <span class="term-marker" data-type='Prop'>∀ <span class="term-marker" data-type='Type'>n</span>, <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='Prop'><span class="term-marker" data-type='ℕ'>n₀</span> ≤ <span class="term-marker" data-type='ℕ'>n</span></span> → <span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='Prop'>|<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℕ → ℝ'><span class="term-marker" data-type='ℝ'>a</span> <span class="term-marker" data-type='ℕ'>n</span></span> - <span class="term-marker" data-type='ℝ'>t</span></span>|</span> ≤ <span class="term-marker" data-type='ℝ'>ε</span></span></span></span></span></span>
+  <span class="term-marker" data-type='Prop'>∀ <span class="term-marker" data-type='Type'>ε</span> &gt; <span class="term-marker" data-type='ℝ'>0</span>, <span class="term-marker" data-type='Prop'>∃ <span class="term-marker" data-type='ℕ'>n₀</span> : <span class="term-marker" data-type='Type'>ℕ</span>, <span class="term-marker" data-type='Prop'>∀ <span class="term-marker" data-type='Type'>n</span>, <span class="term-marker" data-type='ℕ'><span class="term-marker" data-type='Prop'><span class="term-marker" data-type='Prop'>n₀</span> ≤ <span class="term-marker" data-type='ℕ'>n</span></span> → <span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='Prop'>|<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℕ → ℝ'><span class="term-marker" data-type='ℝ'>a</span> <span class="term-marker" data-type='ℕ'>n</span></span> - <span class="term-marker" data-type='ℝ'>t</span></span>|</span> ≤ <span class="term-marker" data-type='ℝ'>ε</span></span></span></span></span></span>
 
 -- [EXR]
-theorem <span class="term-marker" data-type='∀ {a : ℕ → ℝ} {t : ℝ}, TendsTo_le a t ↔ TendsTo a t'>tendsTo_le_iff_TendsTo</span> {<span class="term-marker" data-type='ℕ → ℝ'>a</span> : <span class="term-marker" data-type='Type'><span class="term-marker" data-type='Type'>ℕ</span> → <span class="term-marker" data-type='Type'>ℝ</span></span>} {<span class="term-marker" data-type='ℝ'>t</span> : <span class="term-marker" data-type='Type'>ℝ</span>} : <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='Prop'><span class="term-marker" data-type='(ℕ → ℝ) → ℝ → Prop'>TendsTo_le</span> <span class="term-marker" data-type='ℕ → ℝ'>a</span> <span class="term-marker" data-type='ℝ'>t</span></span> ↔ <span class="term-marker" data-type='(ℕ → ℝ) → ℝ → Prop'><span class="term-marker" data-type='Prop'>TendsTo</span> <span class="term-marker" data-type='ℕ → ℝ'>a</span> <span class="term-marker" data-type='ℝ'>t</span></span></span> := <span class="goal-marker" data-goal='Goals: 1
+theorem <span class="term-marker" data-type='∀ {a : ℕ → ℝ} {t : ℝ}, TendsTo_le a t ↔ TendsTo a t'>tendsTo_le_iff_TendsTo</span> {<span class="term-marker" data-type='ℕ → ℝ'>a</span> : <span class="term-marker" data-type='Type'><span class="term-marker" data-type='Type'>ℕ</span> → <span class="term-marker" data-type='Type'>ℝ</span></span>} {<span class="term-marker" data-type='ℝ'>t</span> : <span class="term-marker" data-type='Type'>ℝ</span>} : <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='(ℕ → ℝ) → ℝ → Prop'><span class="term-marker" data-type='Prop'>TendsTo_le</span> <span class="term-marker" data-type='ℕ → ℝ'>a</span> <span class="term-marker" data-type='ℝ'>t</span></span> ↔ <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='(ℕ → ℝ) → ℝ → Prop'>TendsTo</span> <span class="term-marker" data-type='ℕ → ℝ'>a</span> <span class="term-marker" data-type='ℝ'>t</span></span></span> := <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℕ → ℝ
@@ -821,20 +823,20 @@ t : ℝ
 Goal 1:
 a : ℕ → ℝ
 t : ℝ
-⊢ TendsTo_le a t → TendsTo a t'></span>intro <span class="term-marker" data-type='TendsTo_le a t'>h</span> <span class="goal-marker" data-goal='Goals: 1
+⊢ TendsTo_le a t → TendsTo a t'></span>intro <span class="term-marker" data-type='TendsTo_le a t'>h</span> <span class="term-marker" data-type='ℝ'><span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℕ → ℝ
 t : ℝ
 h : TendsTo_le a t
-⊢ TendsTo a t'></span><span class="term-marker" data-type='ℝ'>ε</span> <span class="goal-marker" data-goal='Goals: 1
+⊢ TendsTo a t'></span>ε</span> <span class="term-marker" data-type='ε &gt; 0'><span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℕ → ℝ
 t : ℝ
 h : TendsTo_le a t
 ε : ℝ
-⊢ ε &gt; 0 → ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |a n - t| &lt; ε'></span><span class="term-marker" data-type='ε &gt; 0'>hε</span>
+⊢ ε &gt; 0 → ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |a n - t| &lt; ε'></span>hε</span>
     <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
@@ -860,7 +862,7 @@ h : TendsTo_le a t
 ε : ℝ
 hε : ε &gt; 0
 ⊢ ε / 2 &gt; 0'></span>linarith [<span class="term-marker" data-type='ε &gt; 0'>hε</span>])</span> with <span class="term-marker" data-type='∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |a n - t| ≤ ε / 2'>⟨<span class="term-marker" data-type='ℕ'>n₀</span>, <span class="term-marker" data-type='∀ (n : ℕ), n₀ ≤ n → |a n - t| ≤ ε / 2'>hn₀</span>⟩</span>
-    <span class="goal-marker" data-goal='Goals: 1
+    <span class="term-marker" data-type='Prop'><span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℕ → ℝ
@@ -870,7 +872,7 @@ h : TendsTo_le a t
 hε : ε &gt; 0
 n₀ : ℕ
 hn₀ : ∀ (n : ℕ), n₀ ≤ n → |a n - t| ≤ ε / 2
-⊢ ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |a n - t| &lt; ε'></span><span class="term-marker" data-type='Prop'>use <span class="term-marker" data-type='ℕ'>n₀</span></span>
+⊢ ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |a n - t| &lt; ε'></span>use <span class="term-marker" data-type='ℕ'>n₀</span></span>
     <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
@@ -984,7 +986,7 @@ h : TendsTo a t
 hε : ε &gt; 0
 n₀ : ℕ
 hn₀ : ∀ (n : ℕ), n₀ ≤ n → |a n - t| &lt; ε
-⊢ ∀ (n : ℕ), n₀ ≤ n → |a n - t| ≤ ε'></span>intro <span class="term-marker" data-type='ℕ'>n</span> <span class="goal-marker" data-goal='Goals: 1
+⊢ ∀ (n : ℕ), n₀ ≤ n → |a n - t| ≤ ε'></span>intro <span class="term-marker" data-type='ℕ'>n</span> <span class="term-marker" data-type='n₀ ≤ n'><span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℕ → ℝ
@@ -995,7 +997,7 @@ hε : ε &gt; 0
 n₀ : ℕ
 hn₀ : ∀ (n : ℕ), n₀ ≤ n → |a n - t| &lt; ε
 n : ℕ
-⊢ n₀ ≤ n → |a n - t| ≤ ε'></span><span class="term-marker" data-type='n₀ ≤ n'>hn</span><span class="goal-marker" data-goal='Goals: 1
+⊢ n₀ ≤ n → |a n - t| ≤ ε'></span>hn</span><span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℕ → ℝ
@@ -1039,10 +1041,10 @@ a weaker version of `TendsTo` where we require `ε &lt; l`.
 When `l &gt; 0`, this is equivalent to `TendsTo`.
 -/
 def <span class="term-marker" data-type='(ℕ → ℝ) → ℝ → ℝ → Prop'>TendsTo_εlt</span> (<span class="term-marker" data-type='ℕ → ℝ'>a</span> : <span class="term-marker" data-type='Type'><span class="term-marker" data-type='Type'>ℕ</span> → <span class="term-marker" data-type='Type'>ℝ</span></span>) (<span class="term-marker" data-type='ℝ'>t</span> : <span class="term-marker" data-type='Type'>ℝ</span>) (<span class="term-marker" data-type='ℝ'>l</span> : <span class="term-marker" data-type='Type'>ℝ</span>) : <span class="term-marker" data-type='Type'>Prop</span> :=
-  <span class="term-marker" data-type='Prop'>∀ <span class="term-marker" data-type='Type'>ε</span> &gt; <span class="term-marker" data-type='ℝ'>0</span>, <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='Prop'><span class="term-marker" data-type='ℝ'>ε</span> &lt; <span class="term-marker" data-type='ℝ'>l</span></span> → <span class="term-marker" data-type='Prop'>∃ <span class="term-marker" data-type='ℕ'>n₀</span> : <span class="term-marker" data-type='Type'>ℕ</span>, <span class="term-marker" data-type='Prop'>∀ <span class="term-marker" data-type='Type'>n</span>, <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='Prop'><span class="term-marker" data-type='ℕ'>n₀</span> ≤ <span class="term-marker" data-type='ℕ'>n</span></span> → <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='ℝ'>|<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℕ → ℝ'>a</span> <span class="term-marker" data-type='ℕ'>n</span></span> - <span class="term-marker" data-type='ℝ'>t</span></span>|</span> &lt; <span class="term-marker" data-type='ℝ'>ε</span></span></span></span></span></span></span>
+  <span class="term-marker" data-type='Prop'>∀ <span class="term-marker" data-type='Type'>ε</span> &gt; <span class="term-marker" data-type='ℝ'>0</span>, <span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='Prop'><span class="term-marker" data-type='Prop'>ε</span> &lt; <span class="term-marker" data-type='ℝ'>l</span></span> → <span class="term-marker" data-type='Prop'>∃ <span class="term-marker" data-type='ℕ'>n₀</span> : <span class="term-marker" data-type='Type'>ℕ</span>, <span class="term-marker" data-type='Prop'>∀ <span class="term-marker" data-type='Type'>n</span>, <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='Prop'><span class="term-marker" data-type='ℕ'>n₀</span> ≤ <span class="term-marker" data-type='ℕ'>n</span></span> → <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='ℝ'>|<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℕ → ℝ'>a</span> <span class="term-marker" data-type='ℕ'>n</span></span> - <span class="term-marker" data-type='ℝ'>t</span></span>|</span> &lt; <span class="term-marker" data-type='ℝ'>ε</span></span></span></span></span></span></span>
 
-theorem <span class="term-marker" data-type='∀ {a : ℕ → ℝ} {t l : ℝ}, l &gt; 0 → (TendsTo_εlt a t l ↔ TendsTo a t)'>tendsTo_εlt_iff_TendsTo</span> {<span class="term-marker" data-type='ℕ → ℝ'>a</span> : <span class="term-marker" data-type='Type'><span class="term-marker" data-type='Type'>ℕ</span> → <span class="term-marker" data-type='Type'>ℝ</span></span>} {<span class="term-marker" data-type='ℝ'>t</span> : <span class="term-marker" data-type='Type'>ℝ</span>} {<span class="term-marker" data-type='ℝ'>l</span> : <span class="term-marker" data-type='Type'>ℝ</span>} (<span class="term-marker" data-type='l &gt; 0'>l_gt_zero</span> : <span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='Prop'>l</span> &gt; <span class="term-marker" data-type='ℝ'>0</span></span>) :
-    <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='Prop'><span class="term-marker" data-type='(ℕ → ℝ) → ℝ → ℝ → Prop'>TendsTo_εlt</span> <span class="term-marker" data-type='ℕ → ℝ'>a</span> <span class="term-marker" data-type='ℝ'>t</span> <span class="term-marker" data-type='ℝ'>l</span></span> ↔ <span class="term-marker" data-type='(ℕ → ℝ) → ℝ → Prop'><span class="term-marker" data-type='Prop'>TendsTo</span> <span class="term-marker" data-type='ℕ → ℝ'>a</span> <span class="term-marker" data-type='ℝ'>t</span></span></span> := <span class="goal-marker" data-goal='Goals: 1
+theorem <span class="term-marker" data-type='∀ {a : ℕ → ℝ} {t l : ℝ}, l &gt; 0 → (TendsTo_εlt a t l ↔ TendsTo a t)'>tendsTo_εlt_iff_TendsTo</span> {<span class="term-marker" data-type='ℕ → ℝ'>a</span> : <span class="term-marker" data-type='Type'><span class="term-marker" data-type='Type'>ℕ</span> → <span class="term-marker" data-type='Type'>ℝ</span></span>} {<span class="term-marker" data-type='ℝ'>t</span> : <span class="term-marker" data-type='Type'>ℝ</span>} {<span class="term-marker" data-type='ℝ'>l</span> : <span class="term-marker" data-type='Type'>ℝ</span>} (<span class="term-marker" data-type='l &gt; 0'>l_gt_zero</span> : <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='ℝ'>l</span> &gt; <span class="term-marker" data-type='ℝ'>0</span></span>) :
+    <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='Prop'><span class="term-marker" data-type='(ℕ → ℝ) → ℝ → ℝ → Prop'>TendsTo_εlt</span> <span class="term-marker" data-type='ℕ → ℝ'>a</span> <span class="term-marker" data-type='ℝ'>t</span> <span class="term-marker" data-type='ℝ'>l</span></span> ↔ <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='(ℕ → ℝ) → ℝ → Prop'>TendsTo</span> <span class="term-marker" data-type='ℕ → ℝ'>a</span> <span class="term-marker" data-type='ℝ'>t</span></span></span> := <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℕ → ℝ
@@ -1108,7 +1110,7 @@ l_gt_zero : l &gt; 0
 h : TendsTo_εlt a t l
 ε : ℝ
 hε : ε &gt; 0
-⊢ ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |a n - t| &lt; ε'></span>specialize <span class="term-marker" data-type='TendsTo_εlt a t l'><span class="term-marker" data-type='∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |a n - t| &lt; min ε (l / 2)'>h</span> <span class="term-marker" data-type='ℝ'>(<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='{α : Type} → [self : Min α] → α → α → α'>min</span> <span class="term-marker" data-type='ℝ'>ε</span> <span class="term-marker" data-type='ℝ'>(<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>l</span> / <span class="term-marker" data-type='ℝ'>2</span></span>)</span></span>)</span>
+⊢ ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |a n - t| &lt; ε'></span>specialize <span class="term-marker" data-type='∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |a n - t| &lt; min ε (l / 2)'><span class="term-marker" data-type='TendsTo_εlt a t l'>h</span> <span class="term-marker" data-type='ℝ'>(<span class="term-marker" data-type='{α : Type} → [self : Min α] → α → α → α'><span class="term-marker" data-type='ℝ'>min</span> <span class="term-marker" data-type='ℝ'>ε</span> <span class="term-marker" data-type='ℝ'>(<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>l</span> / <span class="term-marker" data-type='ℝ'>2</span></span>)</span></span>)</span>
                  (<span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
@@ -1319,7 +1321,7 @@ n₀ : ℕ
 n : ℕ
 hn : n₀ ≤ n
 hn₀ : |a n - t| &lt; min ε (l / 2)
-⊢ |a n - t| &lt; ε'></span>rw [<span class="goal-marker" data-goal='Goals: 1
+⊢ |a n - t| &lt; ε'></span>rw [<span class="term-marker" data-type='|a n - t| &lt; min ε (l / 2) ↔ |a n - t| &lt; ε ∧ |a n - t| &lt; l / 2'><span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℕ → ℝ
@@ -1332,7 +1334,7 @@ n₀ : ℕ
 n : ℕ
 hn : n₀ ≤ n
 hn₀ : |a n - t| &lt; min ε (l / 2)
-⊢ |a n - t| &lt; ε'></span><span class="term-marker" data-type='|a n - t| &lt; min ε (l / 2) ↔ |a n - t| &lt; ε ∧ |a n - t| &lt; l / 2'>lt_min_iff</span><span class="goal-marker" data-goal='Goals: 1
+⊢ |a n - t| &lt; ε'></span>lt_min_iff</span><span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℕ → ℝ
@@ -1359,7 +1361,7 @@ n₀ : ℕ
 n : ℕ
 hn : n₀ ≤ n
 hn₀ : |a n - t| &lt; ε ∧ |a n - t| &lt; l / 2
-⊢ |a n - t| &lt; ε'></span>exact <span class="term-marker" data-type='|a n - t| &lt; ε ∧ |a n - t| &lt; l / 2'><span class="term-marker" data-type='|a n - t| &lt; ε'>hn₀</span>.<span class="term-marker" data-type='∀ {a b : Prop}, a ∧ b → a'>left</span></span>
+⊢ |a n - t| &lt; ε'></span>exact <span class="term-marker" data-type='|a n - t| &lt; ε'><span class="term-marker" data-type='|a n - t| &lt; ε ∧ |a n - t| &lt; l / 2'>hn₀</span>.<span class="term-marker" data-type='∀ {a b : Prop}, a ∧ b → a'>left</span></span>
   <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
@@ -1381,8 +1383,8 @@ l_gt_zero : l &gt; 0
 [TODO] I failed to finish the proof swiftly.
 You are welcome to optimize it!
 -/
-theorem <span class="term-marker" data-type='∀ {a b : ℕ → ℝ} {A B : ℝ}, TendsTo a A → TendsTo b B → TendsTo (fun n =&gt; a n * b n) (A * B)'>tendsTo_mul</span> {<span class="term-marker" data-type='ℕ → ℝ'>a</span> <span class="term-marker" data-type='ℕ → ℝ'>b</span> : <span class="term-marker" data-type='Type'><span class="term-marker" data-type='Type'>ℕ</span> → <span class="term-marker" data-type='Type'>ℝ</span></span>} {<span class="term-marker" data-type='ℝ'>A</span> <span class="term-marker" data-type='ℝ'>B</span> : <span class="term-marker" data-type='Type'>ℝ</span>} (<span class="term-marker" data-type='TendsTo a A'>ha</span> : <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='(ℕ → ℝ) → ℝ → Prop'>TendsTo</span> <span class="term-marker" data-type='ℕ → ℝ'>a</span> <span class="term-marker" data-type='ℝ'>A</span></span>) (<span class="term-marker" data-type='TendsTo b B'>hb</span> : <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='(ℕ → ℝ) → ℝ → Prop'>TendsTo</span> <span class="term-marker" data-type='ℕ → ℝ'>b</span> <span class="term-marker" data-type='ℝ'>B</span></span>) :
-    <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='(ℕ → ℝ) → ℝ → Prop'>TendsTo</span> <span class="term-marker" data-type='ℕ → ℝ'>(<span class="term-marker" data-type='ℕ → ℝ'>fun <span class="term-marker" data-type='Type'>n</span> ↦ <span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℕ → ℝ'>a</span> <span class="term-marker" data-type='ℕ'>n</span></span> * <span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℕ → ℝ'>b</span> <span class="term-marker" data-type='ℕ'>n</span></span></span></span>)</span> <span class="term-marker" data-type='ℝ'>(<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>A</span> * <span class="term-marker" data-type='ℝ'>B</span></span>)</span></span> := <span class="goal-marker" data-goal='Goals: 1
+theorem <span class="term-marker" data-type='∀ {a b : ℕ → ℝ} {A B : ℝ}, TendsTo a A → TendsTo b B → TendsTo (fun n =&gt; a n * b n) (A * B)'>tendsTo_mul</span> {<span class="term-marker" data-type='ℕ → ℝ'>a</span> <span class="term-marker" data-type='ℕ → ℝ'>b</span> : <span class="term-marker" data-type='Type'><span class="term-marker" data-type='Type'>ℕ</span> → <span class="term-marker" data-type='Type'>ℝ</span></span>} {<span class="term-marker" data-type='ℝ'>A</span> <span class="term-marker" data-type='ℝ'>B</span> : <span class="term-marker" data-type='Type'>ℝ</span>} (<span class="term-marker" data-type='TendsTo a A'>ha</span> : <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='(ℕ → ℝ) → ℝ → Prop'>TendsTo</span> <span class="term-marker" data-type='ℕ → ℝ'>a</span> <span class="term-marker" data-type='ℝ'>A</span></span>) (<span class="term-marker" data-type='TendsTo b B'>hb</span> : <span class="term-marker" data-type='(ℕ → ℝ) → ℝ → Prop'><span class="term-marker" data-type='Prop'>TendsTo</span> <span class="term-marker" data-type='ℕ → ℝ'>b</span> <span class="term-marker" data-type='ℝ'>B</span></span>) :
+    <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='(ℕ → ℝ) → ℝ → Prop'>TendsTo</span> <span class="term-marker" data-type='ℕ → ℝ'>(<span class="term-marker" data-type='ℕ → ℝ'>fun <span class="term-marker" data-type='Type'>n</span> ↦ <span class="term-marker" data-type='ℕ → ℝ'><span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>a</span> <span class="term-marker" data-type='ℕ'>n</span></span> * <span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℕ → ℝ'>b</span> <span class="term-marker" data-type='ℕ'>n</span></span></span></span>)</span> <span class="term-marker" data-type='ℝ'>(<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>A</span> * <span class="term-marker" data-type='ℝ'>B</span></span>)</span></span> := <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℕ → ℝ
@@ -1410,7 +1412,7 @@ A : ℝ
 B : ℝ
 ha : TendsTo a A
 hb : TendsTo b B
-⊢ TendsTo (fun n =&gt; a n * b n) (A * B)'></span>← <span class="term-marker" data-type='∀ {a : ℕ → ℝ} {t l : ℝ}, l &gt; 0 → (TendsTo_εlt a t l ↔ TendsTo a t)'><span class="term-marker" data-type='TendsTo_εlt (fun n =&gt; a n * b n) (A * B) 1 ↔ TendsTo (fun n =&gt; a n * b n) (A * B)'>tendsTo_εlt_iff_TendsTo</span> <span class="term-marker" data-type='1 &gt; 0'>(<span class="goal-marker" data-goal='Goals: 1
+⊢ TendsTo (fun n =&gt; a n * b n) (A * B)'></span>← <span class="term-marker" data-type='TendsTo_εlt (fun n =&gt; a n * b n) (A * B) 1 ↔ TendsTo (fun n =&gt; a n * b n) (A * B)'><span class="term-marker" data-type='∀ {a : ℕ → ℝ} {t l : ℝ}, l &gt; 0 → (TendsTo_εlt a t l ↔ TendsTo a t)'>tendsTo_εlt_iff_TendsTo</span> <span class="term-marker" data-type='1 &gt; 0'>(<span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℕ → ℝ
@@ -1456,7 +1458,7 @@ A : ℝ
 B : ℝ
 ha : TendsTo a A
 hb : TendsTo b B
-⊢ TendsTo_εlt (fun n =&gt; a n * b n) (A * B) 1'></span>intro <span class="term-marker" data-type='ℝ'>ε</span> <span class="term-marker" data-type='ε &gt; 0'><span class="goal-marker" data-goal='Goals: 1
+⊢ TendsTo_εlt (fun n =&gt; a n * b n) (A * B) 1'></span>intro <span class="term-marker" data-type='ℝ'>ε</span> <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℕ → ℝ
@@ -1466,18 +1468,7 @@ B : ℝ
 ha : TendsTo a A
 hb : TendsTo b B
 ε : ℝ
-⊢ ε &gt; 0 → ε &lt; 1 → ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |(fun n =&gt; a n * b n) n - A * B| &lt; ε'></span>hε</span> <span class="goal-marker" data-goal='Goals: 1
-
-Goal 1:
-a : ℕ → ℝ
-b : ℕ → ℝ
-A : ℝ
-B : ℝ
-ha : TendsTo a A
-hb : TendsTo b B
-ε : ℝ
-hε : ε &gt; 0
-⊢ ε &lt; 1 → ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |(fun n =&gt; a n * b n) n - A * B| &lt; ε'></span><span class="term-marker" data-type='ε &lt; 1'>hεlt1</span><span class="goal-marker" data-goal='Goals: 1
+⊢ ε &gt; 0 → ε &lt; 1 → ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |(fun n =&gt; a n * b n) n - A * B| &lt; ε'></span><span class="term-marker" data-type='ε &gt; 0'>hε</span> <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℕ → ℝ
@@ -1488,20 +1479,7 @@ ha : TendsTo a A
 hb : TendsTo b B
 ε : ℝ
 hε : ε &gt; 0
-hεlt1 : ε &lt; 1
-⊢ ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |(fun n =&gt; a n * b n) n - A * B| &lt; ε'></span>; <span class="goal-marker" data-goal='Goals: 1
-
-Goal 1:
-a : ℕ → ℝ
-b : ℕ → ℝ
-A : ℝ
-B : ℝ
-ha : TendsTo a A
-hb : TendsTo b B
-ε : ℝ
-hε : ε &gt; 0
-hεlt1 : ε &lt; 1
-⊢ ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |(fun n =&gt; a n * b n) n - A * B| &lt; ε'></span>simp
+⊢ ε &lt; 1 → ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |(fun n =&gt; a n * b n) n - A * B| &lt; ε'></span><span class="term-marker" data-type='ε &lt; 1'>hεlt1</span>
   <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
@@ -1514,7 +1492,7 @@ hb : TendsTo b B
 ε : ℝ
 hε : ε &gt; 0
 hεlt1 : ε &lt; 1
-⊢ ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |a n * b n - A * B| &lt; ε'></span>specialize <span class="term-marker" data-type='TendsTo a A'><span class="term-marker" data-type='∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |a n - A| &lt; ε / (3 * (|B| + 1))'>ha</span> <span class="term-marker" data-type='ℝ'>(<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>ε</span> / (<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>3</span> * (<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>|<span class="term-marker" data-type='ℝ'>B</span>|</span> + <span class="term-marker" data-type='ℝ'>1</span></span>)</span>)</span>)</span> (<span class="goal-marker" data-goal='Goals: 1
+⊢ ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |(fun n =&gt; a n * b n) n - A * B| &lt; ε'></span>specialize <span class="term-marker" data-type='∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |a n - A| &lt; ε / (3 * (|B| + 1))'><span class="term-marker" data-type='TendsTo a A'>ha</span> <span class="term-marker" data-type='ℝ'>(<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>ε</span> / (<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>3</span> * (<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>|<span class="term-marker" data-type='ℝ'>B</span>|</span> + <span class="term-marker" data-type='ℝ'>1</span></span>)</span>)</span>)</span> (<span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℕ → ℝ
@@ -1566,7 +1544,7 @@ hb : TendsTo b B
 hε : ε &gt; 0
 hεlt1 : ε &lt; 1
 ha : ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |a n - A| &lt; ε / (3 * (|B| + 1))
-⊢ ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |a n * b n - A * B| &lt; ε'></span>rcases <span class="term-marker" data-type='∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |a n - A| &lt; ε / (3 * (|B| + 1))'>ha</span> with <span class="term-marker" data-type='∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |a n - A| &lt; ε / (3 * (|B| + 1))'>⟨<span class="term-marker" data-type='ℕ'>n₁</span>, <span class="term-marker" data-type='∀ (n : ℕ), n₁ ≤ n → |a n - A| &lt; ε / (3 * (|B| + 1))'>ha</span>⟩</span>
+⊢ ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |(fun n =&gt; a n * b n) n - A * B| &lt; ε'></span>rcases <span class="term-marker" data-type='∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |a n - A| &lt; ε / (3 * (|B| + 1))'>ha</span> with <span class="term-marker" data-type='∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |a n - A| &lt; ε / (3 * (|B| + 1))'>⟨<span class="term-marker" data-type='ℕ'>n₁</span>, <span class="term-marker" data-type='∀ (n : ℕ), n₁ ≤ n → |a n - A| &lt; ε / (3 * (|B| + 1))'>ha</span>⟩</span>
   <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
@@ -1580,7 +1558,7 @@ hε : ε &gt; 0
 hεlt1 : ε &lt; 1
 n₁ : ℕ
 ha : ∀ (n : ℕ), n₁ ≤ n → |a n - A| &lt; ε / (3 * (|B| + 1))
-⊢ ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |a n * b n - A * B| &lt; ε'></span>specialize <span class="term-marker" data-type='∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |b n - B| &lt; ε / (3 * (|A| + 1))'><span class="term-marker" data-type='TendsTo b B'>hb</span> <span class="term-marker" data-type='ℝ'>(<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>ε</span> / (<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>3</span> * (<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>|<span class="term-marker" data-type='ℝ'>A</span>|</span> + <span class="term-marker" data-type='ℝ'>1</span></span>)</span>)</span>)</span> (<span class="goal-marker" data-goal='Goals: 1
+⊢ ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |(fun n =&gt; a n * b n) n - A * B| &lt; ε'></span>specialize <span class="term-marker" data-type='∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |b n - B| &lt; ε / (3 * (|A| + 1))'><span class="term-marker" data-type='TendsTo b B'>hb</span> <span class="term-marker" data-type='ℝ'>(<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>ε</span> / (<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>3</span> * (<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>|<span class="term-marker" data-type='ℝ'>A</span>|</span> + <span class="term-marker" data-type='ℝ'>1</span></span>)</span>)</span>)</span> (<span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℕ → ℝ
@@ -1607,8 +1585,8 @@ hε : ε &gt; 0
 hεlt1 : ε &lt; 1
 n₁ : ℕ
 ha : ∀ (n : ℕ), n₁ ≤ n → |a n - A| &lt; ε / (3 * (|B| + 1))
-⊢ ε / (3 * (|A| + 1)) &gt; 0'></span>apply <span class="term-marker" data-type='0 &lt; 3 * (|A| + 1) → 0 &lt; ε / (3 * (|A| + 1))'><span class="term-marker" data-type='∀ {G₀ : Type} [inst : GroupWithZero G₀] [inst_1 : PartialOrder G₀] [PosMulReflectLT G₀] {a b : G₀},
-  0 &lt; a → 0 &lt; b → 0 &lt; a / b'>div_pos</span> <span class="term-marker" data-type='ε &gt; 0'>hε</span></span>
+⊢ ε / (3 * (|A| + 1)) &gt; 0'></span>apply <span class="term-marker" data-type='∀ {G₀ : Type} [inst : GroupWithZero G₀] [inst_1 : PartialOrder G₀] [PosMulReflectLT G₀] {a b : G₀},
+  0 &lt; a → 0 &lt; b → 0 &lt; a / b'><span class="term-marker" data-type='0 &lt; 3 * (|A| + 1) → 0 &lt; ε / (3 * (|A| + 1))'>div_pos</span> <span class="term-marker" data-type='ε &gt; 0'>hε</span></span>
     <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
@@ -1636,7 +1614,7 @@ hεlt1 : ε &lt; 1
 n₁ : ℕ
 ha : ∀ (n : ℕ), n₁ ≤ n → |a n - A| &lt; ε / (3 * (|B| + 1))
 hb : ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |b n - B| &lt; ε / (3 * (|A| + 1))
-⊢ ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |a n * b n - A * B| &lt; ε'></span>rcases <span class="term-marker" data-type='∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |b n - B| &lt; ε / (3 * (|A| + 1))'>hb</span> with <span class="term-marker" data-type='∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |b n - B| &lt; ε / (3 * (|A| + 1))'>⟨<span class="term-marker" data-type='ℕ'>n₂</span>, <span class="term-marker" data-type='∀ (n : ℕ), n₂ ≤ n → |b n - B| &lt; ε / (3 * (|A| + 1))'>hb</span>⟩</span>
+⊢ ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |(fun n =&gt; a n * b n) n - A * B| &lt; ε'></span>rcases <span class="term-marker" data-type='∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |b n - B| &lt; ε / (3 * (|A| + 1))'>hb</span> with <span class="term-marker" data-type='∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |b n - B| &lt; ε / (3 * (|A| + 1))'>⟨<span class="term-marker" data-type='ℕ'>n₂</span>, <span class="term-marker" data-type='∀ (n : ℕ), n₂ ≤ n → |b n - B| &lt; ε / (3 * (|A| + 1))'>hb</span>⟩</span>
   <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
@@ -1651,7 +1629,7 @@ n₁ : ℕ
 ha : ∀ (n : ℕ), n₁ ≤ n → |a n - A| &lt; ε / (3 * (|B| + 1))
 n₂ : ℕ
 hb : ∀ (n : ℕ), n₂ ≤ n → |b n - B| &lt; ε / (3 * (|A| + 1))
-⊢ ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |a n * b n - A * B| &lt; ε'></span><span class="term-marker" data-type='Prop'>use <span class="term-marker" data-type='ℕ'><span class="term-marker" data-type='{α : Type} → [self : Max α] → α → α → α'>max</span> <span class="term-marker" data-type='ℕ'>n₁</span> <span class="term-marker" data-type='ℕ'>n₂</span></span></span>
+⊢ ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |(fun n =&gt; a n * b n) n - A * B| &lt; ε'></span><span class="term-marker" data-type='Prop'>use <span class="term-marker" data-type='ℕ'><span class="term-marker" data-type='{α : Type} → [self : Max α] → α → α → α'>max</span> <span class="term-marker" data-type='ℕ'>n₁</span> <span class="term-marker" data-type='ℕ'>n₂</span></span></span>
   <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
@@ -1666,7 +1644,7 @@ n₁ : ℕ
 ha : ∀ (n : ℕ), n₁ ≤ n → |a n - A| &lt; ε / (3 * (|B| + 1))
 n₂ : ℕ
 hb : ∀ (n : ℕ), n₂ ≤ n → |b n - B| &lt; ε / (3 * (|A| + 1))
-⊢ ∀ (n : ℕ), max n₁ n₂ ≤ n → |a n * b n - A * B| &lt; ε'></span>intro <span class="term-marker" data-type='ℕ'>n</span> <span class="goal-marker" data-goal='Goals: 1
+⊢ ∀ (n : ℕ), max n₁ n₂ ≤ n → |(fun n =&gt; a n * b n) n - A * B| &lt; ε'></span>intro <span class="term-marker" data-type='ℕ'>n</span> <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℕ → ℝ
@@ -1681,7 +1659,7 @@ ha : ∀ (n : ℕ), n₁ ≤ n → |a n - A| &lt; ε / (3 * (|B| + 1))
 n₂ : ℕ
 hb : ∀ (n : ℕ), n₂ ≤ n → |b n - B| &lt; ε / (3 * (|A| + 1))
 n : ℕ
-⊢ max n₁ n₂ ≤ n → |a n * b n - A * B| &lt; ε'></span><span class="term-marker" data-type='max n₁ n₂ ≤ n'>hn</span>
+⊢ max n₁ n₂ ≤ n → |(fun n =&gt; a n * b n) n - A * B| &lt; ε'></span><span class="term-marker" data-type='max n₁ n₂ ≤ n'>hn</span>
   <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
@@ -1698,7 +1676,7 @@ n₂ : ℕ
 hb : ∀ (n : ℕ), n₂ ≤ n → |b n - B| &lt; ε / (3 * (|A| + 1))
 n : ℕ
 hn : max n₁ n₂ ≤ n
-⊢ |a n * b n - A * B| &lt; ε'></span>rw [<span class="term-marker" data-type='max n₁ n₂ ≤ n ↔ n₁ ≤ n ∧ n₂ ≤ n'><span class="goal-marker" data-goal='Goals: 1
+⊢ |(fun n =&gt; a n * b n) n - A * B| &lt; ε'></span>rw [<span class="term-marker" data-type='max n₁ n₂ ≤ n ↔ n₁ ≤ n ∧ n₂ ≤ n'><span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℕ → ℝ
@@ -1714,7 +1692,7 @@ n₂ : ℕ
 hb : ∀ (n : ℕ), n₂ ≤ n → |b n - B| &lt; ε / (3 * (|A| + 1))
 n : ℕ
 hn : max n₁ n₂ ≤ n
-⊢ |a n * b n - A * B| &lt; ε'></span>max_le_iff</span><span class="goal-marker" data-goal='Goals: 1
+⊢ |(fun n =&gt; a n * b n) n - A * B| &lt; ε'></span>max_le_iff</span><span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℕ → ℝ
@@ -1730,7 +1708,7 @@ n₂ : ℕ
 hb : ∀ (n : ℕ), n₂ ≤ n → |b n - B| &lt; ε / (3 * (|A| + 1))
 n : ℕ
 hn : n₁ ≤ n ∧ n₂ ≤ n
-⊢ |a n * b n - A * B| &lt; ε'></span>] at <span class="term-marker" data-type='max n₁ n₂ ≤ n'>hn</span>
+⊢ |(fun n =&gt; a n * b n) n - A * B| &lt; ε'></span>] at <span class="term-marker" data-type='max n₁ n₂ ≤ n'>hn</span>
   <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
@@ -1747,7 +1725,7 @@ n₂ : ℕ
 hb : ∀ (n : ℕ), n₂ ≤ n → |b n - B| &lt; ε / (3 * (|A| + 1))
 n : ℕ
 hn : n₁ ≤ n ∧ n₂ ≤ n
-⊢ |a n * b n - A * B| &lt; ε'></span>specialize <span class="term-marker" data-type='∀ (n : ℕ), n₁ ≤ n → |a n - A| &lt; ε / (3 * (|B| + 1))'><span class="term-marker" data-type='|a n - A| &lt; ε / (3 * (|B| + 1))'>ha</span> <span class="term-marker" data-type='ℕ'>n</span> <span class="term-marker" data-type='n₁ ≤ n'><span class="term-marker" data-type='n₁ ≤ n ∧ n₂ ≤ n'>hn</span>.<span class="term-marker" data-type='∀ {a b : Prop}, a ∧ b → a'>left</span></span></span>
+⊢ |(fun n =&gt; a n * b n) n - A * B| &lt; ε'></span>specialize <span class="term-marker" data-type='∀ (n : ℕ), n₁ ≤ n → |a n - A| &lt; ε / (3 * (|B| + 1))'><span class="term-marker" data-type='|a n - A| &lt; ε / (3 * (|B| + 1))'>ha</span> <span class="term-marker" data-type='ℕ'>n</span> <span class="term-marker" data-type='n₁ ≤ n ∧ n₂ ≤ n'><span class="term-marker" data-type='n₁ ≤ n'>hn</span>.<span class="term-marker" data-type='∀ {a b : Prop}, a ∧ b → a'>left</span></span></span>
   <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
@@ -1764,7 +1742,7 @@ hb : ∀ (n : ℕ), n₂ ≤ n → |b n - B| &lt; ε / (3 * (|A| + 1))
 n : ℕ
 hn : n₁ ≤ n ∧ n₂ ≤ n
 ha : |a n - A| &lt; ε / (3 * (|B| + 1))
-⊢ |a n * b n - A * B| &lt; ε'></span>specialize <span class="term-marker" data-type='∀ (n : ℕ), n₂ ≤ n → |b n - B| &lt; ε / (3 * (|A| + 1))'><span class="term-marker" data-type='|b n - B| &lt; ε / (3 * (|A| + 1))'>hb</span> <span class="term-marker" data-type='ℕ'>n</span> <span class="term-marker" data-type='n₂ ≤ n'><span class="term-marker" data-type='n₁ ≤ n ∧ n₂ ≤ n'>hn</span>.<span class="term-marker" data-type='∀ {a b : Prop}, a ∧ b → b'>right</span></span></span>
+⊢ |(fun n =&gt; a n * b n) n - A * B| &lt; ε'></span>specialize <span class="term-marker" data-type='∀ (n : ℕ), n₂ ≤ n → |b n - B| &lt; ε / (3 * (|A| + 1))'><span class="term-marker" data-type='|b n - B| &lt; ε / (3 * (|A| + 1))'>hb</span> <span class="term-marker" data-type='ℕ'>n</span> <span class="term-marker" data-type='n₁ ≤ n ∧ n₂ ≤ n'><span class="term-marker" data-type='n₂ ≤ n'>hn</span>.<span class="term-marker" data-type='∀ {a b : Prop}, a ∧ b → b'>right</span></span></span>
   <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
@@ -1781,7 +1759,7 @@ n : ℕ
 hn : n₁ ≤ n ∧ n₂ ≤ n
 ha : |a n - A| &lt; ε / (3 * (|B| + 1))
 hb : |b n - B| &lt; ε / (3 * (|A| + 1))
-⊢ |a n * b n - A * B| &lt; ε'></span>rw [<span class="goal-marker" data-goal='Goals: 1
+⊢ |(fun n =&gt; a n * b n) n - A * B| &lt; ε'></span>rw [<span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℕ → ℝ
@@ -1797,7 +1775,7 @@ n : ℕ
 hn : n₁ ≤ n ∧ n₂ ≤ n
 ha : |a n - A| &lt; ε / (3 * (|B| + 1))
 hb : |b n - B| &lt; ε / (3 * (|A| + 1))
-⊢ |a n * b n - A * B| &lt; ε'></span><span class="term-marker" data-type='a n * b n - A * B = (a n - A) * (b n - B) + A * (b n - B) + B * (a n - A)'>show <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℕ → ℝ'>a</span> <span class="term-marker" data-type='ℕ'>n</span></span> * <span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℕ → ℝ'>b</span> <span class="term-marker" data-type='ℕ'>n</span></span></span> - <span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>A</span> * <span class="term-marker" data-type='ℝ'>B</span></span></span> = <span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>(<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℕ → ℝ'><span class="term-marker" data-type='ℝ'>a</span> <span class="term-marker" data-type='ℕ'>n</span></span> - <span class="term-marker" data-type='ℝ'>A</span></span>) * (<span class="term-marker" data-type='ℕ → ℝ'><span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>b</span> <span class="term-marker" data-type='ℕ'>n</span></span> - <span class="term-marker" data-type='ℝ'>B</span></span>)</span> + <span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>A</span> * (<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℕ → ℝ'><span class="term-marker" data-type='ℝ'>b</span> <span class="term-marker" data-type='ℕ'>n</span></span> - <span class="term-marker" data-type='ℝ'>B</span></span>)</span></span> + <span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>B</span> * (<span class="term-marker" data-type='ℕ → ℝ'><span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>a</span> <span class="term-marker" data-type='ℕ'>n</span></span> - <span class="term-marker" data-type='ℝ'>A</span></span>)</span></span></span> <span class="goal-marker" data-goal='Goals: 1
+⊢ |(fun n =&gt; a n * b n) n - A * B| &lt; ε'></span><span class="term-marker" data-type='a n * b n - A * B = (a n - A) * (b n - B) + A * (b n - B) + B * (a n - A)'>show <span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℕ → ℝ'><span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='Prop'><span class="term-marker" data-type='ℝ'>a</span> <span class="term-marker" data-type='ℕ'>n</span></span> * <span class="term-marker" data-type='ℕ → ℝ'><span class="term-marker" data-type='ℝ'>b</span> <span class="term-marker" data-type='ℕ'>n</span></span></span> - <span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>A</span> * <span class="term-marker" data-type='ℝ'>B</span></span></span> = <span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>(<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℕ → ℝ'>a</span> <span class="term-marker" data-type='ℕ'>n</span></span> - <span class="term-marker" data-type='ℝ'>A</span></span>) * (<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℕ → ℝ'>b</span> <span class="term-marker" data-type='ℕ'>n</span></span> - <span class="term-marker" data-type='ℝ'>B</span></span>)</span> + <span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>A</span> * (<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℕ → ℝ'><span class="term-marker" data-type='ℝ'>b</span> <span class="term-marker" data-type='ℕ'>n</span></span> - <span class="term-marker" data-type='ℝ'>B</span></span>)</span></span> + <span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>B</span> * (<span class="term-marker" data-type='ℕ → ℝ'><span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>a</span> <span class="term-marker" data-type='ℕ'>n</span></span> - <span class="term-marker" data-type='ℝ'>A</span></span>)</span></span></span> <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℕ → ℝ
@@ -1878,7 +1856,7 @@ n : ℕ
 hn : n₁ ≤ n ∧ n₂ ≤ n
 ha : |a n - A| &lt; ε / (3 * (|B| + 1))
 hb : |b n - B| &lt; ε / (3 * (|A| + 1))
-⊢ |(a n - A) * (b n - B) + A * (b n - B) + B * (a n - A)| &lt; ε'></span>grw [<span class="goal-marker" data-goal='Goals: 1
+⊢ |(a n - A) * (b n - B) + A * (b n - B) + B * (a n - A)| &lt; ε'></span>grw [<span class="term-marker" data-type='∀ (a b : ℝ), |a + b| ≤ |a| + |b|'><span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℕ → ℝ
@@ -1894,7 +1872,23 @@ n : ℕ
 hn : n₁ ≤ n ∧ n₂ ≤ n
 ha : |a n - A| &lt; ε / (3 * (|B| + 1))
 hb : |b n - B| &lt; ε / (3 * (|A| + 1))
-⊢ |(a n - A) * (b n - B) + A * (b n - B) + B * (a n - A)| &lt; ε'></span>abs_add]
+⊢ |(a n - A) * (b n - B) + A * (b n - B) + B * (a n - A)| &lt; ε'></span>abs_add_le</span><span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℕ → ℝ
+b : ℕ → ℝ
+A : ℝ
+B : ℝ
+ε : ℝ
+hε : ε &gt; 0
+hεlt1 : ε &lt; 1
+n₁ : ℕ
+n₂ : ℕ
+n : ℕ
+hn : n₁ ≤ n ∧ n₂ ≤ n
+ha : |a n - A| &lt; ε / (3 * (|B| + 1))
+hb : |b n - B| &lt; ε / (3 * (|A| + 1))
+⊢ |(a n - A) * (b n - B) + A * (b n - B)| + |B * (a n - A)| &lt; ε'></span>]
   <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
@@ -1911,7 +1905,7 @@ n : ℕ
 hn : n₁ ≤ n ∧ n₂ ≤ n
 ha : |a n - A| &lt; ε / (3 * (|B| + 1))
 hb : |b n - B| &lt; ε / (3 * (|A| + 1))
-⊢ |(a n - A) * (b n - B) + A * (b n - B) + B * (a n - A)| &lt; ε'></span>repeat <span class="goal-marker" data-goal='Goals: 1
+⊢ |(a n - A) * (b n - B)| + |A * (b n - B)| + |B * (a n - A)| &lt; ε'></span>repeat <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℕ → ℝ
@@ -1927,7 +1921,7 @@ n : ℕ
 hn : n₁ ≤ n ∧ n₂ ≤ n
 ha : |a n - A| &lt; ε / (3 * (|B| + 1))
 hb : |b n - B| &lt; ε / (3 * (|A| + 1))
-⊢ |(a n - A) * (b n - B) + A * (b n - B) + B * (a n - A)| &lt; ε'></span>grw [<span class="term-marker" data-type='∀ (a b : ?m.231), |a * b| = |a| * |b|'><span class="goal-marker" data-goal='Goals: 1
+⊢ |(a n - A) * (b n - B)| + |A * (b n - B)| + |B * (a n - A)| &lt; ε'></span>grw [<span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℕ → ℝ
@@ -1943,7 +1937,23 @@ n : ℕ
 hn : n₁ ≤ n ∧ n₂ ≤ n
 ha : |a n - A| &lt; ε / (3 * (|B| + 1))
 hb : |b n - B| &lt; ε / (3 * (|A| + 1))
-⊢ |(a n - A) * (b n - B) + A * (b n - B) + B * (a n - A)| &lt; ε'></span>abs_mul</span>]
+⊢ |(a n - A) * (b n - B)| + |A * (b n - B)| + |B * (a n - A)| &lt; ε'></span><span class="term-marker" data-type='∀ (a b : ℝ), |a * b| = |a| * |b|'>abs_mul</span><span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℕ → ℝ
+b : ℕ → ℝ
+A : ℝ
+B : ℝ
+ε : ℝ
+hε : ε &gt; 0
+hεlt1 : ε &lt; 1
+n₁ : ℕ
+n₂ : ℕ
+n : ℕ
+hn : n₁ ≤ n ∧ n₂ ≤ n
+ha : |a n - A| &lt; ε / (3 * (|B| + 1))
+hb : |b n - B| &lt; ε / (3 * (|A| + 1))
+⊢ |a n - A| * |b n - B| + |A * (b n - B)| + |B * (a n - A)| &lt; ε'></span>]
   <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
@@ -1960,7 +1970,7 @@ n : ℕ
 hn : n₁ ≤ n ∧ n₂ ≤ n
 ha : |a n - A| &lt; ε / (3 * (|B| + 1))
 hb : |b n - B| &lt; ε / (3 * (|A| + 1))
-⊢ |(a n - A) * (b n - B) + A * (b n - B) + B * (a n - A)| &lt; ε'></span>grw [<span class="goal-marker" data-goal='Goals: 1
+⊢ |a n - A| * |b n - B| + |A| * |b n - B| + |B| * |a n - A| &lt; ε'></span>grw [<span class="term-marker" data-type='|a n - A| &lt; ε / (3 * (|B| + 1))'><span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℕ → ℝ
@@ -1976,38 +1986,425 @@ n : ℕ
 hn : n₁ ≤ n ∧ n₂ ≤ n
 ha : |a n - A| &lt; ε / (3 * (|B| + 1))
 hb : |b n - B| &lt; ε / (3 * (|A| + 1))
-⊢ |(a n - A) * (b n - B) + A * (b n - B) + B * (a n - A)| &lt; ε'></span><span class="term-marker" data-type='|a n - A| &lt; ε / (3 * (|B| + 1))'>ha</span>, hb]
+⊢ |a n - A| * |b n - B| + |A| * |b n - B| + |B| * |a n - A| &lt; ε'></span>ha</span>, <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℕ → ℝ
+b : ℕ → ℝ
+A : ℝ
+B : ℝ
+ε : ℝ
+hε : ε &gt; 0
+hεlt1 : ε &lt; 1
+n₁ : ℕ
+n₂ : ℕ
+n : ℕ
+hn : n₁ ≤ n ∧ n₂ ≤ n
+ha : |a n - A| &lt; ε / (3 * (|B| + 1))
+hb : |b n - B| &lt; ε / (3 * (|A| + 1))
+⊢ ε / (3 * (|B| + 1)) * |b n - B| + |A| * |b n - B| + |B| * (ε / (3 * (|B| + 1))) &lt; ε'></span><span class="term-marker" data-type='|b n - B| &lt; ε / (3 * (|A| + 1))'>hb</span><span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℕ → ℝ
+b : ℕ → ℝ
+A : ℝ
+B : ℝ
+ε : ℝ
+hε : ε &gt; 0
+hεlt1 : ε &lt; 1
+n₁ : ℕ
+n₂ : ℕ
+n : ℕ
+hn : n₁ ≤ n ∧ n₂ ≤ n
+ha : |a n - A| &lt; ε / (3 * (|B| + 1))
+hb : |b n - B| &lt; ε / (3 * (|A| + 1))
+⊢ ε / (3 * (|B| + 1)) * (ε / (3 * (|A| + 1))) + |A| * (ε / (3 * (|A| + 1))) + |B| * (ε / (3 * (|B| + 1))) &lt; ε'></span>]
   -- sometimes you have no choice but add some manual steps
-  have h1 : |A| * (ε / (3 * (|A| + 1))) &lt; ε / 3 := by
-    field_simp
-    rw [div_lt_iff₀]
-    · ring_nf
-      linarith only [hε]
-    · linarith only [abs_nonneg A]
-  have h2 : |B| * (ε / (3 * (|B| + 1))) &lt; ε / 3 := by
-    field_simp
-    rw [div_lt_iff₀]
-    · ring_nf
-      linarith only [hε]
-    · linarith only [abs_nonneg B]
-  have h3 : ε / (3 * (|B| + 1)) * (ε / (3 * (|A| + 1))) &lt; ε / 3 := by
-    field_simp
-    rw [div_lt_iff₀]
-    · repeat grw [← abs_nonneg]
-      ring_nf
-      calc
-        _ = ε * ε := by ring
-        _ ≤ 1 * ε := by grw [← hεlt1]
-        _ = ε     := by ring
-        _ &lt; ε * 3 := by linarith only [hε]
-    · repeat grw [← abs_nonneg]
-      ring_nf
-      linarith only
-  linarith only [h1, h2, h3]
+  <span class="term-marker" data-type='ε / (3 * (|B| + 1)) * (ε / (3 * (|A| + 1))) + |A| * (ε / (3 * (|A| + 1))) + |B| * (ε / (3 * (|B| + 1))) &lt; ε'><span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℕ → ℝ
+b : ℕ → ℝ
+A : ℝ
+B : ℝ
+ε : ℝ
+hε : ε &gt; 0
+hεlt1 : ε &lt; 1
+n₁ : ℕ
+n₂ : ℕ
+n : ℕ
+hn : n₁ ≤ n ∧ n₂ ≤ n
+ha : |a n - A| &lt; ε / (3 * (|B| + 1))
+hb : |b n - B| &lt; ε / (3 * (|A| + 1))
+⊢ ε / (3 * (|B| + 1)) * (ε / (3 * (|A| + 1))) + |A| * (ε / (3 * (|A| + 1))) + |B| * (ε / (3 * (|B| + 1))) &lt; ε'></span>have</span> <span class="term-marker" data-type='|A| * (ε / (3 * (|A| + 1))) &lt; ε / 3'>h1</span> : <span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='Prop'><span class="term-marker" data-type='ℝ'>|<span class="term-marker" data-type='ℝ'>A</span>|</span> * (<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>ε</span> / (<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>3</span> * (<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>|<span class="term-marker" data-type='ℝ'>A</span>|</span> + <span class="term-marker" data-type='ℝ'>1</span></span>)</span>)</span>)</span> &lt; <span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>ε</span> / <span class="term-marker" data-type='ℝ'>3</span></span></span> := <span class="goal-marker" data-goal='Goals: 2
+
+Goal 1:
+a : ℕ → ℝ
+b : ℕ → ℝ
+A : ℝ
+B : ℝ
+ε : ℝ
+hε : ε &gt; 0
+hεlt1 : ε &lt; 1
+n₁ : ℕ
+n₂ : ℕ
+n : ℕ
+hn : n₁ ≤ n ∧ n₂ ≤ n
+ha : |a n - A| &lt; ε / (3 * (|B| + 1))
+hb : |b n - B| &lt; ε / (3 * (|A| + 1))
+⊢ |A| * (ε / (3 * (|A| + 1))) &lt; ε / 3
+---
+
+Goal 2:
+a : ℕ → ℝ
+b : ℕ → ℝ
+A : ℝ
+B : ℝ
+ε : ℝ
+hε : ε &gt; 0
+hεlt1 : ε &lt; 1
+n₁ : ℕ
+n₂ : ℕ
+n : ℕ
+hn : n₁ ≤ n ∧ n₂ ≤ n
+ha : |a n - A| &lt; ε / (3 * (|B| + 1))
+hb : |b n - B| &lt; ε / (3 * (|A| + 1))
+h1 : |A| * (ε / (3 * (|A| + 1))) &lt; ε / 3
+⊢ ε / (3 * (|B| + 1)) * (ε / (3 * (|A| + 1))) + |A| * (ε / (3 * (|A| + 1))) + |B| * (ε / (3 * (|B| + 1))) &lt; ε'></span>by
+    <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℕ → ℝ
+b : ℕ → ℝ
+A : ℝ
+B : ℝ
+ε : ℝ
+hε : ε &gt; 0
+hεlt1 : ε &lt; 1
+n₁ : ℕ
+n₂ : ℕ
+n : ℕ
+hn : n₁ ≤ n ∧ n₂ ≤ n
+ha : |a n - A| &lt; ε / (3 * (|B| + 1))
+hb : |b n - B| &lt; ε / (3 * (|A| + 1))
+⊢ |A| * (ε / (3 * (|A| + 1))) &lt; ε / 3'></span>field_simp
+    <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℕ → ℝ
+b : ℕ → ℝ
+A : ℝ
+B : ℝ
+ε : ℝ
+hε : ε &gt; 0
+hεlt1 : ε &lt; 1
+n₁ : ℕ
+n₂ : ℕ
+n : ℕ
+hn : n₁ ≤ n ∧ n₂ ≤ n
+ha : |a n - A| &lt; ε / (3 * (|B| + 1))
+hb : |b n - B| &lt; ε / (3 * (|A| + 1))
+⊢ |A| &lt; |A| + 1'></span>simp
+  <span class="term-marker" data-type='ε / (3 * (|B| + 1)) * (ε / (3 * (|A| + 1))) + |A| * (ε / (3 * (|A| + 1))) + |B| * (ε / (3 * (|B| + 1))) &lt; ε'><span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℕ → ℝ
+b : ℕ → ℝ
+A : ℝ
+B : ℝ
+ε : ℝ
+hε : ε &gt; 0
+hεlt1 : ε &lt; 1
+n₁ : ℕ
+n₂ : ℕ
+n : ℕ
+hn : n₁ ≤ n ∧ n₂ ≤ n
+ha : |a n - A| &lt; ε / (3 * (|B| + 1))
+hb : |b n - B| &lt; ε / (3 * (|A| + 1))
+h1 : |A| * (ε / (3 * (|A| + 1))) &lt; ε / 3
+⊢ ε / (3 * (|B| + 1)) * (ε / (3 * (|A| + 1))) + |A| * (ε / (3 * (|A| + 1))) + |B| * (ε / (3 * (|B| + 1))) &lt; ε'></span>have</span> <span class="term-marker" data-type='|B| * (ε / (3 * (|B| + 1))) &lt; ε / 3'>h2</span> : <span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='Prop'><span class="term-marker" data-type='ℝ'>|<span class="term-marker" data-type='ℝ'>B</span>|</span> * (<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>ε</span> / (<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>3</span> * (<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>|<span class="term-marker" data-type='ℝ'>B</span>|</span> + <span class="term-marker" data-type='ℝ'>1</span></span>)</span>)</span>)</span> &lt; <span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>ε</span> / <span class="term-marker" data-type='ℝ'>3</span></span></span> := <span class="goal-marker" data-goal='Goals: 2
+
+Goal 1:
+a : ℕ → ℝ
+b : ℕ → ℝ
+A : ℝ
+B : ℝ
+ε : ℝ
+hε : ε &gt; 0
+hεlt1 : ε &lt; 1
+n₁ : ℕ
+n₂ : ℕ
+n : ℕ
+hn : n₁ ≤ n ∧ n₂ ≤ n
+ha : |a n - A| &lt; ε / (3 * (|B| + 1))
+hb : |b n - B| &lt; ε / (3 * (|A| + 1))
+h1 : |A| * (ε / (3 * (|A| + 1))) &lt; ε / 3
+⊢ |B| * (ε / (3 * (|B| + 1))) &lt; ε / 3
+---
+
+Goal 2:
+a : ℕ → ℝ
+b : ℕ → ℝ
+A : ℝ
+B : ℝ
+ε : ℝ
+hε : ε &gt; 0
+hεlt1 : ε &lt; 1
+n₁ : ℕ
+n₂ : ℕ
+n : ℕ
+hn : n₁ ≤ n ∧ n₂ ≤ n
+ha : |a n - A| &lt; ε / (3 * (|B| + 1))
+hb : |b n - B| &lt; ε / (3 * (|A| + 1))
+h1 : |A| * (ε / (3 * (|A| + 1))) &lt; ε / 3
+h2 : |B| * (ε / (3 * (|B| + 1))) &lt; ε / 3
+⊢ ε / (3 * (|B| + 1)) * (ε / (3 * (|A| + 1))) + |A| * (ε / (3 * (|A| + 1))) + |B| * (ε / (3 * (|B| + 1))) &lt; ε'></span>by
+    <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℕ → ℝ
+b : ℕ → ℝ
+A : ℝ
+B : ℝ
+ε : ℝ
+hε : ε &gt; 0
+hεlt1 : ε &lt; 1
+n₁ : ℕ
+n₂ : ℕ
+n : ℕ
+hn : n₁ ≤ n ∧ n₂ ≤ n
+ha : |a n - A| &lt; ε / (3 * (|B| + 1))
+hb : |b n - B| &lt; ε / (3 * (|A| + 1))
+h1 : |A| * (ε / (3 * (|A| + 1))) &lt; ε / 3
+⊢ |B| * (ε / (3 * (|B| + 1))) &lt; ε / 3'></span>field_simp
+    <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℕ → ℝ
+b : ℕ → ℝ
+A : ℝ
+B : ℝ
+ε : ℝ
+hε : ε &gt; 0
+hεlt1 : ε &lt; 1
+n₁ : ℕ
+n₂ : ℕ
+n : ℕ
+hn : n₁ ≤ n ∧ n₂ ≤ n
+ha : |a n - A| &lt; ε / (3 * (|B| + 1))
+hb : |b n - B| &lt; ε / (3 * (|A| + 1))
+h1 : |A| * (ε / (3 * (|A| + 1))) &lt; ε / 3
+⊢ |B| &lt; |B| + 1'></span>simp
+  <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℕ → ℝ
+b : ℕ → ℝ
+A : ℝ
+B : ℝ
+ε : ℝ
+hε : ε &gt; 0
+hεlt1 : ε &lt; 1
+n₁ : ℕ
+n₂ : ℕ
+n : ℕ
+hn : n₁ ≤ n ∧ n₂ ≤ n
+ha : |a n - A| &lt; ε / (3 * (|B| + 1))
+hb : |b n - B| &lt; ε / (3 * (|A| + 1))
+h1 : |A| * (ε / (3 * (|A| + 1))) &lt; ε / 3
+h2 : |B| * (ε / (3 * (|B| + 1))) &lt; ε / 3
+⊢ ε / (3 * (|B| + 1)) * (ε / (3 * (|A| + 1))) + |A| * (ε / (3 * (|A| + 1))) + |B| * (ε / (3 * (|B| + 1))) &lt; ε'></span><span class="term-marker" data-type='ε / (3 * (|B| + 1)) * (ε / (3 * (|A| + 1))) + |A| * (ε / (3 * (|A| + 1))) + |B| * (ε / (3 * (|B| + 1))) &lt; ε'>have</span> <span class="term-marker" data-type='ε / (3 * (|B| + 1)) * (ε / (3 * (|A| + 1))) &lt; ε / 3'>h3</span> : <span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='Prop'><span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>ε</span> / (<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>3</span> * (<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>|<span class="term-marker" data-type='ℝ'>B</span>|</span> + <span class="term-marker" data-type='ℝ'>1</span></span>)</span>)</span> * (<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>ε</span> / (<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>3</span> * (<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>|<span class="term-marker" data-type='ℝ'>A</span>|</span> + <span class="term-marker" data-type='ℝ'>1</span></span>)</span>)</span>)</span> &lt; <span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>ε</span> / <span class="term-marker" data-type='ℝ'>3</span></span></span> := <span class="goal-marker" data-goal='Goals: 2
+
+Goal 1:
+a : ℕ → ℝ
+b : ℕ → ℝ
+A : ℝ
+B : ℝ
+ε : ℝ
+hε : ε &gt; 0
+hεlt1 : ε &lt; 1
+n₁ : ℕ
+n₂ : ℕ
+n : ℕ
+hn : n₁ ≤ n ∧ n₂ ≤ n
+ha : |a n - A| &lt; ε / (3 * (|B| + 1))
+hb : |b n - B| &lt; ε / (3 * (|A| + 1))
+h1 : |A| * (ε / (3 * (|A| + 1))) &lt; ε / 3
+h2 : |B| * (ε / (3 * (|B| + 1))) &lt; ε / 3
+⊢ ε / (3 * (|B| + 1)) * (ε / (3 * (|A| + 1))) &lt; ε / 3
+---
+
+Goal 2:
+a : ℕ → ℝ
+b : ℕ → ℝ
+A : ℝ
+B : ℝ
+ε : ℝ
+hε : ε &gt; 0
+hεlt1 : ε &lt; 1
+n₁ : ℕ
+n₂ : ℕ
+n : ℕ
+hn : n₁ ≤ n ∧ n₂ ≤ n
+ha : |a n - A| &lt; ε / (3 * (|B| + 1))
+hb : |b n - B| &lt; ε / (3 * (|A| + 1))
+h1 : |A| * (ε / (3 * (|A| + 1))) &lt; ε / 3
+h2 : |B| * (ε / (3 * (|B| + 1))) &lt; ε / 3
+h3 : ε / (3 * (|B| + 1)) * (ε / (3 * (|A| + 1))) &lt; ε / 3
+⊢ ε / (3 * (|B| + 1)) * (ε / (3 * (|A| + 1))) + |A| * (ε / (3 * (|A| + 1))) + |B| * (ε / (3 * (|B| + 1))) &lt; ε'></span>by
+    <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℕ → ℝ
+b : ℕ → ℝ
+A : ℝ
+B : ℝ
+ε : ℝ
+hε : ε &gt; 0
+hεlt1 : ε &lt; 1
+n₁ : ℕ
+n₂ : ℕ
+n : ℕ
+hn : n₁ ≤ n ∧ n₂ ≤ n
+ha : |a n - A| &lt; ε / (3 * (|B| + 1))
+hb : |b n - B| &lt; ε / (3 * (|A| + 1))
+h1 : |A| * (ε / (3 * (|A| + 1))) &lt; ε / 3
+h2 : |B| * (ε / (3 * (|B| + 1))) &lt; ε / 3
+⊢ ε / (3 * (|B| + 1)) * (ε / (3 * (|A| + 1))) &lt; ε / 3'></span>field_simp
+    <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℕ → ℝ
+b : ℕ → ℝ
+A : ℝ
+B : ℝ
+ε : ℝ
+hε : ε &gt; 0
+hεlt1 : ε &lt; 1
+n₁ : ℕ
+n₂ : ℕ
+n : ℕ
+hn : n₁ ≤ n ∧ n₂ ≤ n
+ha : |a n - A| &lt; ε / (3 * (|B| + 1))
+hb : |b n - B| &lt; ε / (3 * (|A| + 1))
+h1 : |A| * (ε / (3 * (|A| + 1))) &lt; ε / 3
+h2 : |B| * (ε / (3 * (|B| + 1))) &lt; ε / 3
+⊢ ε &lt; 3 * (|B| + 1) * (|A| + 1)'></span>grw [<span class="term-marker" data-type='ε &lt; 1'><span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℕ → ℝ
+b : ℕ → ℝ
+A : ℝ
+B : ℝ
+ε : ℝ
+hε : ε &gt; 0
+hεlt1 : ε &lt; 1
+n₁ : ℕ
+n₂ : ℕ
+n : ℕ
+hn : n₁ ≤ n ∧ n₂ ≤ n
+ha : |a n - A| &lt; ε / (3 * (|B| + 1))
+hb : |b n - B| &lt; ε / (3 * (|A| + 1))
+h1 : |A| * (ε / (3 * (|A| + 1))) &lt; ε / 3
+h2 : |B| * (ε / (3 * (|B| + 1))) &lt; ε / 3
+⊢ ε &lt; 3 * (|B| + 1) * (|A| + 1)'></span>hεlt1</span>, <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℕ → ℝ
+b : ℕ → ℝ
+A : ℝ
+B : ℝ
+ε : ℝ
+hε : ε &gt; 0
+hεlt1 : ε &lt; 1
+n₁ : ℕ
+n₂ : ℕ
+n : ℕ
+hn : n₁ ≤ n ∧ n₂ ≤ n
+ha : |a n - A| &lt; ε / (3 * (|B| + 1))
+hb : |b n - B| &lt; ε / (3 * (|A| + 1))
+h1 : |A| * (ε / (3 * (|A| + 1))) &lt; ε / 3
+h2 : |B| * (ε / (3 * (|B| + 1))) &lt; ε / 3
+⊢ 1 &lt; 3 * (|B| + 1) * (|A| + 1)'></span>← <span class="term-marker" data-type='0 ≤ |A|'><span class="term-marker" data-type='∀ {α : Type} [inst : Lattice α] [inst_1 : AddGroup α] [AddLeftMono α] [AddRightMono α] (a : α), 0 ≤ |a|'>abs_nonneg</span> <span class="term-marker" data-type='ℝ'>A</span></span>, <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℕ → ℝ
+b : ℕ → ℝ
+A : ℝ
+B : ℝ
+ε : ℝ
+hε : ε &gt; 0
+hεlt1 : ε &lt; 1
+n₁ : ℕ
+n₂ : ℕ
+n : ℕ
+hn : n₁ ≤ n ∧ n₂ ≤ n
+ha : |a n - A| &lt; ε / (3 * (|B| + 1))
+hb : |b n - B| &lt; ε / (3 * (|A| + 1))
+h1 : |A| * (ε / (3 * (|A| + 1))) &lt; ε / 3
+h2 : |B| * (ε / (3 * (|B| + 1))) &lt; ε / 3
+⊢ 1 &lt; 3 * (|B| + 1) * (0 + 1)'></span>← <span class="term-marker" data-type='∀ {α : Type} [inst : Lattice α] [inst_1 : AddGroup α] [AddLeftMono α] [AddRightMono α] (a : α), 0 ≤ |a|'><span class="term-marker" data-type='0 ≤ |B|'>abs_nonneg</span> <span class="term-marker" data-type='ℝ'>B</span></span><span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℕ → ℝ
+b : ℕ → ℝ
+A : ℝ
+B : ℝ
+ε : ℝ
+hε : ε &gt; 0
+hεlt1 : ε &lt; 1
+n₁ : ℕ
+n₂ : ℕ
+n : ℕ
+hn : n₁ ≤ n ∧ n₂ ≤ n
+ha : |a n - A| &lt; ε / (3 * (|B| + 1))
+hb : |b n - B| &lt; ε / (3 * (|A| + 1))
+h1 : |A| * (ε / (3 * (|A| + 1))) &lt; ε / 3
+h2 : |B| * (ε / (3 * (|B| + 1))) &lt; ε / 3
+⊢ 1 &lt; 3 * (0 + 1) * (0 + 1)'></span>]
+    <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℕ → ℝ
+b : ℕ → ℝ
+A : ℝ
+B : ℝ
+ε : ℝ
+hε : ε &gt; 0
+hεlt1 : ε &lt; 1
+n₁ : ℕ
+n₂ : ℕ
+n : ℕ
+hn : n₁ ≤ n ∧ n₂ ≤ n
+ha : |a n - A| &lt; ε / (3 * (|B| + 1))
+hb : |b n - B| &lt; ε / (3 * (|A| + 1))
+h1 : |A| * (ε / (3 * (|A| + 1))) &lt; ε / 3
+h2 : |B| * (ε / (3 * (|B| + 1))) &lt; ε / 3
+⊢ 1 &lt; 3 * (0 + 1) * (0 + 1)'></span>simp
+  <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℕ → ℝ
+b : ℕ → ℝ
+A : ℝ
+B : ℝ
+ε : ℝ
+hε : ε &gt; 0
+hεlt1 : ε &lt; 1
+n₁ : ℕ
+n₂ : ℕ
+n : ℕ
+hn : n₁ ≤ n ∧ n₂ ≤ n
+ha : |a n - A| &lt; ε / (3 * (|B| + 1))
+hb : |b n - B| &lt; ε / (3 * (|A| + 1))
+h1 : |A| * (ε / (3 * (|A| + 1))) &lt; ε / 3
+h2 : |B| * (ε / (3 * (|B| + 1))) &lt; ε / 3
+h3 : ε / (3 * (|B| + 1)) * (ε / (3 * (|A| + 1))) &lt; ε / 3
+⊢ ε / (3 * (|B| + 1)) * (ε / (3 * (|A| + 1))) + |A| * (ε / (3 * (|A| + 1))) + |B| * (ε / (3 * (|B| + 1))) &lt; ε'></span>linarith only [<span class="term-marker" data-type='|A| * (ε / (3 * (|A| + 1))) &lt; ε / 3'>h1</span>, <span class="term-marker" data-type='|B| * (ε / (3 * (|B| + 1))) &lt; ε / 3'>h2</span>, <span class="term-marker" data-type='ε / (3 * (|B| + 1)) * (ε / (3 * (|A| + 1))) &lt; ε / 3'>h3</span>]
 
 /- squeeze theorem for sequences -/
-theorem <span class="term-marker" data-type='∀ {a b c : ℕ → ℝ} {L : ℝ}, TendsTo a L → TendsTo c L → (∀ (n : ℕ), a n ≤ b n) → (∀ (n : ℕ), b n ≤ c n) → TendsTo b L'>tendsTo_sandwich</span> {<span class="term-marker" data-type='ℕ → ℝ'>a</span> <span class="term-marker" data-type='ℕ → ℝ'>b</span> <span class="term-marker" data-type='ℕ → ℝ'>c</span> : <span class="term-marker" data-type='Type'><span class="term-marker" data-type='Type'>ℕ</span> → <span class="term-marker" data-type='Type'>ℝ</span></span>} {<span class="term-marker" data-type='ℝ'>L</span> : <span class="term-marker" data-type='Type'>ℝ</span>} (<span class="term-marker" data-type='TendsTo a L'>ha</span> : <span class="term-marker" data-type='(ℕ → ℝ) → ℝ → Prop'><span class="term-marker" data-type='Prop'>TendsTo</span> <span class="term-marker" data-type='ℕ → ℝ'>a</span> <span class="term-marker" data-type='ℝ'>L</span></span>) (<span class="term-marker" data-type='TendsTo c L'>hc</span> : <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='(ℕ → ℝ) → ℝ → Prop'>TendsTo</span> <span class="term-marker" data-type='ℕ → ℝ'>c</span> <span class="term-marker" data-type='ℝ'>L</span></span>)
-    (<span class="term-marker" data-type='∀ (n : ℕ), a n ≤ b n'>hab</span> : <span class="term-marker" data-type='Prop'>∀ <span class="term-marker" data-type='Type'>n</span>, <span class="term-marker" data-type='ℕ → ℝ'><span class="term-marker" data-type='Prop'><span class="term-marker" data-type='ℝ'>a</span> <span class="term-marker" data-type='ℕ'>n</span></span> ≤ <span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℕ → ℝ'>b</span> <span class="term-marker" data-type='ℕ'>n</span></span></span></span>) (<span class="term-marker" data-type='∀ (n : ℕ), b n ≤ c n'>hbc</span> : <span class="term-marker" data-type='Prop'>∀ <span class="term-marker" data-type='Type'>n</span>, <span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='Prop'><span class="term-marker" data-type='ℕ → ℝ'>b</span> <span class="term-marker" data-type='ℕ'>n</span></span> ≤ <span class="term-marker" data-type='ℕ → ℝ'><span class="term-marker" data-type='ℝ'>c</span> <span class="term-marker" data-type='ℕ'>n</span></span></span></span>) : <span class="term-marker" data-type='(ℕ → ℝ) → ℝ → Prop'><span class="term-marker" data-type='Prop'>TendsTo</span> <span class="term-marker" data-type='ℕ → ℝ'>b</span> <span class="term-marker" data-type='ℝ'>L</span></span> := <span class="goal-marker" data-goal='Goals: 1
+theorem <span class="term-marker" data-type='∀ {a b c : ℕ → ℝ} {L : ℝ}, TendsTo a L → TendsTo c L → (∀ (n : ℕ), a n ≤ b n) → (∀ (n : ℕ), b n ≤ c n) → TendsTo b L'>tendsTo_sandwich</span> {<span class="term-marker" data-type='ℕ → ℝ'>a</span> <span class="term-marker" data-type='ℕ → ℝ'>b</span> <span class="term-marker" data-type='ℕ → ℝ'>c</span> : <span class="term-marker" data-type='Type'><span class="term-marker" data-type='Type'>ℕ</span> → <span class="term-marker" data-type='Type'>ℝ</span></span>} {<span class="term-marker" data-type='ℝ'>L</span> : <span class="term-marker" data-type='Type'>ℝ</span>} (<span class="term-marker" data-type='TendsTo a L'>ha</span> : <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='(ℕ → ℝ) → ℝ → Prop'>TendsTo</span> <span class="term-marker" data-type='ℕ → ℝ'>a</span> <span class="term-marker" data-type='ℝ'>L</span></span>) (<span class="term-marker" data-type='TendsTo c L'>hc</span> : <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='(ℕ → ℝ) → ℝ → Prop'>TendsTo</span> <span class="term-marker" data-type='ℕ → ℝ'>c</span> <span class="term-marker" data-type='ℝ'>L</span></span>)
+    (<span class="term-marker" data-type='∀ (n : ℕ), a n ≤ b n'>hab</span> : <span class="term-marker" data-type='Prop'>∀ <span class="term-marker" data-type='Type'>n</span>, <span class="term-marker" data-type='ℕ → ℝ'><span class="term-marker" data-type='Prop'><span class="term-marker" data-type='ℝ'>a</span> <span class="term-marker" data-type='ℕ'>n</span></span> ≤ <span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℕ → ℝ'>b</span> <span class="term-marker" data-type='ℕ'>n</span></span></span></span>) (<span class="term-marker" data-type='∀ (n : ℕ), b n ≤ c n'>hbc</span> : <span class="term-marker" data-type='Prop'>∀ <span class="term-marker" data-type='Type'>n</span>, <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℕ → ℝ'>b</span> <span class="term-marker" data-type='ℕ'>n</span></span> ≤ <span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℕ → ℝ'>c</span> <span class="term-marker" data-type='ℕ'>n</span></span></span></span>) : <span class="term-marker" data-type='(ℕ → ℝ) → ℝ → Prop'><span class="term-marker" data-type='Prop'>TendsTo</span> <span class="term-marker" data-type='ℕ → ℝ'>b</span> <span class="term-marker" data-type='ℝ'>L</span></span> := <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℕ → ℝ
@@ -2042,7 +2439,7 @@ ha : TendsTo a L
 hc : TendsTo c L
 hab : ∀ (n : ℕ), a n ≤ b n
 hbc : ∀ (n : ℕ), b n ≤ c n
-⊢ ∀ ε &gt; 0, ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |b n - L| &lt; ε'></span>intro <span class="term-marker" data-type='ℝ'>ε</span> <span class="goal-marker" data-goal='Goals: 1
+⊢ ∀ ε &gt; 0, ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |b n - L| &lt; ε'></span>intro <span class="term-marker" data-type='ℝ'>ε</span> <span class="term-marker" data-type='ε &gt; 0'><span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℕ → ℝ
@@ -2054,7 +2451,7 @@ hc : TendsTo c L
 hab : ∀ (n : ℕ), a n ≤ b n
 hbc : ∀ (n : ℕ), b n ≤ c n
 ε : ℝ
-⊢ ε &gt; 0 → ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |b n - L| &lt; ε'></span><span class="term-marker" data-type='ε &gt; 0'>hε</span>
+⊢ ε &gt; 0 → ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |b n - L| &lt; ε'></span>hε</span>
   <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
@@ -2068,7 +2465,7 @@ hab : ∀ (n : ℕ), a n ≤ b n
 hbc : ∀ (n : ℕ), b n ≤ c n
 ε : ℝ
 hε : ε &gt; 0
-⊢ ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |b n - L| &lt; ε'></span>specialize <span class="term-marker" data-type='∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |a n - L| &lt; ε'><span class="term-marker" data-type='TendsTo a L'>ha</span> <span class="term-marker" data-type='ℝ'>ε</span> <span class="term-marker" data-type='ε &gt; 0'>hε</span></span>
+⊢ ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |b n - L| &lt; ε'></span>specialize <span class="term-marker" data-type='TendsTo a L'><span class="term-marker" data-type='∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |a n - L| &lt; ε'>ha</span> <span class="term-marker" data-type='ℝ'>ε</span> <span class="term-marker" data-type='ε &gt; 0'>hε</span></span>
   <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
@@ -2112,22 +2509,6 @@ hc : ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |c n - L| &lt; ε
 n₀ : ℕ
 hn₀ : ∀ (n : ℕ), n₀ ≤ n → |a n - L| &lt; ε
 ⊢ ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |b n - L| &lt; ε'></span>rcases <span class="term-marker" data-type='∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |c n - L| &lt; ε'>hc</span> with <span class="term-marker" data-type='∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |c n - L| &lt; ε'>⟨<span class="term-marker" data-type='ℕ'>m₀</span>, <span class="term-marker" data-type='∀ (n : ℕ), m₀ ≤ n → |c n - L| &lt; ε'>hm₀</span>⟩</span>
-  <span class="term-marker" data-type='Prop'><span class="goal-marker" data-goal='Goals: 1
-
-Goal 1:
-a : ℕ → ℝ
-b : ℕ → ℝ
-c : ℕ → ℝ
-L : ℝ
-hab : ∀ (n : ℕ), a n ≤ b n
-hbc : ∀ (n : ℕ), b n ≤ c n
-ε : ℝ
-hε : ε &gt; 0
-n₀ : ℕ
-hn₀ : ∀ (n : ℕ), n₀ ≤ n → |a n - L| &lt; ε
-m₀ : ℕ
-hm₀ : ∀ (n : ℕ), m₀ ≤ n → |c n - L| &lt; ε
-⊢ ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |b n - L| &lt; ε'></span>use <span class="term-marker" data-type='ℕ'><span class="term-marker" data-type='{α : Type} → [self : Max α] → α → α → α'>max</span> <span class="term-marker" data-type='ℕ'>n₀</span> <span class="term-marker" data-type='ℕ'>m₀</span></span></span>
   <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
@@ -2143,7 +2524,23 @@ n₀ : ℕ
 hn₀ : ∀ (n : ℕ), n₀ ≤ n → |a n - L| &lt; ε
 m₀ : ℕ
 hm₀ : ∀ (n : ℕ), m₀ ≤ n → |c n - L| &lt; ε
-⊢ ∀ (n : ℕ), max n₀ m₀ ≤ n → |b n - L| &lt; ε'></span>intro <span class="term-marker" data-type='ℕ'>n</span> <span class="goal-marker" data-goal='Goals: 1
+⊢ ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |b n - L| &lt; ε'></span><span class="term-marker" data-type='Prop'>use <span class="term-marker" data-type='ℕ'><span class="term-marker" data-type='{α : Type} → [self : Max α] → α → α → α'>max</span> <span class="term-marker" data-type='ℕ'>n₀</span> <span class="term-marker" data-type='ℕ'>m₀</span></span></span>
+  <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+a : ℕ → ℝ
+b : ℕ → ℝ
+c : ℕ → ℝ
+L : ℝ
+hab : ∀ (n : ℕ), a n ≤ b n
+hbc : ∀ (n : ℕ), b n ≤ c n
+ε : ℝ
+hε : ε &gt; 0
+n₀ : ℕ
+hn₀ : ∀ (n : ℕ), n₀ ≤ n → |a n - L| &lt; ε
+m₀ : ℕ
+hm₀ : ∀ (n : ℕ), m₀ ≤ n → |c n - L| &lt; ε
+⊢ ∀ (n : ℕ), max n₀ m₀ ≤ n → |b n - L| &lt; ε'></span>intro <span class="term-marker" data-type='ℕ'>n</span> <span class="term-marker" data-type='max n₀ m₀ ≤ n'><span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℕ → ℝ
@@ -2159,7 +2556,7 @@ hn₀ : ∀ (n : ℕ), n₀ ≤ n → |a n - L| &lt; ε
 m₀ : ℕ
 hm₀ : ∀ (n : ℕ), m₀ ≤ n → |c n - L| &lt; ε
 n : ℕ
-⊢ max n₀ m₀ ≤ n → |b n - L| &lt; ε'></span><span class="term-marker" data-type='max n₀ m₀ ≤ n'>hn</span>
+⊢ max n₀ m₀ ≤ n → |b n - L| &lt; ε'></span>hn</span>
   <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
@@ -2299,7 +2696,7 @@ n : ℕ
 hn : n₀ ≤ n ∧ m₀ ≤ n
 hab : a n ≤ b n
 hn₀ : |a n - L| &lt; ε
-⊢ |b n - L| &lt; ε'></span>specialize <span class="term-marker" data-type='∀ (n : ℕ), m₀ ≤ n → |c n - L| &lt; ε'><span class="term-marker" data-type='|c n - L| &lt; ε'>hm₀</span> <span class="term-marker" data-type='ℕ'>n</span> (<span class="goal-marker" data-goal='Goals: 1
+⊢ |b n - L| &lt; ε'></span>specialize <span class="term-marker" data-type='|c n - L| &lt; ε'><span class="term-marker" data-type='∀ (n : ℕ), m₀ ≤ n → |c n - L| &lt; ε'>hm₀</span> <span class="term-marker" data-type='ℕ'>n</span> (<span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℕ → ℝ
@@ -2316,7 +2713,7 @@ n : ℕ
 hn : n₀ ≤ n ∧ m₀ ≤ n
 hab : a n ≤ b n
 hn₀ : |a n - L| &lt; ε
-⊢ m₀ ≤ n'></span>by <span class="term-marker" data-type='Lean.Meta.Simp.Config'><span class="goal-marker" data-goal='Goals: 1
+⊢ m₀ ≤ n'></span>by <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℕ → ℝ
@@ -2333,7 +2730,7 @@ n : ℕ
 hn : n₀ ≤ n ∧ m₀ ≤ n
 hab : a n ≤ b n
 hn₀ : |a n - L| &lt; ε
-⊢ m₀ ≤ n'></span>linarith only [<span class="term-marker" data-type='n₀ ≤ n ∧ m₀ ≤ n'><span class="term-marker" data-type='m₀ ≤ n'>hn</span>.<span class="term-marker" data-type='∀ {a b : Prop}, a ∧ b → b'>right</span></span>]</span>)</span>
+⊢ m₀ ≤ n'></span><span class="term-marker" data-type='Lean.Meta.Simp.Config'>linarith only [<span class="term-marker" data-type='n₀ ≤ n ∧ m₀ ≤ n'><span class="term-marker" data-type='m₀ ≤ n'>hn</span>.<span class="term-marker" data-type='∀ {a b : Prop}, a ∧ b → b'>right</span></span>]</span>)</span>
   <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
@@ -2512,7 +2909,7 @@ hbc : b n ≤ c n
 ⊢ b n - L &lt; ε'></span>linarith only [<span class="term-marker" data-type='-ε &lt; a n - L ∧ a n - L &lt; ε'>hn₀</span>, <span class="term-marker" data-type='-ε &lt; c n - L ∧ c n - L &lt; ε'>hm₀</span>, <span class="term-marker" data-type='b n ≤ c n'>hbc</span>, <span class="term-marker" data-type='a n ≤ b n'>hab</span>]
 
 /- constant sequence tends to zero iff condition -/
-theorem <span class="term-marker" data-type='∀ {x : ℝ}, TendsTo (fun x_1 =&gt; x) 0 ↔ ∀ ε &gt; 0, |x| &lt; ε'>tendsTo_zero_iff_lt_ε</span> {<span class="term-marker" data-type='ℝ'>x</span> : <span class="term-marker" data-type='Type'>ℝ</span>} : <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='(ℕ → ℝ) → ℝ → Prop'><span class="term-marker" data-type='Prop'>TendsTo</span> <span class="term-marker" data-type='ℕ → ℝ'>(<span class="term-marker" data-type='ℕ → ℝ'>fun <span class="term-marker" data-type='Type'>_</span> ↦ <span class="term-marker" data-type='ℝ'>x</span></span>)</span> <span class="term-marker" data-type='ℝ'>0</span></span> ↔ <span class="term-marker" data-type='Prop'>(<span class="term-marker" data-type='Prop'>∀ <span class="term-marker" data-type='Type'>ε</span> &gt; <span class="term-marker" data-type='ℝ'>0</span>, <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='ℝ'>|<span class="term-marker" data-type='ℝ'>x</span>|</span> &lt; <span class="term-marker" data-type='ℝ'>ε</span></span></span>)</span></span> := <span class="goal-marker" data-goal='Goals: 1
+theorem <span class="term-marker" data-type='∀ {x : ℝ}, TendsTo (fun x_1 =&gt; x) 0 ↔ ∀ ε &gt; 0, |x| &lt; ε'>tendsTo_zero_iff_lt_ε</span> {<span class="term-marker" data-type='ℝ'>x</span> : <span class="term-marker" data-type='Type'>ℝ</span>} : <span class="term-marker" data-type='(ℕ → ℝ) → ℝ → Prop'><span class="term-marker" data-type='Prop'><span class="term-marker" data-type='Prop'>TendsTo</span> <span class="term-marker" data-type='ℕ → ℝ'>(<span class="term-marker" data-type='ℕ → ℝ'>fun <span class="term-marker" data-type='Type'>_</span> ↦ <span class="term-marker" data-type='ℝ'>x</span></span>)</span> <span class="term-marker" data-type='ℝ'>0</span></span> ↔ <span class="term-marker" data-type='Prop'>(<span class="term-marker" data-type='Prop'>∀ <span class="term-marker" data-type='Type'>ε</span> &gt; <span class="term-marker" data-type='ℝ'>0</span>, <span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='Prop'>|<span class="term-marker" data-type='ℝ'>x</span>|</span> &lt; <span class="term-marker" data-type='ℝ'>ε</span></span></span>)</span></span> := <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 x : ℝ
@@ -2627,13 +3024,13 @@ x : ℝ
 Goal 1:
 x : ℝ
 h : ∀ ε &gt; 0, |x| &lt; ε
-⊢ TendsTo (fun x_1 =&gt; x) 0'></span>intro <span class="term-marker" data-type='ℝ'>ε</span> <span class="term-marker" data-type='ε &gt; 0'><span class="goal-marker" data-goal='Goals: 1
+⊢ TendsTo (fun x_1 =&gt; x) 0'></span>intro <span class="term-marker" data-type='ℝ'>ε</span> <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 x : ℝ
 h : ∀ ε &gt; 0, |x| &lt; ε
 ε : ℝ
-⊢ ε &gt; 0 → ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |(fun x_1 =&gt; x) n - 0| &lt; ε'></span>hε</span>
+⊢ ε &gt; 0 → ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |(fun x_1 =&gt; x) n - 0| &lt; ε'></span><span class="term-marker" data-type='ε &gt; 0'>hε</span>
     <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
@@ -2642,14 +3039,6 @@ h : ∀ ε &gt; 0, |x| &lt; ε
 ε : ℝ
 hε : ε &gt; 0
 ⊢ ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |(fun x_1 =&gt; x) n - 0| &lt; ε'></span>specialize <span class="term-marker" data-type='|x| &lt; ε'><span class="term-marker" data-type='∀ ε &gt; 0, |x| &lt; ε'>h</span> <span class="term-marker" data-type='ℝ'>ε</span> <span class="term-marker" data-type='ε &gt; 0'>hε</span></span>
-    <span class="term-marker" data-type='Prop'><span class="goal-marker" data-goal='Goals: 1
-
-Goal 1:
-x : ℝ
-ε : ℝ
-hε : ε &gt; 0
-h : |x| &lt; ε
-⊢ ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |(fun x_1 =&gt; x) n - 0| &lt; ε'></span>use <span class="term-marker" data-type='ℕ'>0</span></span>
     <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
@@ -2657,7 +3046,15 @@ x : ℝ
 ε : ℝ
 hε : ε &gt; 0
 h : |x| &lt; ε
-⊢ ∀ (n : ℕ), 0 ≤ n → |(fun x_1 =&gt; x) n - 0| &lt; ε'></span>intro <span class="term-marker" data-type='ℕ'>n</span> <span class="goal-marker" data-goal='Goals: 1
+⊢ ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |(fun x_1 =&gt; x) n - 0| &lt; ε'></span><span class="term-marker" data-type='Prop'>use <span class="term-marker" data-type='ℕ'>0</span></span>
+    <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+x : ℝ
+ε : ℝ
+hε : ε &gt; 0
+h : |x| &lt; ε
+⊢ ∀ (n : ℕ), 0 ≤ n → |(fun x_1 =&gt; x) n - 0| &lt; ε'></span>intro <span class="term-marker" data-type='ℕ'>n</span> <span class="term-marker" data-type='0 ≤ n'><span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 x : ℝ
@@ -2665,7 +3062,7 @@ x : ℝ
 hε : ε &gt; 0
 h : |x| &lt; ε
 n : ℕ
-⊢ 0 ≤ n → |(fun x_1 =&gt; x) n - 0| &lt; ε'></span><span class="term-marker" data-type='0 ≤ n'>hn</span>
+⊢ 0 ≤ n → |(fun x_1 =&gt; x) n - 0| &lt; ε'></span>hn</span>
     <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
@@ -2696,7 +3093,7 @@ hn : 0 ≤ n
 ⊢ |x| &lt; ε'></span>exact <span class="term-marker" data-type='|x| &lt; ε'>h</span>
 
 /- [EXR] zero sequence tends to x iff condition -/
-theorem <span class="term-marker" data-type='∀ {x : ℝ}, TendsTo (fun x =&gt; 0) x ↔ ∀ ε &gt; 0, |x| &lt; ε'>zero_tendsTo_iff_lt_ε</span> {<span class="term-marker" data-type='ℝ'>x</span> : <span class="term-marker" data-type='Type'>ℝ</span>} : <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='Prop'><span class="term-marker" data-type='(ℕ → ℝ) → ℝ → Prop'>TendsTo</span> <span class="term-marker" data-type='ℕ → ℝ'>(<span class="term-marker" data-type='ℕ → ℝ'>fun <span class="term-marker" data-type='Type'>_</span> ↦ <span class="term-marker" data-type='ℝ'>0</span></span>)</span> <span class="term-marker" data-type='ℝ'>x</span></span> ↔ <span class="term-marker" data-type='Prop'>(<span class="term-marker" data-type='Prop'>∀ <span class="term-marker" data-type='Type'>ε</span> &gt; <span class="term-marker" data-type='ℝ'>0</span>, <span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='Prop'>|<span class="term-marker" data-type='ℝ'>x</span>|</span> &lt; <span class="term-marker" data-type='ℝ'>ε</span></span></span>)</span></span> := <span class="goal-marker" data-goal='Goals: 1
+theorem <span class="term-marker" data-type='∀ {x : ℝ}, TendsTo (fun x =&gt; 0) x ↔ ∀ ε &gt; 0, |x| &lt; ε'>zero_tendsTo_iff_lt_ε</span> {<span class="term-marker" data-type='ℝ'>x</span> : <span class="term-marker" data-type='Type'>ℝ</span>} : <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='Prop'><span class="term-marker" data-type='(ℕ → ℝ) → ℝ → Prop'>TendsTo</span> <span class="term-marker" data-type='ℕ → ℝ'>(<span class="term-marker" data-type='ℕ → ℝ'>fun <span class="term-marker" data-type='Type'>_</span> ↦ <span class="term-marker" data-type='ℝ'>0</span></span>)</span> <span class="term-marker" data-type='ℝ'>x</span></span> ↔ <span class="term-marker" data-type='Prop'>(<span class="term-marker" data-type='Prop'>∀ <span class="term-marker" data-type='Type'>ε</span> &gt; <span class="term-marker" data-type='ℝ'>0</span>, <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='ℝ'>|<span class="term-marker" data-type='ℝ'>x</span>|</span> &lt; <span class="term-marker" data-type='ℝ'>ε</span></span></span>)</span></span> := <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 x : ℝ
@@ -2755,7 +3152,7 @@ x : ℝ
 h : ∀ (ε : ℝ), 0 &lt; ε → ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |x| &lt; ε
 ε : ℝ
 hε : ε &gt; 0
-⊢ |x| &lt; ε'></span>specialize <span class="term-marker" data-type='∀ (ε : ℝ), 0 &lt; ε → ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |x| &lt; ε'><span class="term-marker" data-type='∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |x| &lt; ε'>h</span> <span class="term-marker" data-type='ℝ'>ε</span> <span class="term-marker" data-type='ε &gt; 0'>hε</span></span>
+⊢ |x| &lt; ε'></span>specialize <span class="term-marker" data-type='∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |x| &lt; ε'><span class="term-marker" data-type='∀ (ε : ℝ), 0 &lt; ε → ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |x| &lt; ε'>h</span> <span class="term-marker" data-type='ℝ'>ε</span> <span class="term-marker" data-type='ε &gt; 0'>hε</span></span>
     <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
@@ -2780,7 +3177,7 @@ x : ℝ
 hε : ε &gt; 0
 n₀ : ℕ
 hn₀ : ∀ (n : ℕ), n₀ ≤ n → |x| &lt; ε
-⊢ n₀ ≤ n₀'></span>by <span class="goal-marker" data-goal='Goals: 1
+⊢ n₀ ≤ n₀'></span>by <span class="term-marker" data-type='Lean.Meta.Simp.Config'><span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 x : ℝ
@@ -2788,7 +3185,7 @@ x : ℝ
 hε : ε &gt; 0
 n₀ : ℕ
 hn₀ : ∀ (n : ℕ), n₀ ≤ n → |x| &lt; ε
-⊢ n₀ ≤ n₀'></span><span class="term-marker" data-type='Lean.Meta.Simp.Config'>linarith only</span>)</span>
+⊢ n₀ ≤ n₀'></span>linarith only</span>)</span>
     <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
@@ -2819,14 +3216,6 @@ x : ℝ
 h : ∀ ε &gt; 0, |x| &lt; ε
 ε : ℝ
 ⊢ ε &gt; 0 → ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |(fun x =&gt; 0) n - x| &lt; ε'></span><span class="term-marker" data-type='ε &gt; 0'>hε</span>
-    <span class="term-marker" data-type='Prop'><span class="goal-marker" data-goal='Goals: 1
-
-Goal 1:
-x : ℝ
-h : ∀ ε &gt; 0, |x| &lt; ε
-ε : ℝ
-hε : ε &gt; 0
-⊢ ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |(fun x =&gt; 0) n - x| &lt; ε'></span>use <span class="term-marker" data-type='ℕ'>0</span></span>
     <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
@@ -2834,7 +3223,15 @@ x : ℝ
 h : ∀ ε &gt; 0, |x| &lt; ε
 ε : ℝ
 hε : ε &gt; 0
-⊢ ∀ (n : ℕ), 0 ≤ n → |(fun x =&gt; 0) n - x| &lt; ε'></span>intro <span class="term-marker" data-type='ℕ'>n</span> <span class="term-marker" data-type='0 ≤ n'><span class="goal-marker" data-goal='Goals: 1
+⊢ ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |(fun x =&gt; 0) n - x| &lt; ε'></span><span class="term-marker" data-type='Prop'>use <span class="term-marker" data-type='ℕ'>0</span></span>
+    <span class="goal-marker" data-goal='Goals: 1
+
+Goal 1:
+x : ℝ
+h : ∀ ε &gt; 0, |x| &lt; ε
+ε : ℝ
+hε : ε &gt; 0
+⊢ ∀ (n : ℕ), 0 ≤ n → |(fun x =&gt; 0) n - x| &lt; ε'></span>intro <span class="term-marker" data-type='ℕ'>n</span> <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 x : ℝ
@@ -2842,7 +3239,7 @@ h : ∀ ε &gt; 0, |x| &lt; ε
 ε : ℝ
 hε : ε &gt; 0
 n : ℕ
-⊢ 0 ≤ n → |(fun x =&gt; 0) n - x| &lt; ε'></span>hn</span>
+⊢ 0 ≤ n → |(fun x =&gt; 0) n - x| &lt; ε'></span><span class="term-marker" data-type='0 ≤ n'>hn</span>
     <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
@@ -2874,7 +3271,7 @@ t : ℝ
 hs : TendsTo a s
 ht : TendsTo a t
 ⊢ s = t'></span>by
-  <span class="term-marker" data-type='Prop'><span class="goal-marker" data-goal='Goals: 1
+  <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℕ → ℝ
@@ -2882,7 +3279,7 @@ s : ℝ
 t : ℝ
 hs : TendsTo a s
 ht : TendsTo a t
-⊢ s = t'></span>by_contra! <span class="term-marker" data-type='s ≠ t'>hneq</span></span>
+⊢ s = t'></span><span class="term-marker" data-type='Prop'>by_contra! <span class="term-marker" data-type='s ≠ t'>hneq</span></span>
   <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
@@ -2892,7 +3289,7 @@ t : ℝ
 hs : TendsTo a s
 ht : TendsTo a t
 hneq : s ≠ t
-⊢ False'></span><span class="term-marker" data-type='False'>have</span> <span class="term-marker" data-type='0 &lt; |t - s|'>hstp</span> : <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='ℝ'>0</span> &lt; <span class="term-marker" data-type='ℝ'>|<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>t</span> - <span class="term-marker" data-type='ℝ'>s</span></span>|</span></span> := <span class="goal-marker" data-goal='Goals: 2
+⊢ False'></span><span class="term-marker" data-type='False'>have</span> <span class="term-marker" data-type='0 &lt; |t - s|'>hstp</span> : <span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='Prop'>0</span> &lt; <span class="term-marker" data-type='ℝ'>|<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>t</span> - <span class="term-marker" data-type='ℝ'>s</span></span>|</span></span> := <span class="goal-marker" data-goal='Goals: 2
 
 Goal 1:
 a : ℕ → ℝ
@@ -3025,7 +3422,7 @@ ht : TendsTo a t
 hneq : s ≠ t
 hstp : 0 &lt; |t - s|
 hst : TendsTo (fun n =&gt; 0) (s - t)
-⊢ False'></span>rw [<span class="goal-marker" data-goal='Goals: 1
+⊢ False'></span>rw [<span class="term-marker" data-type='TendsTo (fun x =&gt; 0) (s - t) ↔ ∀ ε &gt; 0, |s - t| &lt; ε'><span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℕ → ℝ
@@ -3036,7 +3433,7 @@ ht : TendsTo a t
 hneq : s ≠ t
 hstp : 0 &lt; |t - s|
 hst : TendsTo (fun n =&gt; 0) (s - t)
-⊢ False'></span><span class="term-marker" data-type='TendsTo (fun x =&gt; 0) (s - t) ↔ ∀ ε &gt; 0, |s - t| &lt; ε'>zero_tendsTo_iff_lt_ε</span><span class="goal-marker" data-goal='Goals: 1
+⊢ False'></span>zero_tendsTo_iff_lt_ε</span><span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 a : ℕ → ℝ
@@ -3059,7 +3456,7 @@ ht : TendsTo a t
 hneq : s ≠ t
 hstp : 0 &lt; |t - s|
 hst : ∀ ε &gt; 0, |s - t| &lt; ε
-⊢ False'></span>specialize <span class="term-marker" data-type='|s - t| &lt; |t - s|'><span class="term-marker" data-type='∀ ε &gt; 0, |s - t| &lt; ε'>hst</span> <span class="term-marker" data-type='ℝ'>|<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>t</span> - <span class="term-marker" data-type='ℝ'>s</span></span>|</span> <span class="term-marker" data-type='0 &lt; |t - s|'>hstp</span></span>
+⊢ False'></span>specialize <span class="term-marker" data-type='∀ ε &gt; 0, |s - t| &lt; ε'><span class="term-marker" data-type='|s - t| &lt; |t - s|'>hst</span> <span class="term-marker" data-type='ℝ'>|<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>t</span> - <span class="term-marker" data-type='ℝ'>s</span></span>|</span> <span class="term-marker" data-type='0 &lt; |t - s|'>hstp</span></span>
   <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
@@ -3108,9 +3505,9 @@ hst : |t - s| &lt; |t - s|
 ⊢ False'></span>linarith only [<span class="term-marker" data-type='|t - s| &lt; |t - s|'>hst</span>]
 
 def <span class="term-marker" data-type='(ℝ → ℝ) → ℝ → Prop'>contAt</span> (<span class="term-marker" data-type='ℝ → ℝ'>f</span> : <span class="term-marker" data-type='Type'><span class="term-marker" data-type='Type'>ℝ</span> → <span class="term-marker" data-type='Type'>ℝ</span></span>) (<span class="term-marker" data-type='ℝ'>x₀</span> : <span class="term-marker" data-type='Type'>ℝ</span>) : <span class="term-marker" data-type='Type'>Prop</span> :=
-  <span class="term-marker" data-type='Prop'>∀ <span class="term-marker" data-type='Type'>ε</span> &gt; <span class="term-marker" data-type='ℝ'>0</span>, <span class="term-marker" data-type='Prop'>∃ <span class="term-marker" data-type='Type'>δ</span> &gt; <span class="term-marker" data-type='ℝ'>0</span>, <span class="term-marker" data-type='Prop'>∀ <span class="term-marker" data-type='Type'>x</span>, <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='Prop'><span class="term-marker" data-type='ℝ'>|<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>x</span> - <span class="term-marker" data-type='ℝ'>x₀</span></span>|</span> &lt; <span class="term-marker" data-type='ℝ'>δ</span></span> → <span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='Prop'>|<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ → ℝ'><span class="term-marker" data-type='ℝ'>f</span> <span class="term-marker" data-type='ℝ'>x</span></span> - <span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ → ℝ'>f</span> <span class="term-marker" data-type='ℝ'>x₀</span></span></span>|</span> &lt; <span class="term-marker" data-type='ℝ'>ε</span></span></span></span></span></span>
+  <span class="term-marker" data-type='Prop'>∀ <span class="term-marker" data-type='Type'>ε</span> &gt; <span class="term-marker" data-type='ℝ'>0</span>, <span class="term-marker" data-type='Prop'>∃ <span class="term-marker" data-type='Type'>δ</span> &gt; <span class="term-marker" data-type='ℝ'>0</span>, <span class="term-marker" data-type='Prop'>∀ <span class="term-marker" data-type='Type'>x</span>, <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='Prop'><span class="term-marker" data-type='ℝ'>|<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>x</span> - <span class="term-marker" data-type='ℝ'>x₀</span></span>|</span> &lt; <span class="term-marker" data-type='ℝ'>δ</span></span> → <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='ℝ'>|<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ → ℝ'>f</span> <span class="term-marker" data-type='ℝ'>x</span></span> - <span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ → ℝ'>f</span> <span class="term-marker" data-type='ℝ'>x₀</span></span></span>|</span> &lt; <span class="term-marker" data-type='ℝ'>ε</span></span></span></span></span></span>
 
-def <span class="term-marker" data-type='(ℝ → ℝ) → Prop'>cont</span> (<span class="term-marker" data-type='ℝ → ℝ'>f</span> : <span class="term-marker" data-type='Type'><span class="term-marker" data-type='Type'>ℝ</span> → <span class="term-marker" data-type='Type'>ℝ</span></span>) : <span class="term-marker" data-type='Type'>Prop</span> := <span class="term-marker" data-type='Prop'>∀ <span class="term-marker" data-type='ℝ'>x₀</span> : <span class="term-marker" data-type='Type'>ℝ</span>, <span class="term-marker" data-type='(ℝ → ℝ) → ℝ → Prop'><span class="term-marker" data-type='Prop'>contAt</span> <span class="term-marker" data-type='ℝ → ℝ'>f</span> <span class="term-marker" data-type='ℝ'>x₀</span></span></span>
+def <span class="term-marker" data-type='(ℝ → ℝ) → Prop'>cont</span> (<span class="term-marker" data-type='ℝ → ℝ'>f</span> : <span class="term-marker" data-type='Type'><span class="term-marker" data-type='Type'>ℝ</span> → <span class="term-marker" data-type='Type'>ℝ</span></span>) : <span class="term-marker" data-type='Type'>Prop</span> := <span class="term-marker" data-type='Prop'>∀ <span class="term-marker" data-type='ℝ'>x₀</span> : <span class="term-marker" data-type='Type'>ℝ</span>, <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='(ℝ → ℝ) → ℝ → Prop'>contAt</span> <span class="term-marker" data-type='ℝ → ℝ'>f</span> <span class="term-marker" data-type='ℝ'>x₀</span></span></span>
 
 /- continuity of function composition -/
 def <span class="term-marker" data-type='∀ {f g : ℝ → ℝ} {x₀ : ℝ}, contAt f (g x₀) → contAt g x₀ → contAt (f ∘ g) x₀'>contAt_comp</span> {<span class="term-marker" data-type='ℝ → ℝ'>f</span> <span class="term-marker" data-type='ℝ → ℝ'>g</span> : <span class="term-marker" data-type='Type'><span class="term-marker" data-type='Type'>ℝ</span> → <span class="term-marker" data-type='Type'>ℝ</span></span>} {<span class="term-marker" data-type='ℝ'>x₀</span> : <span class="term-marker" data-type='Type'>ℝ</span>} (<span class="term-marker" data-type='contAt f (g x₀)'>hf</span> : <span class="term-marker" data-type='(ℝ → ℝ) → ℝ → Prop'><span class="term-marker" data-type='Prop'>contAt</span> <span class="term-marker" data-type='ℝ → ℝ'>f</span> <span class="term-marker" data-type='ℝ'>(<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ → ℝ'>g</span> <span class="term-marker" data-type='ℝ'>x₀</span></span>)</span></span>) (<span class="term-marker" data-type='contAt g x₀'>hg</span> : <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='(ℝ → ℝ) → ℝ → Prop'>contAt</span> <span class="term-marker" data-type='ℝ → ℝ'>g</span> <span class="term-marker" data-type='ℝ'>x₀</span></span>) :
@@ -3151,7 +3548,7 @@ hf : contAt f (g x₀)
 hg : contAt g x₀
 ε : ℝ
 hε : ε &gt; 0
-⊢ ∃ δ &gt; 0, ∀ (x : ℝ), |x - x₀| &lt; δ → |(f ∘ g) x - (f ∘ g) x₀| &lt; ε'></span>rcases <span class="term-marker" data-type='contAt f (g x₀)'><span class="term-marker" data-type='∃ δ &gt; 0, ∀ (x : ℝ), |x - g x₀| &lt; δ → |f x - f (g x₀)| &lt; ε'>hf</span> <span class="term-marker" data-type='ℝ'>ε</span> <span class="term-marker" data-type='ε &gt; 0'>hε</span></span> with <span class="term-marker" data-type='∃ δ &gt; 0, ∀ (x : ℝ), |x - g x₀| &lt; δ → |f x - f (g x₀)| &lt; ε'>⟨<span class="term-marker" data-type='ℝ'>δf</span>, <span class="term-marker" data-type='δf &gt; 0'>hδf</span>, <span class="term-marker" data-type='∀ (x : ℝ), |x - g x₀| &lt; δf → |f x - f (g x₀)| &lt; ε'>hf</span>⟩</span>
+⊢ ∃ δ &gt; 0, ∀ (x : ℝ), |x - x₀| &lt; δ → |(f ∘ g) x - (f ∘ g) x₀| &lt; ε'></span>rcases <span class="term-marker" data-type='∃ δ &gt; 0, ∀ (x : ℝ), |x - g x₀| &lt; δ → |f x - f (g x₀)| &lt; ε'><span class="term-marker" data-type='contAt f (g x₀)'>hf</span> <span class="term-marker" data-type='ℝ'>ε</span> <span class="term-marker" data-type='ε &gt; 0'>hε</span></span> with <span class="term-marker" data-type='∃ δ &gt; 0, ∀ (x : ℝ), |x - g x₀| &lt; δ → |f x - f (g x₀)| &lt; ε'>⟨<span class="term-marker" data-type='ℝ'>δf</span>, <span class="term-marker" data-type='δf &gt; 0'>hδf</span>, <span class="term-marker" data-type='∀ (x : ℝ), |x - g x₀| &lt; δf → |f x - f (g x₀)| &lt; ε'>hf</span>⟩</span>
   <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
@@ -3165,7 +3562,7 @@ hε : ε &gt; 0
 δf : ℝ
 hδf : δf &gt; 0
 hf : ∀ (x : ℝ), |x - g x₀| &lt; δf → |f x - f (g x₀)| &lt; ε
-⊢ ∃ δ &gt; 0, ∀ (x : ℝ), |x - x₀| &lt; δ → |(f ∘ g) x - (f ∘ g) x₀| &lt; ε'></span>rcases <span class="term-marker" data-type='contAt g x₀'><span class="term-marker" data-type='∃ δ &gt; 0, ∀ (x : ℝ), |x - x₀| &lt; δ → |g x - g x₀| &lt; δf'>hg</span> <span class="term-marker" data-type='ℝ'>δf</span> <span class="term-marker" data-type='δf &gt; 0'>hδf</span></span> with <span class="term-marker" data-type='∃ δ &gt; 0, ∀ (x : ℝ), |x - x₀| &lt; δ → |g x - g x₀| &lt; δf'>⟨<span class="term-marker" data-type='ℝ'>δg</span>, <span class="term-marker" data-type='δg &gt; 0'>hδg</span>, <span class="term-marker" data-type='∀ (x : ℝ), |x - x₀| &lt; δg → |g x - g x₀| &lt; δf'>hg</span>⟩</span>
+⊢ ∃ δ &gt; 0, ∀ (x : ℝ), |x - x₀| &lt; δ → |(f ∘ g) x - (f ∘ g) x₀| &lt; ε'></span>rcases <span class="term-marker" data-type='∃ δ &gt; 0, ∀ (x : ℝ), |x - x₀| &lt; δ → |g x - g x₀| &lt; δf'><span class="term-marker" data-type='contAt g x₀'>hg</span> <span class="term-marker" data-type='ℝ'>δf</span> <span class="term-marker" data-type='δf &gt; 0'>hδf</span></span> with <span class="term-marker" data-type='∃ δ &gt; 0, ∀ (x : ℝ), |x - x₀| &lt; δ → |g x - g x₀| &lt; δf'>⟨<span class="term-marker" data-type='ℝ'>δg</span>, <span class="term-marker" data-type='δg &gt; 0'>hδg</span>, <span class="term-marker" data-type='∀ (x : ℝ), |x - x₀| &lt; δg → |g x - g x₀| &lt; δf'>hg</span>⟩</span>
   <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
@@ -3235,7 +3632,7 @@ hδg : δg &gt; 0
 hg : ∀ (x : ℝ), |x - x₀| &lt; δg → |g x - g x₀| &lt; δf
 x : ℝ
 hx : |x - x₀| &lt; δg
-⊢ |(f ∘ g) x - (f ∘ g) x₀| &lt; ε'></span>simp only [<span class="term-marker" data-type='∀ {β : Sort ?u.71640} {δ : Sort ?u.71639} {α : Sort ?u.71638} {f : β → δ} {g : α → β} {x : α}, (f ∘ g) x = f (g x)'>Function.comp_apply</span>]
+⊢ |(f ∘ g) x - (f ∘ g) x₀| &lt; ε'></span>simp only [<span class="term-marker" data-type='∀ {β : Sort ?u.147369} {δ : Sort ?u.147368} {α : Sort ?u.147367} {f : β → δ} {g : α → β} {x : α}, (f ∘ g) x = f (g x)'>Function.comp_apply</span>]
   <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
@@ -3273,7 +3670,7 @@ hδg : δg &gt; 0
 x : ℝ
 hx : |x - x₀| &lt; δg
 hg : |g x - g x₀| &lt; δf
-⊢ |f (g x) - f (g x₀)| &lt; ε'></span>specialize <span class="term-marker" data-type='∀ (x : ℝ), |x - g x₀| &lt; δf → |f x - f (g x₀)| &lt; ε'><span class="term-marker" data-type='|f (g x) - f (g x₀)| &lt; ε'>hf</span> <span class="term-marker" data-type='ℝ'>(<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ → ℝ'>g</span> <span class="term-marker" data-type='ℝ'>x</span></span>)</span> <span class="term-marker" data-type='|g x - g x₀| &lt; δf'>hg</span></span>
+⊢ |f (g x) - f (g x₀)| &lt; ε'></span>specialize <span class="term-marker" data-type='|f (g x) - f (g x₀)| &lt; ε'><span class="term-marker" data-type='∀ (x : ℝ), |x - g x₀| &lt; δf → |f x - f (g x₀)| &lt; ε'>hf</span> <span class="term-marker" data-type='ℝ'>(<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ → ℝ'>g</span> <span class="term-marker" data-type='ℝ'>x</span></span>)</span> <span class="term-marker" data-type='|g x - g x₀| &lt; δf'>hg</span></span>
   <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
@@ -3295,7 +3692,7 @@ hf : |f (g x) - f (g x₀)| &lt; ε
 ⊢ |f (g x) - f (g x₀)| &lt; ε'></span>exact <span class="term-marker" data-type='|f (g x) - f (g x₀)| &lt; ε'>hf</span>
 
 /- [EXR] continuity of function composition -/
-def <span class="term-marker" data-type='∀ {f g : ℝ → ℝ}, cont f → cont g → cont (f ∘ g)'>cont_comp</span> {<span class="term-marker" data-type='ℝ → ℝ'>f</span> <span class="term-marker" data-type='ℝ → ℝ'>g</span> : <span class="term-marker" data-type='Type'><span class="term-marker" data-type='Type'>ℝ</span> → <span class="term-marker" data-type='Type'>ℝ</span></span>} (<span class="term-marker" data-type='cont f'>hf</span> : <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='(ℝ → ℝ) → Prop'>cont</span> <span class="term-marker" data-type='ℝ → ℝ'>f</span></span>) (<span class="term-marker" data-type='cont g'>hg</span> : <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='(ℝ → ℝ) → Prop'>cont</span> <span class="term-marker" data-type='ℝ → ℝ'>g</span></span>) : <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='(ℝ → ℝ) → Prop'>cont</span> <span class="term-marker" data-type='ℝ → ℝ'>(<span class="term-marker" data-type='ℝ → ℝ'><span class="term-marker" data-type='ℝ → ℝ'>f</span> ∘ <span class="term-marker" data-type='ℝ → ℝ'>g</span></span>)</span></span> := <span class="goal-marker" data-goal='Goals: 1
+def <span class="term-marker" data-type='∀ {f g : ℝ → ℝ}, cont f → cont g → cont (f ∘ g)'>cont_comp</span> {<span class="term-marker" data-type='ℝ → ℝ'>f</span> <span class="term-marker" data-type='ℝ → ℝ'>g</span> : <span class="term-marker" data-type='Type'><span class="term-marker" data-type='Type'>ℝ</span> → <span class="term-marker" data-type='Type'>ℝ</span></span>} (<span class="term-marker" data-type='cont f'>hf</span> : <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='(ℝ → ℝ) → Prop'>cont</span> <span class="term-marker" data-type='ℝ → ℝ'>f</span></span>) (<span class="term-marker" data-type='cont g'>hg</span> : <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='(ℝ → ℝ) → Prop'>cont</span> <span class="term-marker" data-type='ℝ → ℝ'>g</span></span>) : <span class="term-marker" data-type='(ℝ → ℝ) → Prop'><span class="term-marker" data-type='Prop'>cont</span> <span class="term-marker" data-type='ℝ → ℝ'>(<span class="term-marker" data-type='ℝ → ℝ'><span class="term-marker" data-type='ℝ → ℝ'>f</span> ∘ <span class="term-marker" data-type='ℝ → ℝ'>g</span></span>)</span></span> := <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 f : ℝ → ℝ
@@ -3319,11 +3716,11 @@ g : ℝ → ℝ
 hf : cont f
 hg : cont g
 x : ℝ
-⊢ contAt (f ∘ g) x'></span>exact <span class="term-marker" data-type='contAt (f ∘ g) x'><span class="term-marker" data-type='∀ {f g : ℝ → ℝ} {x₀ : ℝ}, contAt f (g x₀) → contAt g x₀ → contAt (f ∘ g) x₀'>contAt_comp</span> <span class="term-marker" data-type='contAt f (g x)'>(<span class="term-marker" data-type='cont f'><span class="term-marker" data-type='contAt f (g x)'>hf</span> <span class="term-marker" data-type='ℝ'>(<span class="term-marker" data-type='ℝ → ℝ'><span class="term-marker" data-type='ℝ'>g</span> <span class="term-marker" data-type='ℝ'>x</span></span>)</span></span>)</span> <span class="term-marker" data-type='contAt g x'>(<span class="term-marker" data-type='contAt g x'><span class="term-marker" data-type='cont g'>hg</span> <span class="term-marker" data-type='ℝ'>x</span></span>)</span></span>
+⊢ contAt (f ∘ g) x'></span>exact <span class="term-marker" data-type='contAt (f ∘ g) x'><span class="term-marker" data-type='∀ {f g : ℝ → ℝ} {x₀ : ℝ}, contAt f (g x₀) → contAt g x₀ → contAt (f ∘ g) x₀'>contAt_comp</span> <span class="term-marker" data-type='contAt f (g x)'>(<span class="term-marker" data-type='contAt f (g x)'><span class="term-marker" data-type='cont f'>hf</span> <span class="term-marker" data-type='ℝ'>(<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ → ℝ'>g</span> <span class="term-marker" data-type='ℝ'>x</span></span>)</span></span>)</span> <span class="term-marker" data-type='contAt g x'>(<span class="term-marker" data-type='cont g'><span class="term-marker" data-type='contAt g x'>hg</span> <span class="term-marker" data-type='ℝ'>x</span></span>)</span></span>
 
 /- [EXR] continuity implies sequential continuity -/
-def <span class="term-marker" data-type='∀ {f : ℝ → ℝ} {x₀ : ℝ}, contAt f x₀ → ∀ {a : ℕ → ℝ}, TendsTo a x₀ → TendsTo (f ∘ a) (f x₀)'>tendsTo_of_contAt</span> {<span class="term-marker" data-type='ℝ → ℝ'>f</span> : <span class="term-marker" data-type='Type'><span class="term-marker" data-type='Type'>ℝ</span> → <span class="term-marker" data-type='Type'>ℝ</span></span>} {<span class="term-marker" data-type='ℝ'>x₀</span> : <span class="term-marker" data-type='Type'>ℝ</span>} (<span class="term-marker" data-type='contAt f x₀'>hf</span> : <span class="term-marker" data-type='(ℝ → ℝ) → ℝ → Prop'><span class="term-marker" data-type='Prop'>contAt</span> <span class="term-marker" data-type='ℝ → ℝ'>f</span> <span class="term-marker" data-type='ℝ'>x₀</span></span>)
-    {<span class="term-marker" data-type='ℕ → ℝ'>a</span> : <span class="term-marker" data-type='Type'><span class="term-marker" data-type='Type'>ℕ</span> → <span class="term-marker" data-type='Type'>ℝ</span></span>} (<span class="term-marker" data-type='TendsTo a x₀'>ha</span> : <span class="term-marker" data-type='(ℕ → ℝ) → ℝ → Prop'><span class="term-marker" data-type='Prop'>TendsTo</span> <span class="term-marker" data-type='ℕ → ℝ'>a</span> <span class="term-marker" data-type='ℝ'>x₀</span></span>) : <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='(ℕ → ℝ) → ℝ → Prop'>TendsTo</span> <span class="term-marker" data-type='ℕ → ℝ'>(<span class="term-marker" data-type='ℕ → ℝ'><span class="term-marker" data-type='ℝ → ℝ'>f</span> ∘ <span class="term-marker" data-type='ℕ → ℝ'>a</span></span>)</span> <span class="term-marker" data-type='ℝ'>(<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ → ℝ'>f</span> <span class="term-marker" data-type='ℝ'>x₀</span></span>)</span></span> := <span class="goal-marker" data-goal='Goals: 1
+def <span class="term-marker" data-type='∀ {f : ℝ → ℝ} {x₀ : ℝ}, contAt f x₀ → ∀ {a : ℕ → ℝ}, TendsTo a x₀ → TendsTo (f ∘ a) (f x₀)'>tendsTo_of_contAt</span> {<span class="term-marker" data-type='ℝ → ℝ'>f</span> : <span class="term-marker" data-type='Type'><span class="term-marker" data-type='Type'>ℝ</span> → <span class="term-marker" data-type='Type'>ℝ</span></span>} {<span class="term-marker" data-type='ℝ'>x₀</span> : <span class="term-marker" data-type='Type'>ℝ</span>} (<span class="term-marker" data-type='contAt f x₀'>hf</span> : <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='(ℝ → ℝ) → ℝ → Prop'>contAt</span> <span class="term-marker" data-type='ℝ → ℝ'>f</span> <span class="term-marker" data-type='ℝ'>x₀</span></span>)
+    {<span class="term-marker" data-type='ℕ → ℝ'>a</span> : <span class="term-marker" data-type='Type'><span class="term-marker" data-type='Type'>ℕ</span> → <span class="term-marker" data-type='Type'>ℝ</span></span>} (<span class="term-marker" data-type='TendsTo a x₀'>ha</span> : <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='(ℕ → ℝ) → ℝ → Prop'>TendsTo</span> <span class="term-marker" data-type='ℕ → ℝ'>a</span> <span class="term-marker" data-type='ℝ'>x₀</span></span>) : <span class="term-marker" data-type='(ℕ → ℝ) → ℝ → Prop'><span class="term-marker" data-type='Prop'>TendsTo</span> <span class="term-marker" data-type='ℕ → ℝ'>(<span class="term-marker" data-type='ℕ → ℝ'><span class="term-marker" data-type='ℝ → ℝ'>f</span> ∘ <span class="term-marker" data-type='ℕ → ℝ'>a</span></span>)</span> <span class="term-marker" data-type='ℝ'>(<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ → ℝ'>f</span> <span class="term-marker" data-type='ℝ'>x₀</span></span>)</span></span> := <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 f : ℝ → ℝ
@@ -3340,7 +3737,7 @@ x₀ : ℝ
 hf : contAt f x₀
 a : ℕ → ℝ
 ha : TendsTo a x₀
-⊢ TendsTo (f ∘ a) (f x₀)'></span>intro <span class="term-marker" data-type='ℝ'>ε</span> <span class="term-marker" data-type='ε &gt; 0'><span class="goal-marker" data-goal='Goals: 1
+⊢ TendsTo (f ∘ a) (f x₀)'></span>intro <span class="term-marker" data-type='ℝ'>ε</span> <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 f : ℝ → ℝ
@@ -3349,7 +3746,7 @@ hf : contAt f x₀
 a : ℕ → ℝ
 ha : TendsTo a x₀
 ε : ℝ
-⊢ ε &gt; 0 → ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |(f ∘ a) n - f x₀| &lt; ε'></span>hε</span>
+⊢ ε &gt; 0 → ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |(f ∘ a) n - f x₀| &lt; ε'></span><span class="term-marker" data-type='ε &gt; 0'>hε</span>
   <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
@@ -3374,7 +3771,7 @@ hε : ε &gt; 0
 δ : ℝ
 hδ : δ &gt; 0
 hδf : ∀ (x : ℝ), |x - x₀| &lt; δ → |f x - f x₀| &lt; ε
-⊢ ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |(f ∘ a) n - f x₀| &lt; ε'></span>specialize <span class="term-marker" data-type='∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |a n - x₀| &lt; δ'><span class="term-marker" data-type='TendsTo a x₀'>ha</span> <span class="term-marker" data-type='ℝ'>δ</span> <span class="term-marker" data-type='δ &gt; 0'>hδ</span></span>
+⊢ ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |(f ∘ a) n - f x₀| &lt; ε'></span>specialize <span class="term-marker" data-type='TendsTo a x₀'><span class="term-marker" data-type='∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |a n - x₀| &lt; δ'>ha</span> <span class="term-marker" data-type='ℝ'>δ</span> <span class="term-marker" data-type='δ &gt; 0'>hδ</span></span>
   <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
@@ -3490,11 +3887,11 @@ hδf : |f (a n) - f x₀| &lt; ε
 The uniform limit of a sequence of continuous functions is continuous.
 -/
 def <span class="term-marker" data-type='(ℕ → ℝ → ℝ) → (ℝ → ℝ) → Prop'>uconv</span> (<span class="term-marker" data-type='ℕ → ℝ → ℝ'>f</span> : <span class="term-marker" data-type='Type'><span class="term-marker" data-type='Type'>ℕ</span> → <span class="term-marker" data-type='Type'><span class="term-marker" data-type='Type'>ℝ</span> → <span class="term-marker" data-type='Type'>ℝ</span></span></span>) (<span class="term-marker" data-type='ℝ → ℝ'>f₀</span> : <span class="term-marker" data-type='Type'><span class="term-marker" data-type='Type'>ℝ</span> → <span class="term-marker" data-type='Type'>ℝ</span></span>) : <span class="term-marker" data-type='Type'>Prop</span> :=
-  <span class="term-marker" data-type='Prop'>∀ <span class="term-marker" data-type='Type'>ε</span> &gt; <span class="term-marker" data-type='ℝ'>0</span>, <span class="term-marker" data-type='Prop'>∃ <span class="term-marker" data-type='ℕ'>N</span> : <span class="term-marker" data-type='Type'>ℕ</span>, <span class="term-marker" data-type='Prop'>∀ <span class="term-marker" data-type='Type'>n</span> ≥ <span class="term-marker" data-type='ℕ'>N</span>, <span class="term-marker" data-type='Prop'>∀ <span class="term-marker" data-type='ℝ'>x</span> : <span class="term-marker" data-type='Type'>ℝ</span>, <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='ℝ'>|<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℕ → ℝ → ℝ'>f</span> <span class="term-marker" data-type='ℕ'>n</span> <span class="term-marker" data-type='ℝ'>x</span></span> - <span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ → ℝ'>f₀</span> <span class="term-marker" data-type='ℝ'>x</span></span></span>|</span> &lt; <span class="term-marker" data-type='ℝ'>ε</span></span></span></span></span></span>
+  <span class="term-marker" data-type='Prop'>∀ <span class="term-marker" data-type='Type'>ε</span> &gt; <span class="term-marker" data-type='ℝ'>0</span>, <span class="term-marker" data-type='Prop'>∃ <span class="term-marker" data-type='ℕ'>N</span> : <span class="term-marker" data-type='Type'>ℕ</span>, <span class="term-marker" data-type='Prop'>∀ <span class="term-marker" data-type='Type'>n</span> ≥ <span class="term-marker" data-type='ℕ'>N</span>, <span class="term-marker" data-type='Prop'>∀ <span class="term-marker" data-type='ℝ'>x</span> : <span class="term-marker" data-type='Type'>ℝ</span>, <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='ℝ'>|<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℕ → ℝ → ℝ'>f</span> <span class="term-marker" data-type='ℕ'>n</span> <span class="term-marker" data-type='ℝ'>x</span></span> - <span class="term-marker" data-type='ℝ → ℝ'><span class="term-marker" data-type='ℝ'>f₀</span> <span class="term-marker" data-type='ℝ'>x</span></span></span>|</span> &lt; <span class="term-marker" data-type='ℝ'>ε</span></span></span></span></span></span>
 
 theorem <span class="term-marker" data-type='∀ (f : ℕ → ℝ → ℝ), (∀ (n : ℕ), cont (f n)) → ∀ (f₀ : ℝ → ℝ), uconv f f₀ → cont f₀'>cont_of_cont_of_uconv</span>
-    (<span class="term-marker" data-type='ℕ → ℝ → ℝ'>f</span> : <span class="term-marker" data-type='Type'><span class="term-marker" data-type='Type'>ℕ</span> → <span class="term-marker" data-type='Type'><span class="term-marker" data-type='Type'>ℝ</span> → <span class="term-marker" data-type='Type'>ℝ</span></span></span>) (<span class="term-marker" data-type='∀ (n : ℕ), cont (f n)'>f_cont</span> : <span class="term-marker" data-type='Prop'>∀ <span class="term-marker" data-type='ℕ'>n</span> : <span class="term-marker" data-type='Type'>ℕ</span>, <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='(ℝ → ℝ) → Prop'>cont</span> <span class="term-marker" data-type='ℝ → ℝ'>(<span class="term-marker" data-type='ℕ → ℝ → ℝ'><span class="term-marker" data-type='ℝ → ℝ'>f</span> <span class="term-marker" data-type='ℕ'>n</span></span>)</span></span></span>)
-    (<span class="term-marker" data-type='ℝ → ℝ'>f₀</span> : <span class="term-marker" data-type='Type'><span class="term-marker" data-type='Type'>ℝ</span> → <span class="term-marker" data-type='Type'>ℝ</span></span>) (<span class="term-marker" data-type='uconv f f₀'>h_uconv</span> : <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='(ℕ → ℝ → ℝ) → (ℝ → ℝ) → Prop'>uconv</span> <span class="term-marker" data-type='ℕ → ℝ → ℝ'>f</span> <span class="term-marker" data-type='ℝ → ℝ'>f₀</span></span>) : <span class="term-marker" data-type='(ℝ → ℝ) → Prop'><span class="term-marker" data-type='Prop'>cont</span> <span class="term-marker" data-type='ℝ → ℝ'>f₀</span></span> := <span class="goal-marker" data-goal='Goals: 1
+    (<span class="term-marker" data-type='ℕ → ℝ → ℝ'>f</span> : <span class="term-marker" data-type='Type'><span class="term-marker" data-type='Type'>ℕ</span> → <span class="term-marker" data-type='Type'><span class="term-marker" data-type='Type'>ℝ</span> → <span class="term-marker" data-type='Type'>ℝ</span></span></span>) (<span class="term-marker" data-type='∀ (n : ℕ), cont (f n)'>f_cont</span> : <span class="term-marker" data-type='Prop'>∀ <span class="term-marker" data-type='ℕ'>n</span> : <span class="term-marker" data-type='Type'>ℕ</span>, <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='(ℝ → ℝ) → Prop'>cont</span> <span class="term-marker" data-type='ℝ → ℝ'>(<span class="term-marker" data-type='ℝ → ℝ'><span class="term-marker" data-type='ℕ → ℝ → ℝ'>f</span> <span class="term-marker" data-type='ℕ'>n</span></span>)</span></span></span>)
+    (<span class="term-marker" data-type='ℝ → ℝ'>f₀</span> : <span class="term-marker" data-type='Type'><span class="term-marker" data-type='Type'>ℝ</span> → <span class="term-marker" data-type='Type'>ℝ</span></span>) (<span class="term-marker" data-type='uconv f f₀'>h_uconv</span> : <span class="term-marker" data-type='(ℕ → ℝ → ℝ) → (ℝ → ℝ) → Prop'><span class="term-marker" data-type='Prop'>uconv</span> <span class="term-marker" data-type='ℕ → ℝ → ℝ'>f</span> <span class="term-marker" data-type='ℝ → ℝ'>f₀</span></span>) : <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='(ℝ → ℝ) → Prop'>cont</span> <span class="term-marker" data-type='ℝ → ℝ'>f₀</span></span> := <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 f : ℕ → ℝ → ℝ
@@ -3509,7 +3906,7 @@ f : ℕ → ℝ → ℝ
 f_cont : ∀ (n : ℕ), cont (f n)
 f₀ : ℝ → ℝ
 h_uconv : uconv f f₀
-⊢ cont f₀'></span>intro <span class="term-marker" data-type='ℝ'>x₀</span> <span class="goal-marker" data-goal='Goals: 1
+⊢ cont f₀'></span>intro <span class="term-marker" data-type='ℝ'>x₀</span> <span class="term-marker" data-type='ℝ'><span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 f : ℕ → ℝ → ℝ
@@ -3517,7 +3914,7 @@ f_cont : ∀ (n : ℕ), cont (f n)
 f₀ : ℝ → ℝ
 h_uconv : uconv f f₀
 x₀ : ℝ
-⊢ contAt f₀ x₀'></span><span class="term-marker" data-type='ℝ'>ε</span> <span class="term-marker" data-type='ε &gt; 0'><span class="goal-marker" data-goal='Goals: 1
+⊢ contAt f₀ x₀'></span>ε</span> <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 f : ℕ → ℝ → ℝ
@@ -3526,7 +3923,7 @@ f₀ : ℝ → ℝ
 h_uconv : uconv f f₀
 x₀ : ℝ
 ε : ℝ
-⊢ ε &gt; 0 → ∃ δ &gt; 0, ∀ (x : ℝ), |x - x₀| &lt; δ → |f₀ x - f₀ x₀| &lt; ε'></span>hε</span>
+⊢ ε &gt; 0 → ∃ δ &gt; 0, ∀ (x : ℝ), |x - x₀| &lt; δ → |f₀ x - f₀ x₀| &lt; ε'></span><span class="term-marker" data-type='ε &gt; 0'>hε</span>
   <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
@@ -3537,7 +3934,7 @@ h_uconv : uconv f f₀
 x₀ : ℝ
 ε : ℝ
 hε : ε &gt; 0
-⊢ ∃ δ &gt; 0, ∀ (x : ℝ), |x - x₀| &lt; δ → |f₀ x - f₀ x₀| &lt; ε'></span>rcases <span class="term-marker" data-type='∃ N, ∀ n ≥ N, ∀ (x : ℝ), |f n x - f₀ x| &lt; ε / 3'><span class="term-marker" data-type='uconv f f₀'>h_uconv</span> <span class="term-marker" data-type='ℝ'>(<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>ε</span> / <span class="term-marker" data-type='ℝ'>3</span></span>)</span> (<span class="goal-marker" data-goal='Goals: 1
+⊢ ∃ δ &gt; 0, ∀ (x : ℝ), |x - x₀| &lt; δ → |f₀ x - f₀ x₀| &lt; ε'></span>rcases <span class="term-marker" data-type='uconv f f₀'><span class="term-marker" data-type='∃ N, ∀ n ≥ N, ∀ (x : ℝ), |f n x - f₀ x| &lt; ε / 3'>h_uconv</span> <span class="term-marker" data-type='ℝ'>(<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>ε</span> / <span class="term-marker" data-type='ℝ'>3</span></span>)</span> (<span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 f : ℕ → ℝ → ℝ
@@ -3570,7 +3967,7 @@ x₀ : ℝ
 hε : ε &gt; 0
 N : ℕ
 hN : ∀ n ≥ N, ∀ (x : ℝ), |f n x - f₀ x| &lt; ε / 3
-⊢ ∃ δ &gt; 0, ∀ (x : ℝ), |x - x₀| &lt; δ → |f₀ x - f₀ x₀| &lt; ε'></span>specialize <span class="term-marker" data-type='∀ (x : ℝ), |f N x - f₀ x| &lt; ε / 3'><span class="term-marker" data-type='∀ n ≥ N, ∀ (x : ℝ), |f n x - f₀ x| &lt; ε / 3'>hN</span> <span class="term-marker" data-type='ℕ'>N</span> (<span class="goal-marker" data-goal='Goals: 1
+⊢ ∃ δ &gt; 0, ∀ (x : ℝ), |x - x₀| &lt; δ → |f₀ x - f₀ x₀| &lt; ε'></span>specialize <span class="term-marker" data-type='∀ n ≥ N, ∀ (x : ℝ), |f n x - f₀ x| &lt; ε / 3'><span class="term-marker" data-type='∀ (x : ℝ), |f N x - f₀ x| &lt; ε / 3'>hN</span> <span class="term-marker" data-type='ℕ'>N</span> (<span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 f : ℕ → ℝ → ℝ
@@ -3582,7 +3979,7 @@ x₀ : ℝ
 hε : ε &gt; 0
 N : ℕ
 hN : ∀ n ≥ N, ∀ (x : ℝ), |f n x - f₀ x| &lt; ε / 3
-⊢ N ≥ N'></span>by <span class="term-marker" data-type='Lean.Meta.Simp.Config'><span class="goal-marker" data-goal='Goals: 1
+⊢ N ≥ N'></span>by <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 f : ℕ → ℝ → ℝ
@@ -3594,7 +3991,7 @@ x₀ : ℝ
 hε : ε &gt; 0
 N : ℕ
 hN : ∀ n ≥ N, ∀ (x : ℝ), |f n x - f₀ x| &lt; ε / 3
-⊢ N ≥ N'></span>linarith</span>)</span>
+⊢ N ≥ N'></span><span class="term-marker" data-type='Lean.Meta.Simp.Config'>linarith</span>)</span>
   <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
@@ -3632,7 +4029,7 @@ hε : ε &gt; 0
 N : ℕ
 hN : ∀ (x : ℝ), |f N x - f₀ x| &lt; ε / 3
 ⊢ ε / 3 &gt; 0'></span>linarith only [<span class="term-marker" data-type='ε &gt; 0'>hε</span>])</span> with <span class="term-marker" data-type='∃ δ &gt; 0, ∀ (x : ℝ), |x - x₀| &lt; δ → |f N x - f N x₀| &lt; ε / 3'>⟨<span class="term-marker" data-type='ℝ'>δ</span>, <span class="term-marker" data-type='δ &gt; 0'>hδ</span>, <span class="term-marker" data-type='∀ (x : ℝ), |x - x₀| &lt; δ → |f N x - f N x₀| &lt; ε / 3'>hδf</span>⟩</span>
-  <span class="goal-marker" data-goal='Goals: 1
+  <span class="term-marker" data-type='Prop'><span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 f : ℕ → ℝ → ℝ
@@ -3647,7 +4044,7 @@ hN : ∀ (x : ℝ), |f N x - f₀ x| &lt; ε / 3
 δ : ℝ
 hδ : δ &gt; 0
 hδf : ∀ (x : ℝ), |x - x₀| &lt; δ → |f N x - f N x₀| &lt; ε / 3
-⊢ ∃ δ &gt; 0, ∀ (x : ℝ), |x - x₀| &lt; δ → |f₀ x - f₀ x₀| &lt; ε'></span><span class="term-marker" data-type='Prop'>use <span class="term-marker" data-type='ℝ'>δ</span>, <span class="term-marker" data-type='δ &gt; 0'>hδ</span></span>
+⊢ ∃ δ &gt; 0, ∀ (x : ℝ), |x - x₀| &lt; δ → |f₀ x - f₀ x₀| &lt; ε'></span>use <span class="term-marker" data-type='ℝ'>δ</span>, <span class="term-marker" data-type='δ &gt; 0'>hδ</span></span>
   <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
@@ -3697,7 +4094,7 @@ hδ : δ &gt; 0
 hδf : ∀ (x : ℝ), |x - x₀| &lt; δ → |f N x - f N x₀| &lt; ε / 3
 x : ℝ
 hx : |x - x₀| &lt; δ
-⊢ |f₀ x - f₀ x₀| &lt; ε'></span>specialize <span class="term-marker" data-type='∀ (x : ℝ), |x - x₀| &lt; δ → |f N x - f N x₀| &lt; ε / 3'><span class="term-marker" data-type='|f N x - f N x₀| &lt; ε / 3'>hδf</span> <span class="term-marker" data-type='ℝ'>x</span> <span class="term-marker" data-type='|x - x₀| &lt; δ'>hx</span></span>
+⊢ |f₀ x - f₀ x₀| &lt; ε'></span>specialize <span class="term-marker" data-type='|f N x - f N x₀| &lt; ε / 3'><span class="term-marker" data-type='∀ (x : ℝ), |x - x₀| &lt; δ → |f N x - f N x₀| &lt; ε / 3'>hδf</span> <span class="term-marker" data-type='ℝ'>x</span> <span class="term-marker" data-type='|x - x₀| &lt; δ'>hx</span></span>
   <span class="term-marker" data-type='|f₀ x - f₀ x₀| &lt; ε'><span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
@@ -3715,7 +4112,7 @@ hδ : δ &gt; 0
 x : ℝ
 hx : |x - x₀| &lt; δ
 hδf : |f N x - f N x₀| &lt; ε / 3
-⊢ |f₀ x - f₀ x₀| &lt; ε'></span>have <span class="term-marker" data-type='Prop'>hNx</span> := <span class="term-marker" data-type='|f N x - f₀ x| &lt; ε / 3'><span class="term-marker" data-type='∀ (x : ℝ), |f N x - f₀ x| &lt; ε / 3'>hN</span> <span class="term-marker" data-type='ℝ'>x</span></span></span>
+⊢ |f₀ x - f₀ x₀| &lt; ε'></span>have <span class="term-marker" data-type='Prop'>hNx</span> := <span class="term-marker" data-type='∀ (x : ℝ), |f N x - f₀ x| &lt; ε / 3'><span class="term-marker" data-type='|f N x - f₀ x| &lt; ε / 3'>hN</span> <span class="term-marker" data-type='ℝ'>x</span></span></span>
   <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
@@ -3878,7 +4275,7 @@ hNx₀ : -(ε / 3) &lt; f N x₀ - f₀ x₀ ∧ f N x₀ - f₀ x₀ &lt; ε / 
 The sequential definition of function continuity is equivalent to the epsilon-delta definition.
 -/
 def <span class="term-marker" data-type='(ℝ → ℝ) → ℝ → Prop'>contAt_seq</span> (<span class="term-marker" data-type='ℝ → ℝ'>f</span> : <span class="term-marker" data-type='Type'><span class="term-marker" data-type='Type'>ℝ</span> → <span class="term-marker" data-type='Type'>ℝ</span></span>) (<span class="term-marker" data-type='ℝ'>x₀</span> : <span class="term-marker" data-type='Type'>ℝ</span>) : <span class="term-marker" data-type='Type'>Prop</span> :=
-  <span class="term-marker" data-type='Prop'>∀ <span class="term-marker" data-type='ℕ → ℝ'>a</span> : <span class="term-marker" data-type='Type'><span class="term-marker" data-type='Type'>ℕ</span> → <span class="term-marker" data-type='Type'>ℝ</span></span>, <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='Prop'><span class="term-marker" data-type='(ℕ → ℝ) → ℝ → Prop'>TendsTo</span> <span class="term-marker" data-type='ℕ → ℝ'>a</span> <span class="term-marker" data-type='ℝ'>x₀</span></span> → <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='(ℕ → ℝ) → ℝ → Prop'>TendsTo</span> <span class="term-marker" data-type='ℕ → ℝ'>(<span class="term-marker" data-type='ℕ → ℝ'><span class="term-marker" data-type='ℝ → ℝ'>f</span> ∘ <span class="term-marker" data-type='ℕ → ℝ'>a</span></span>)</span> <span class="term-marker" data-type='ℝ'>(<span class="term-marker" data-type='ℝ → ℝ'><span class="term-marker" data-type='ℝ'>f</span> <span class="term-marker" data-type='ℝ'>x₀</span></span>)</span></span></span></span>
+  <span class="term-marker" data-type='Prop'>∀ <span class="term-marker" data-type='ℕ → ℝ'>a</span> : <span class="term-marker" data-type='Type'><span class="term-marker" data-type='Type'>ℕ</span> → <span class="term-marker" data-type='Type'>ℝ</span></span>, <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='Prop'><span class="term-marker" data-type='(ℕ → ℝ) → ℝ → Prop'>TendsTo</span> <span class="term-marker" data-type='ℕ → ℝ'>a</span> <span class="term-marker" data-type='ℝ'>x₀</span></span> → <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='(ℕ → ℝ) → ℝ → Prop'>TendsTo</span> <span class="term-marker" data-type='ℕ → ℝ'>(<span class="term-marker" data-type='ℕ → ℝ'><span class="term-marker" data-type='ℝ → ℝ'>f</span> ∘ <span class="term-marker" data-type='ℕ → ℝ'>a</span></span>)</span> <span class="term-marker" data-type='ℝ'>(<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ → ℝ'>f</span> <span class="term-marker" data-type='ℝ'>x₀</span></span>)</span></span></span></span>
 
 /-
 [TODO]
@@ -3936,7 +4333,7 @@ x₀ : ℝ
 hf : contAt f x₀
 a : ℕ → ℝ
 ha : TendsTo a x₀
-⊢ TendsTo (f ∘ a) (f x₀)'></span>exact <span class="term-marker" data-type='∀ {f : ℝ → ℝ} {x₀ : ℝ}, contAt f x₀ → ∀ {a : ℕ → ℝ}, TendsTo a x₀ → TendsTo (f ∘ a) (f x₀)'><span class="term-marker" data-type='TendsTo (f ∘ a) (f x₀)'>tendsTo_of_contAt</span> <span class="term-marker" data-type='contAt f x₀'>hf</span> <span class="term-marker" data-type='TendsTo a x₀'>ha</span></span>
+⊢ TendsTo (f ∘ a) (f x₀)'></span>exact <span class="term-marker" data-type='TendsTo (f ∘ a) (f x₀)'><span class="term-marker" data-type='∀ {f : ℝ → ℝ} {x₀ : ℝ}, contAt f x₀ → ∀ {a : ℕ → ℝ}, TendsTo a x₀ → TendsTo (f ∘ a) (f x₀)'>tendsTo_of_contAt</span> <span class="term-marker" data-type='contAt f x₀'>hf</span> <span class="term-marker" data-type='TendsTo a x₀'>ha</span></span>
   <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
@@ -3977,14 +4374,14 @@ hnfcont : ¬∀ ε &gt; 0, ∃ δ &gt; 0, ∀ (x : ℝ), |x - x₀| &lt; δ → 
 hnfseq : contAt_seq f x₀
 ⊢ False'></span>push_neg at <span class="term-marker" data-type='¬∀ ε &gt; 0, ∃ δ &gt; 0, ∀ (x : ℝ), |x - x₀| &lt; δ → |f x - f x₀| &lt; ε'>hnfcont</span>
     -- construct a sequence `a n` tending to `x₀`
-    <span class="goal-marker" data-goal='Goals: 1
+    <span class="term-marker" data-type='False'><span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 f : ℝ → ℝ
 x₀ : ℝ
 hnfseq : contAt_seq f x₀
 hnfcont : ∃ ε &gt; 0, ∀ δ &gt; 0, ∃ x, |x - x₀| &lt; δ ∧ ε ≤ |f x - f x₀|
-⊢ False'></span><span class="term-marker" data-type='False'>let <span class="term-marker" data-type='ℕ → ℝ'>a</span> (<span class="term-marker" data-type='ℕ'>n</span> : <span class="term-marker" data-type='Type'>ℕ</span>) : <span class="term-marker" data-type='Type'>ℝ</span> := <span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>1</span> / (<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℕ'>n</span> + <span class="term-marker" data-type='ℝ'>1</span></span>)</span></span>
+⊢ False'></span>let <span class="term-marker" data-type='ℕ → ℝ'>a</span> (<span class="term-marker" data-type='ℕ'>n</span> : <span class="term-marker" data-type='Type'>ℕ</span>) : <span class="term-marker" data-type='Type'>ℝ</span> := <span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>1</span> / (<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℕ'>n</span> + <span class="term-marker" data-type='ℝ'>1</span></span>)</span></span>
     <span class="term-marker" data-type='False'><span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
@@ -3994,7 +4391,7 @@ hnfseq : contAt_seq f x₀
 hnfcont : ∃ ε &gt; 0, ∀ δ &gt; 0, ∃ x, |x - x₀| &lt; δ ∧ ε ≤ |f x - f x₀|
 a : ℕ → ℝ
   := fun n =&gt; 1 / (↑n + 1)
-⊢ False'></span>have</span> <span class="term-marker" data-type='∀ (n : ℕ), a n &gt; 0'>a_gt_zero</span> (<span class="term-marker" data-type='ℕ'>n</span> : <span class="term-marker" data-type='Type'>ℕ</span>) : <span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='Prop'><span class="term-marker" data-type='ℕ → ℝ'>a</span> <span class="term-marker" data-type='ℕ'>n</span></span> &gt; <span class="term-marker" data-type='ℝ'>0</span></span> := <span class="goal-marker" data-goal='Goals: 2
+⊢ False'></span>have</span> <span class="term-marker" data-type='∀ (n : ℕ), a n &gt; 0'>a_gt_zero</span> (<span class="term-marker" data-type='ℕ'>n</span> : <span class="term-marker" data-type='Type'>ℕ</span>) : <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='ℕ → ℝ'><span class="term-marker" data-type='ℝ'>a</span> <span class="term-marker" data-type='ℕ'>n</span></span> &gt; <span class="term-marker" data-type='ℝ'>0</span></span> := <span class="goal-marker" data-goal='Goals: 2
 
 Goal 1:
 f : ℝ → ℝ
@@ -4113,7 +4510,7 @@ a : ℕ → ℝ
 a_gt_zero : ∀ (n : ℕ), a n &gt; 0
 ε : ℝ
 hε : ε &gt; 0
-⊢ ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |a n - 0| &lt; ε'></span><span class="term-marker" data-type='Prop'>use <span class="term-marker" data-type='ℕ'><span class="term-marker" data-type='{α : Type} → [inst : Semiring α] → [inst_1 : PartialOrder α] → [FloorSemiring α] → α → ℕ'>Nat.ceil</span> <span class="term-marker" data-type='ℝ'>(<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>1</span> / <span class="term-marker" data-type='ℝ'>ε</span></span>)</span></span></span> -- ceiling function
+⊢ ∃ n₀, ∀ (n : ℕ), n₀ ≤ n → |a n - 0| &lt; ε'></span><span class="term-marker" data-type='Prop'>use <span class="term-marker" data-type='{α : Type} → [inst : Semiring α] → [inst_1 : PartialOrder α] → [FloorSemiring α] → α → ℕ'><span class="term-marker" data-type='ℕ'>Nat.ceil</span> <span class="term-marker" data-type='ℝ'>(<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>1</span> / <span class="term-marker" data-type='ℝ'>ε</span></span>)</span></span></span> -- ceiling function
       <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
@@ -4126,7 +4523,7 @@ a : ℕ → ℝ
 a_gt_zero : ∀ (n : ℕ), a n &gt; 0
 ε : ℝ
 hε : ε &gt; 0
-⊢ ∀ (n : ℕ), ⌈1 / ε⌉₊ ≤ n → |a n - 0| &lt; ε'></span>intro <span class="term-marker" data-type='ℕ'>n</span> <span class="term-marker" data-type='⌈1 / ε⌉₊ ≤ n'><span class="goal-marker" data-goal='Goals: 1
+⊢ ∀ (n : ℕ), ⌈1 / ε⌉₊ ≤ n → |a n - 0| &lt; ε'></span>intro <span class="term-marker" data-type='ℕ'>n</span> <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 f : ℝ → ℝ
@@ -4139,7 +4536,7 @@ a_gt_zero : ∀ (n : ℕ), a n &gt; 0
 ε : ℝ
 hε : ε &gt; 0
 n : ℕ
-⊢ ⌈1 / ε⌉₊ ≤ n → |a n - 0| &lt; ε'></span>hn</span>
+⊢ ⌈1 / ε⌉₊ ≤ n → |a n - 0| &lt; ε'></span><span class="term-marker" data-type='⌈1 / ε⌉₊ ≤ n'>hn</span>
       <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
@@ -4212,7 +4609,7 @@ a_gt_zero : ∀ (n : ℕ), a n &gt; 0
 hε : ε &gt; 0
 n : ℕ
 hn : 1 / ε ≤ ↑n
-⊢ |a n| &lt; ε'></span>rw [<span class="term-marker" data-type='|a n| = a n'><span class="term-marker" data-type='∀ {α : Type} [inst : Lattice α] [inst_1 : AddGroup α] {a : α} [AddLeftMono α], 0 &lt; a → |a| = a'><span class="goal-marker" data-goal='Goals: 1
+⊢ |a n| &lt; ε'></span>rw [<span class="term-marker" data-type='|a n| = a n'><span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 f : ℝ → ℝ
@@ -4226,7 +4623,7 @@ a_gt_zero : ∀ (n : ℕ), a n &gt; 0
 hε : ε &gt; 0
 n : ℕ
 hn : 1 / ε ≤ ↑n
-⊢ |a n| &lt; ε'></span>abs_of_pos</span> <span class="term-marker" data-type='a n &gt; 0'>(<span class="term-marker" data-type='a n &gt; 0'><span class="term-marker" data-type='∀ (n : ℕ), a n &gt; 0'>a_gt_zero</span> <span class="term-marker" data-type='ℕ'>n</span></span>)</span></span><span class="goal-marker" data-goal='Goals: 1
+⊢ |a n| &lt; ε'></span><span class="term-marker" data-type='∀ {α : Type} [inst : Lattice α] [inst_1 : AddGroup α] {a : α} [AddLeftMono α], 0 &lt; a → |a| = a'>abs_of_pos</span> <span class="term-marker" data-type='a n &gt; 0'>(<span class="term-marker" data-type='∀ (n : ℕ), a n &gt; 0'><span class="term-marker" data-type='a n &gt; 0'>a_gt_zero</span> <span class="term-marker" data-type='ℕ'>n</span></span>)</span></span><span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 f : ℝ → ℝ
@@ -4372,7 +4769,7 @@ a_TendsTo_zero : TendsTo a 0
 ε : ℝ
 hε : ε &gt; 0
 hnf : ∀ δ &gt; 0, ∃ x, |x - x₀| &lt; δ ∧ ε ≤ |f x - f x₀|
-⊢ False'></span>let <span class="term-marker" data-type='Type'>x_subtype</span> (<span class="term-marker" data-type='ℕ'>n</span> : <span class="term-marker" data-type='Type'>ℕ</span>) := <span class="term-marker" data-type='{ x // |x - x₀| &lt; a n ∧ ε ≤ |f x - f x₀| }'><span class="term-marker" data-type='{α : Type} → (p : α → Prop) → (∃ x, p x) → { x // p x }'>Classical.indefiniteDescription</span> <span class="term-marker" data-type='ℝ → Prop'>_</span> &lt;| <span class="term-marker" data-type='∀ δ &gt; 0, ∃ x, |x - x₀| &lt; δ ∧ ε ≤ |f x - f x₀|'><span class="term-marker" data-type='∃ x, |x - x₀| &lt; a n ∧ ε ≤ |f x - f x₀|'>hnf</span> <span class="term-marker" data-type='ℝ'>(<span class="term-marker" data-type='ℕ → ℝ'><span class="term-marker" data-type='ℝ'>a</span> <span class="term-marker" data-type='ℕ'>n</span></span>)</span> <span class="term-marker" data-type='a n &gt; 0'>(<span class="term-marker" data-type='a n &gt; 0'><span class="term-marker" data-type='∀ (n : ℕ), a n &gt; 0'>a_gt_zero</span> <span class="term-marker" data-type='ℕ'>n</span></span>)</span></span></span></span>
+⊢ False'></span>let <span class="term-marker" data-type='Type'>x_subtype</span> (<span class="term-marker" data-type='ℕ'>n</span> : <span class="term-marker" data-type='Type'>ℕ</span>) := <span class="term-marker" data-type='{α : Type} → (p : α → Prop) → (∃ x, p x) → { x // p x }'><span class="term-marker" data-type='{ x // |x - x₀| &lt; a n ∧ ε ≤ |f x - f x₀| }'>Classical.indefiniteDescription</span> <span class="term-marker" data-type='ℝ → Prop'>_</span> &lt;| <span class="term-marker" data-type='∃ x, |x - x₀| &lt; a n ∧ ε ≤ |f x - f x₀|'><span class="term-marker" data-type='∀ δ &gt; 0, ∃ x, |x - x₀| &lt; δ ∧ ε ≤ |f x - f x₀|'>hnf</span> <span class="term-marker" data-type='ℝ'>(<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℕ → ℝ'>a</span> <span class="term-marker" data-type='ℕ'>n</span></span>)</span> <span class="term-marker" data-type='a n &gt; 0'>(<span class="term-marker" data-type='∀ (n : ℕ), a n &gt; 0'><span class="term-marker" data-type='a n &gt; 0'>a_gt_zero</span> <span class="term-marker" data-type='ℕ'>n</span></span>)</span></span></span></span>
     <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
@@ -4406,7 +4803,7 @@ x_subtype : (n : ℕ) → { x // |x - x₀| &lt; a n ∧ ε ≤ |f x - f x₀| }
   := fun n =&gt; Classical.indefiniteDescription (fun x =&gt; |x - x₀| &lt; a n ∧ ε ≤ |f x - f x₀|) ⋯
 x : ℕ → ℝ
   := fun n =&gt; ↑(x_subtype n)
-⊢ False'></span><span class="term-marker" data-type='False'>have</span> <span class="term-marker" data-type='∀ (n : ℕ), |x n - x₀| &lt; a n'>x_lt_a</span> (<span class="term-marker" data-type='ℕ'>n</span> : <span class="term-marker" data-type='Type'>ℕ</span>) : <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='ℝ'>|<span class="term-marker" data-type='ℕ → ℝ'><span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>x</span> <span class="term-marker" data-type='ℕ'>n</span></span> - <span class="term-marker" data-type='ℝ'>x₀</span></span>|</span> &lt; <span class="term-marker" data-type='ℕ → ℝ'><span class="term-marker" data-type='ℝ'>a</span> <span class="term-marker" data-type='ℕ'>n</span></span></span> := <span class="goal-marker" data-goal='Goals: 2
+⊢ False'></span><span class="term-marker" data-type='False'>have</span> <span class="term-marker" data-type='∀ (n : ℕ), |x n - x₀| &lt; a n'>x_lt_a</span> (<span class="term-marker" data-type='ℕ'>n</span> : <span class="term-marker" data-type='Type'>ℕ</span>) : <span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='Prop'>|<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℕ → ℝ'>x</span> <span class="term-marker" data-type='ℕ'>n</span></span> - <span class="term-marker" data-type='ℝ'>x₀</span></span>|</span> &lt; <span class="term-marker" data-type='ℕ → ℝ'><span class="term-marker" data-type='ℝ'>a</span> <span class="term-marker" data-type='ℕ'>n</span></span></span> := <span class="goal-marker" data-goal='Goals: 2
 
 Goal 1:
 f : ℝ → ℝ
@@ -4481,8 +4878,8 @@ x_subtype : (n : ℕ) → { x // |x - x₀| &lt; a n ∧ ε ≤ |f x - f x₀| }
 x : ℕ → ℝ
   := fun n =&gt; ↑(x_subtype n)
 n : ℕ
-⊢ |↑(x_subtype n) - x₀| &lt; a n'></span>exact <span class="term-marker" data-type='{ x // |x - x₀| &lt; a n ∧ ε ≤ |f x - f x₀| }'><span class="term-marker" data-type='|↑(x_subtype n) - x₀| &lt; a n'>(<span class="term-marker" data-type='{ x // |x - x₀| &lt; a n ∧ ε ≤ |f x - f x₀| }'><span class="term-marker" data-type='(n : ℕ) → { x // |x - x₀| &lt; a n ∧ ε ≤ |f x - f x₀| }'>x_subtype</span> <span class="term-marker" data-type='ℕ'>n</span></span>)</span>.<span class="term-marker" data-type='∀ {α : Type} {p : α → Prop} (self : Subtype p), p ↑self'>property</span>.<span class="term-marker" data-type='∀ {a b : Prop}, a ∧ b → a'>left</span></span>
-    <span class="goal-marker" data-goal='Goals: 1
+⊢ |↑(x_subtype n) - x₀| &lt; a n'></span>exact <span class="term-marker" data-type='{ x // |x - x₀| &lt; a n ∧ ε ≤ |f x - f x₀| }'><span class="term-marker" data-type='|↑(x_subtype n) - x₀| &lt; a n'>(<span class="term-marker" data-type='(n : ℕ) → { x // |x - x₀| &lt; a n ∧ ε ≤ |f x - f x₀| }'><span class="term-marker" data-type='{ x // |x - x₀| &lt; a n ∧ ε ≤ |f x - f x₀| }'>x_subtype</span> <span class="term-marker" data-type='ℕ'>n</span></span>)</span>.<span class="term-marker" data-type='∀ {α : Type} {p : α → Prop} (self : Subtype p), p ↑self'>property</span>.<span class="term-marker" data-type='∀ {a b : Prop}, a ∧ b → a'>left</span></span>
+    <span class="term-marker" data-type='False'><span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 f : ℝ → ℝ
@@ -4500,7 +4897,7 @@ x_subtype : (n : ℕ) → { x // |x - x₀| &lt; a n ∧ ε ≤ |f x - f x₀| }
 x : ℕ → ℝ
   := fun n =&gt; ↑(x_subtype n)
 x_lt_a : ∀ (n : ℕ), |x n - x₀| &lt; a n
-⊢ False'></span><span class="term-marker" data-type='False'>have</span> <span class="term-marker" data-type='∀ (n : ℕ), |f (x n) - f x₀| ≥ ε'>fx_diverge</span> (<span class="term-marker" data-type='ℕ'>n</span> : <span class="term-marker" data-type='Type'>ℕ</span>) : <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='ℝ'>|<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ → ℝ'>f</span> <span class="term-marker" data-type='ℝ'>(<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℕ → ℝ'>x</span> <span class="term-marker" data-type='ℕ'>n</span></span>)</span></span> - <span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ → ℝ'>f</span> <span class="term-marker" data-type='ℝ'>x₀</span></span></span>|</span> ≥ <span class="term-marker" data-type='ℝ'>ε</span></span> := <span class="goal-marker" data-goal='Goals: 2
+⊢ False'></span>have</span> <span class="term-marker" data-type='∀ (n : ℕ), |f (x n) - f x₀| ≥ ε'>fx_diverge</span> (<span class="term-marker" data-type='ℕ'>n</span> : <span class="term-marker" data-type='Type'>ℕ</span>) : <span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='Prop'>|<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ → ℝ'>f</span> <span class="term-marker" data-type='ℝ'>(<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℕ → ℝ'>x</span> <span class="term-marker" data-type='ℕ'>n</span></span>)</span></span> - <span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ → ℝ'>f</span> <span class="term-marker" data-type='ℝ'>x₀</span></span></span>|</span> ≥ <span class="term-marker" data-type='ℝ'>ε</span></span> := <span class="goal-marker" data-goal='Goals: 2
 
 Goal 1:
 f : ℝ → ℝ
@@ -4579,7 +4976,7 @@ x : ℕ → ℝ
   := fun n =&gt; ↑(x_subtype n)
 x_lt_a : ∀ (n : ℕ), |x n - x₀| &lt; a n
 n : ℕ
-⊢ |f ↑(x_subtype n) - f x₀| ≥ ε'></span>exact <span class="term-marker" data-type='ε ≤ |f ↑(x_subtype n) - f x₀|'><span class="term-marker" data-type='{ x // |x - x₀| &lt; a n ∧ ε ≤ |f x - f x₀| }'>(<span class="term-marker" data-type='(n : ℕ) → { x // |x - x₀| &lt; a n ∧ ε ≤ |f x - f x₀| }'><span class="term-marker" data-type='{ x // |x - x₀| &lt; a n ∧ ε ≤ |f x - f x₀| }'>x_subtype</span> <span class="term-marker" data-type='ℕ'>n</span></span>)</span>.<span class="term-marker" data-type='∀ {α : Type} {p : α → Prop} (self : Subtype p), p ↑self'>property</span>.<span class="term-marker" data-type='∀ {a b : Prop}, a ∧ b → b'>right</span></span>
+⊢ |f ↑(x_subtype n) - f x₀| ≥ ε'></span>exact <span class="term-marker" data-type='{ x // |x - x₀| &lt; a n ∧ ε ≤ |f x - f x₀| }'><span class="term-marker" data-type='ε ≤ |f ↑(x_subtype n) - f x₀|'>(<span class="term-marker" data-type='{ x // |x - x₀| &lt; a n ∧ ε ≤ |f x - f x₀| }'><span class="term-marker" data-type='(n : ℕ) → { x // |x - x₀| &lt; a n ∧ ε ≤ |f x - f x₀| }'>x_subtype</span> <span class="term-marker" data-type='ℕ'>n</span></span>)</span>.<span class="term-marker" data-type='∀ {α : Type} {p : α → Prop} (self : Subtype p), p ↑self'>property</span>.<span class="term-marker" data-type='∀ {a b : Prop}, a ∧ b → b'>right</span></span>
 
     <span class="goal-marker" data-goal='Goals: 1
 
@@ -4600,7 +4997,7 @@ x : ℕ → ℝ
   := fun n =&gt; ↑(x_subtype n)
 x_lt_a : ∀ (n : ℕ), |x n - x₀| &lt; a n
 fx_diverge : ∀ (n : ℕ), |f (x n) - f x₀| ≥ ε
-⊢ False'></span><span class="term-marker" data-type='False'>have</span> <span class="term-marker" data-type='TendsTo x x₀'>x_tendsTo_x₀</span> : <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='(ℕ → ℝ) → ℝ → Prop'>TendsTo</span> <span class="term-marker" data-type='ℕ → ℝ'>x</span> <span class="term-marker" data-type='ℝ'>x₀</span></span> := <span class="goal-marker" data-goal='Goals: 2
+⊢ False'></span><span class="term-marker" data-type='False'>have</span> <span class="term-marker" data-type='TendsTo x x₀'>x_tendsTo_x₀</span> : <span class="term-marker" data-type='(ℕ → ℝ) → ℝ → Prop'><span class="term-marker" data-type='Prop'>TendsTo</span> <span class="term-marker" data-type='ℕ → ℝ'>x</span> <span class="term-marker" data-type='ℝ'>x₀</span></span> := <span class="goal-marker" data-goal='Goals: 2
 
 Goal 1:
 f : ℝ → ℝ
@@ -4641,7 +5038,7 @@ x_lt_a : ∀ (n : ℕ), |x n - x₀| &lt; a n
 fx_diverge : ∀ (n : ℕ), |f (x n) - f x₀| ≥ ε
 x_tendsTo_x₀ : TendsTo x x₀
 ⊢ False'></span>by
-      <span class="term-marker" data-type='TendsTo (fun n =&gt; x n) x₀'><span class="goal-marker" data-goal='Goals: 1
+      <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 f : ℝ → ℝ
@@ -4660,7 +5057,7 @@ x : ℕ → ℝ
   := fun n =&gt; ↑(x_subtype n)
 x_lt_a : ∀ (n : ℕ), |x n - x₀| &lt; a n
 fx_diverge : ∀ (n : ℕ), |f (x n) - f x₀| ≥ ε
-⊢ TendsTo x x₀'></span>suffices <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='(ℕ → ℝ) → ℝ → Prop'>TendsTo</span> <span class="term-marker" data-type='ℕ → ℝ'>(<span class="term-marker" data-type='ℕ → ℝ'>fun <span class="term-marker" data-type='Type'>n</span> ↦ <span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℕ → ℝ'>x</span> <span class="term-marker" data-type='ℕ'>n</span></span> - <span class="term-marker" data-type='ℝ'>x₀</span></span></span>)</span> <span class="term-marker" data-type='ℝ'>0</span></span> <span class="goal-marker" data-goal='Goals: 1
+⊢ TendsTo x x₀'></span><span class="term-marker" data-type='TendsTo (fun n =&gt; x n) x₀'>suffices <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='(ℕ → ℝ) → ℝ → Prop'>TendsTo</span> <span class="term-marker" data-type='ℕ → ℝ'>(<span class="term-marker" data-type='ℕ → ℝ'>fun <span class="term-marker" data-type='Type'>n</span> ↦ <span class="term-marker" data-type='ℕ → ℝ'><span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℝ'>x</span> <span class="term-marker" data-type='ℕ'>n</span></span> - <span class="term-marker" data-type='ℝ'>x₀</span></span></span>)</span> <span class="term-marker" data-type='ℝ'>0</span></span> <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 f : ℝ → ℝ
@@ -4701,7 +5098,7 @@ x : ℕ → ℝ
 x_lt_a : ∀ (n : ℕ), |x n - x₀| &lt; a n
 fx_diverge : ∀ (n : ℕ), |f (x n) - f x₀| ≥ ε
 this : TendsTo (fun n =&gt; x n - x₀) 0
-⊢ TendsTo x x₀'></span>have <span class="term-marker" data-type='Prop'>h_add</span> := <span class="term-marker" data-type='∀ {a b : ℕ → ℝ} {A B : ℝ}, TendsTo a A → TendsTo b B → TendsTo (fun n =&gt; a n + b n) (A + B)'><span class="term-marker" data-type='TendsTo (fun n =&gt; x n - x₀ + x₀) (0 + x₀)'>tendsTo_add</span> <span class="term-marker" data-type='TendsTo (fun n =&gt; x n - x₀) 0'>this</span> <span class="term-marker" data-type='TendsTo (fun x =&gt; x₀) x₀'>(<span class="term-marker" data-type='∀ (c : ℝ), TendsTo (fun x =&gt; c) c'><span class="term-marker" data-type='TendsTo (fun x =&gt; x₀) x₀'>tendsTo_const</span> <span class="term-marker" data-type='ℝ'>x₀</span></span>)</span></span></span>
+⊢ TendsTo x x₀'></span>have <span class="term-marker" data-type='Prop'>h_add</span> := <span class="term-marker" data-type='∀ {a b : ℕ → ℝ} {A B : ℝ}, TendsTo a A → TendsTo b B → TendsTo (fun n =&gt; a n + b n) (A + B)'><span class="term-marker" data-type='TendsTo (fun n =&gt; x n - x₀ + x₀) (0 + x₀)'>tendsTo_add</span> <span class="term-marker" data-type='TendsTo (fun n =&gt; x n - x₀) 0'>this</span> <span class="term-marker" data-type='TendsTo (fun x =&gt; x₀) x₀'>(<span class="term-marker" data-type='TendsTo (fun x =&gt; x₀) x₀'><span class="term-marker" data-type='∀ (c : ℝ), TendsTo (fun x =&gt; c) c'>tendsTo_const</span> <span class="term-marker" data-type='ℝ'>x₀</span></span>)</span></span></span>
         <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
@@ -4785,7 +5182,7 @@ x : ℕ → ℝ
   := fun n =&gt; ↑(x_subtype n)
 x_lt_a : ∀ (n : ℕ), |x n - x₀| &lt; a n
 fx_diverge : ∀ (n : ℕ), |f (x n) - f x₀| ≥ ε
-⊢ TendsTo (fun n =&gt; x n - x₀) 0'></span>refine <span class="term-marker" data-type='TendsTo (fun n =&gt; x n - x₀) 0'><span class="term-marker" data-type='∀ {a b c : ℕ → ℝ} {L : ℝ}, TendsTo a L → TendsTo c L → (∀ (n : ℕ), a n ≤ b n) → (∀ (n : ℕ), b n ≤ c n) → TendsTo b L'>tendsTo_sandwich</span> <span class="term-marker" data-type='TendsTo (fun n =&gt; -a n) 0'>(<span class="term-marker" data-type='TendsTo (fun n =&gt; -a n) 0'>?_</span> : <span class="term-marker" data-type='(ℕ → ℝ) → ℝ → Prop'><span class="term-marker" data-type='Prop'>TendsTo</span> <span class="term-marker" data-type='ℕ → ℝ'>(<span class="term-marker" data-type='ℕ → ℝ'>fun <span class="term-marker" data-type='Type'>n</span> ↦ <span class="term-marker" data-type='ℝ'>-<span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℕ → ℝ'>a</span> <span class="term-marker" data-type='ℕ'>n</span></span></span></span>)</span> <span class="term-marker" data-type='ℝ'>0</span></span>)</span> <span class="term-marker" data-type='TendsTo (fun n =&gt; a n) 0'>(<span class="term-marker" data-type='TendsTo (fun n =&gt; a n) 0'>?_</span> : <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='(ℕ → ℝ) → ℝ → Prop'>TendsTo</span> <span class="term-marker" data-type='ℕ → ℝ'>(<span class="term-marker" data-type='ℕ → ℝ'>fun <span class="term-marker" data-type='Type'>n</span> ↦ <span class="term-marker" data-type='ℝ'><span class="term-marker" data-type='ℕ → ℝ'>a</span> <span class="term-marker" data-type='ℕ'>n</span></span></span>)</span> <span class="term-marker" data-type='ℝ'>0</span></span>)</span> <span class="term-marker" data-type='∀ (n : ℕ), -a n ≤ x n - x₀'>?_</span> <span class="term-marker" data-type='∀ (n : ℕ), x n - x₀ ≤ a n'>?_</span></span>
+⊢ TendsTo (fun n =&gt; x n - x₀) 0'></span>refine <span class="term-marker" data-type='TendsTo (fun n =&gt; x n - x₀) 0'><span class="term-marker" data-type='∀ {a b c : ℕ → ℝ} {L : ℝ}, TendsTo a L → TendsTo c L → (∀ (n : ℕ), a n ≤ b n) → (∀ (n : ℕ), b n ≤ c n) → TendsTo b L'>tendsTo_sandwich</span> <span class="term-marker" data-type='TendsTo (fun n =&gt; -a n) 0'>(<span class="term-marker" data-type='TendsTo (fun n =&gt; -a n) 0'>?_</span> : <span class="term-marker" data-type='Prop'><span class="term-marker" data-type='(ℕ → ℝ) → ℝ → Prop'>TendsTo</span> <span class="term-marker" data-type='ℕ → ℝ'>(<span class="term-marker" data-type='ℕ → ℝ'>fun <span class="term-marker" data-type='Type'>n</span> ↦ <span class="term-marker" data-type='ℝ'>-<span class="term-marker" data-type='ℕ → ℝ'><span class="term-marker" data-type='ℝ'>a</span> <span class="term-marker" data-type='ℕ'>n</span></span></span></span>)</span> <span class="term-marker" data-type='ℝ'>0</span></span>)</span> <span class="term-marker" data-type='TendsTo (fun n =&gt; a n) 0'>(<span class="term-marker" data-type='TendsTo (fun n =&gt; a n) 0'>?_</span> : <span class="term-marker" data-type='(ℕ → ℝ) → ℝ → Prop'><span class="term-marker" data-type='Prop'>TendsTo</span> <span class="term-marker" data-type='ℕ → ℝ'>(<span class="term-marker" data-type='ℕ → ℝ'>fun <span class="term-marker" data-type='Type'>n</span> ↦ <span class="term-marker" data-type='ℕ → ℝ'><span class="term-marker" data-type='ℝ'>a</span> <span class="term-marker" data-type='ℕ'>n</span></span></span>)</span> <span class="term-marker" data-type='ℝ'>0</span></span>)</span> <span class="term-marker" data-type='∀ (n : ℕ), -a n ≤ x n - x₀'>?_</span> <span class="term-marker" data-type='∀ (n : ℕ), x n - x₀ ≤ a n'>?_</span></span>
       <span class="goal-marker" data-goal='Goals: 4
 
 Goal 1:
@@ -4865,7 +5262,7 @@ x : ℕ → ℝ
   := fun n =&gt; ↑(x_subtype n)
 x_lt_a : ∀ (n : ℕ), |x n - x₀| &lt; a n
 fx_diverge : ∀ (n : ℕ), |f (x n) - f x₀| ≥ ε
-⊢ ∀ (n : ℕ), x n - x₀ ≤ a n'></span>· <span class="term-marker" data-type='TendsTo (fun n =&gt; -a n) 0'><span class="goal-marker" data-goal='Goals: 1
+⊢ ∀ (n : ℕ), x n - x₀ ≤ a n'></span>· <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
 f : ℝ → ℝ
@@ -4884,7 +5281,7 @@ x : ℕ → ℝ
   := fun n =&gt; ↑(x_subtype n)
 x_lt_a : ∀ (n : ℕ), |x n - x₀| &lt; a n
 fx_diverge : ∀ (n : ℕ), |f (x n) - f x₀| ≥ ε
-⊢ TendsTo (fun n =&gt; -a n) 0'></span>haveI := <span class="term-marker" data-type='TendsTo (fun n =&gt; -a n) (-0)'><span class="term-marker" data-type='∀ {a : ℕ → ℝ} {t : ℝ}, TendsTo a t → TendsTo (fun n =&gt; -a n) (-t)'>tendsTo_neg</span> <span class="term-marker" data-type='TendsTo a 0'>a_TendsTo_zero</span></span></span>
+⊢ TendsTo (fun n =&gt; -a n) 0'></span><span class="term-marker" data-type='TendsTo (fun n =&gt; -a n) 0'>haveI := <span class="term-marker" data-type='∀ {a : ℕ → ℝ} {t : ℝ}, TendsTo a t → TendsTo (fun n =&gt; -a n) (-t)'><span class="term-marker" data-type='TendsTo (fun n =&gt; -a n) (-0)'>tendsTo_neg</span> <span class="term-marker" data-type='TendsTo a 0'>a_TendsTo_zero</span></span></span>
         <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
@@ -5213,7 +5610,7 @@ x : ℕ → ℝ
 x_lt_a : ∀ (n : ℕ), |x n - x₀| &lt; a n
 fx_diverge : ∀ (n : ℕ), |f (x n) - f x₀| ≥ ε
 x_tendsTo_x₀ : TendsTo x x₀
-⊢ False'></span><span class="term-marker" data-type='False'>haveI := <span class="term-marker" data-type='contAt_seq f x₀'><span class="term-marker" data-type='TendsTo (f ∘ x) (f x₀)'>hnfseq</span> <span class="term-marker" data-type='ℕ → ℝ'>x</span> <span class="term-marker" data-type='TendsTo x x₀'>x_tendsTo_x₀</span></span></span>
+⊢ False'></span><span class="term-marker" data-type='False'>haveI := <span class="term-marker" data-type='TendsTo (f ∘ x) (f x₀)'><span class="term-marker" data-type='contAt_seq f x₀'>hnfseq</span> <span class="term-marker" data-type='ℕ → ℝ'>x</span> <span class="term-marker" data-type='TendsTo x x₀'>x_tendsTo_x₀</span></span></span>
     <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
@@ -5375,7 +5772,7 @@ x_tendsTo_x₀ : TendsTo x x₀
 this : TendsTo (f ∘ x) (f x₀)
 n₀ : ℕ
 hn₀ : |f (x n₀) - f x₀| &lt; ε
-⊢ False'></span>specialize <span class="term-marker" data-type='∀ (n : ℕ), |f (x n) - f x₀| ≥ ε'><span class="term-marker" data-type='|f (x n₀) - f x₀| ≥ ε'>fx_diverge</span> <span class="term-marker" data-type='ℕ'>n₀</span></span>
+⊢ False'></span>specialize <span class="term-marker" data-type='|f (x n₀) - f x₀| ≥ ε'><span class="term-marker" data-type='∀ (n : ℕ), |f (x n) - f x₀| ≥ ε'>fx_diverge</span> <span class="term-marker" data-type='ℕ'>n₀</span></span>
     <span class="goal-marker" data-goal='Goals: 1
 
 Goal 1:
@@ -5400,3 +5797,5 @@ n₀ : ℕ
 hn₀ : |f (x n₀) - f x₀| &lt; ε
 fx_diverge : |f (x n₀) - f x₀| ≥ ε
 ⊢ False'></span>linarith only [<span class="term-marker" data-type='|f (x n₀) - f x₀| &lt; ε'>hn₀</span>, <span class="term-marker" data-type='|f (x n₀) - f x₀| ≥ ε'>fx_diverge</span>]
+
+end
