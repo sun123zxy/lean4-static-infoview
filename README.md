@@ -71,20 +71,22 @@ Just open the generated marked-up code file in our online frontend. The frontend
 
 ### Integrating into Your Website
 
-To use our interactive InfoView and syntax highlighting in your website, put `js/infoview.js` and `css/infoview.css` into your project, and embed the following in `<head>` and `<body>` of your HTML file respectively:
+To use our interactive InfoView and syntax highlighting in your website, embed the following in `<head>` and `<body>` of your HTML file respectively:
 
 ```html
-<link rel="stylesheet" href="css/infoview.css">
+<link rel="stylesheet" href="https://sun123zxy.github.io/lean4-static-infoview/css/infoview.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/vs2015.min.css">
 ```
 
 ```html
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 <script src="https://unpkg.com/highlightjs-lean/dist/lean.min.js"></script>
-<script src="js/infoview.js"></script>
+<script src="https://sun123zxy.github.io/lean4-static-infoview/js/infoview.js"></script>
 ```
 
-You may change the highlighting style by replacing the highlight.js CSS file. Then follow these steps:
+Alternatively, you can also host `js/infoview.js` and `css/infoview.css` locally on your server. You may change the highlighting style by replacing the highlight.js CSS file. If no syntax highlighting is needed, simply omit the highlight.js related files.
+
+Then, Follow these steps:
 
 - your Lean code should first be analyzed by our parser executable offline to generate a marked-up code in HTML format.
 
