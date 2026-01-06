@@ -22,6 +22,23 @@ let infoviewState = {
 // ============================================================================
 
 /**
+ * Safely highlight Lean code with fallback if highlight.js is not loaded
+ * @param {string} code - The code to highlight
+ * @returns {string} - HTML string with highlighted code or escaped plain text
+ */
+function tryHighlight(code) {
+    if (typeof hljs !== 'undefined') {
+        try {
+            return hljs.highlight(code, { language: 'lean', ignoreIllegals: true }).value;
+        } catch (e) {
+            console.warn('Highlighting failed, falling back to plain text:', e);
+        }
+    }
+    // Fallback: escape HTML and return plain text
+    return escapeHtml(code);
+}
+
+/**
  * Recursively walk the DOM and highlight text nodes while preserving marker spans
  */
 function highlightTextNodes(node) {
@@ -31,12 +48,12 @@ function highlightTextNodes(node) {
     if (node.nodeType === Node.TEXT_NODE) {
         const text = node.textContent;
         if (text.trim()) {
-            // Use hljs to highlight this text fragment
-            const highlighted = hljs.highlight(text, { language: 'lean', ignoreIllegals: true });
+            // Highlight this text fragment
+            const highlighted = tryHighlight(text);
             
             // Create a temporary container to parse the highlighted HTML
             const temp = document.createElement('span');
-            temp.innerHTML = highlighted.value;
+            temp.innerHTML = highlighted;
             
             // Replace the text node with the highlighted content
             const parent = node.parentNode;
@@ -120,7 +137,7 @@ function processGoal(goalText) {
     
     if (vdashIndex === -1) {
         // No turnstile, treat entire text as hypotheses
-        const highlighted = hljs.highlight(goalText.trim(), { language: 'lean', ignoreIllegals: true }).value.replace(/\n/g, '<br>');
+        const highlighted = tryHighlight(goalText.trim()).replace(/\n/g, '<br>');
         return `<div class="goal-hypotheses">${highlighted}</div>`;
     }
     
@@ -131,12 +148,12 @@ function processGoal(goalText) {
     
     // Highlight hypotheses
     if (hypotheses) {
-        const hypothesesHighlighted = hljs.highlight(hypotheses, { language: 'lean', ignoreIllegals: true }).value.replace(/\n/g, '<br>');
+        const hypothesesHighlighted = tryHighlight(hypotheses).replace(/\n/g, '<br>');
         html += `<div class="goal-hypotheses">${hypothesesHighlighted}</div>`;
     }
     
     // Add turnstile and target
-    const targetHighlighted = hljs.highlight(target, { language: 'lean', ignoreIllegals: true }).value.replace(/\n/g, '<br>');
+    const targetHighlighted = tryHighlight(target).replace(/\n/g, '<br>');
     html += `<div class="goal-target"><span class="goal-vdash">⊢</span> ${targetHighlighted}</div>`;
     
     return html;
@@ -217,8 +234,8 @@ function updateInfoPanel(content, type = 'goal') {
     if (type === 'term') {
         // Display term and its type information
         msgDiv.className = 'info-message term-info';
-        const termHighlighted = hljs.highlight(content.text, { language: 'lean', ignoreIllegals: true }).value.replace(/\n/g, '<br>');
-        const typeHighlighted = hljs.highlight(content.type, { language: 'lean', ignoreIllegals: true }).value.replace(/\n/g, '<br>');
+        const termHighlighted = tryHighlight(content.text).replace(/\n/g, '<br>');
+        const typeHighlighted = tryHighlight(content.type).replace(/\n/g, '<br>');
         msgDiv.innerHTML = `
             <div class="term-display">
                 <div class="term-label">Term:</div> <div class="term-text">${termHighlighted}</div><br>
@@ -562,7 +579,7 @@ function isTypingInInput() {
 function initInfoview() {
     // 1. Apply syntax highlighting to the code
     const code = document.querySelector('code.infoview-lean');
-    if (code && typeof hljs !== 'undefined') {
+    if (code) {
         highlightTextNodes(code);
     }
     
