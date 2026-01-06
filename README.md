@@ -71,7 +71,7 @@ Just open the generated marked-up code file in our online frontend. The frontend
 
 ### Integrating into Your Website
 
-To use our interactive InfoView and syntax highlighting in your website, embed the following in `<head>` and `<body>` of your HTML file respectively:
+To use our interactive InfoView and syntax highlighting in your website, put `js/infoview.js` and `css/infoview.css` into your project, and embed the following in `<head>` and `<body>` of your HTML file respectively:
 
 ```html
 <link rel="stylesheet" href="css/infoview.css">
