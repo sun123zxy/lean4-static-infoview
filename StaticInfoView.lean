@@ -152,9 +152,7 @@ def collectInfoFromTrees (trees : PersistentArray InfoTree) (source : String) (o
 
   -- Generate HTML by processing events
   let mut html := ""
-
-  -- Add metadata span at the beginning with separate attributes
-  html := html ++ s!"<span class=\"meta-info\" data-export-goals='{options.exportGoals}' data-export-terms='{options.exportTerms}' style='display:none;'></span>"
+  let mut codeHtml := ""
 
   let mut currentPos := 0
   let mut startIndex := 0
@@ -166,7 +164,7 @@ def collectInfoFromTrees (trees : PersistentArray InfoTree) (source : String) (o
       let endPos := sortedEnds[endIndex]!
       if endPos != currentPos then
         break
-      html := html ++ "</span>"
+      codeHtml := codeHtml ++ "</span>"
       endIndex := endIndex + 1
 
     -- Process all START events at this position (open spans or insert markers)
@@ -177,17 +175,23 @@ def collectInfoFromTrees (trees : PersistentArray InfoTree) (source : String) (o
 
       if eventData.startsWith "<goal>" then
         let goalText := eventData.drop 6
-        html := html ++ s!"<span class=\"goal-marker\" data-goal='{goalText}'></span>"
+        codeHtml := codeHtml ++ s!"<span class=\"goal-marker\" data-goal='{goalText}'></span>"
       else if eventData.startsWith "<term>" then
         let termType := eventData.drop 6
-        html := html ++ s!"<span class=\"term-marker\" data-type='{termType}'>"
+        codeHtml := codeHtml ++ s!"<span class=\"term-marker\" data-type='{termType}'>"
 
       startIndex := startIndex + 1
 
     -- Finally, add the character at current position
     let char := String.Pos.Raw.get source ⟨currentPos⟩
-    html := html ++ escapeHtml (String.ofList [char])
+    codeHtml := codeHtml ++ escapeHtml (String.ofList [char])
     currentPos := String.Pos.Raw.next source ⟨currentPos⟩ |>.byteIdx
+
+  -- Wrap in <pre><code> structure with meta-info span before it
+  html := s!"<span class=\"meta-info\" data-export-goals='{options.exportGoals}' data-export-terms='{options.exportTerms}' style='display:none;'></span>"
+  html := html ++ "<pre><code class=\"infoview-lean\">"
+  html := html ++ codeHtml
+  html := html ++ "</code></pre>"
 
   return html
 

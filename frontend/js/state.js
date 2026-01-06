@@ -9,19 +9,13 @@
 // ============================================================================
 
 export const state = {
-    currentFile: null,
-    currentMarker: null,
-    exportedGoals: true,    // Whether goals were exported in the loaded file
-    exportedTerms: true,    // Whether terms were exported in the loaded file
-    displayGoals: true      // User preference: show/hide goal markers
+    currentFile: null
 };
 
 /**
  * Reset state when loading a new file
  */
 export function resetState() {
-    state.currentMarker = null;
-    state.exportedGoals = true;
-    state.exportedTerms = true;
-    state.displayGoals = true;
+    // Reset file state
+    state.currentFile = null;
 }

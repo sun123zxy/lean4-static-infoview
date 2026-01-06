@@ -9,29 +9,28 @@
    - `processFile`: Main pipeline that parses, elaborates, and generates HTML with inline markers
    - `main`: Command-line argument parsing supporting `-g` (goals only), `-t` (terms only), and `-o` (output file)
 
-2. **Frontend** - Modular HTML/CSS/JS in `frontend/` directory
-   - **index.html**: Split-panel layout with file picker and display toggles
-   - **css/style.css**: VS Code dark theme with marker styles and nested term opacity
-   - **js/main.js**: Entry point
-   - **js/state.js**: State management
-   - **js/dataLoader.js**: HTML loading, meta info parsing, toggle controls
-   - **js/codeDisplay.js**: DOM tree walker for syntax highlighting
-   - **js/navigation.js**: Marker interaction and keyboard navigation
-   - **js/infoPanel.js**: Info panel rendering
-   - **js/resize.js**: Resizable panels
+2. **Frontend** - Modular structure with decoupled InfoView functionality
+   - **index.html**: Main HTML structure with toolbar, code display area, and keyboard hint
+   - **css/style.css**: General UI styles (toolbar, file picker, main layout)
+   - **css/infoview.css**: Standalone InfoView styles (panel, markers, goal colorization)
+   - **js/main.js**: Entry point for main frontend initialization
+   - **js/state.js**: Main frontend state (current file)
+   - **js/dataLoader.js**: HTML file loading and injection
+   - **js/infoview.js**: Standalone InfoView module (highlighting, navigation, panel rendering, event handlers)
 
 ## Technical Keypoints
 
 ### HTML Generation
 - **Command-Line Options**: See `README.md`
 - **Export Options**: `ExportOptions` structure controls what information to include in output
-- **Meta Information**: Hidden span at beginning of HTML with `data-export-goals` and `data-export-terms` attributes
-- **Event-Based Generation**: Uses start/end events to properly order nested term span tags.
+- **Output Structure**: `<span class="meta-info">...</span><pre><code class="infoview-lean">{marked-up content}</code></pre>`
+- **Meta Information**: Hidden span before `<pre>` tag with `data-export-goals` and `data-export-terms` attributes (currently not parsed by frontend)
+- **Event-Based Generation**: Uses start/end events to properly order nested term span tags
   - Events at same position: ends processed before starts for correct nesting
 - **Deduplication**: Filters duplicate TermInfo nodes with identical position ranges
 - **Range Validation**: Ignores zero-length or invalid ranges
 - **HTML Escaping**: Escapes special characters in code to ensure valid markup
-- **UTF-8 Handling**: All string positions and lengths are in bytes.
+- **UTF-8 Handling**: All string positions and lengths are in bytes
 - **Pretty Printing**: Uses `withLCtx` with proper local context to show actual variable names
 
 #### Marker Format
@@ -40,15 +39,37 @@
 <span class="term-marker" data-type=""></span>
 ```
 
-### Frontend
-- **Syntax Highlighting**: Highlight each slice of code using highlight.js with [highlightjs-lean](https://github.com/leanprover-community/highlightjs-lean/)
-- **Display Toggles**: Goals (functional), Terms (informational)
-- **Event Handling**: `mouseover` for terms, `click` for goals, `stopPropagation()` for nesting
-- **Keyboard Navigation**: Arrow keys with line-aware movement
+### Frontend Architecture
 
-#### Info Panel
-- **Goal State**: Colored hypotheses (cyan), turnstile (purple), types (teal)
-- **Term Info**: "Term: ... Type: ..." format
+#### Standalone InfoView (infoview.js + infoview.css)
+The InfoView is fully decoupled and reusable:
+- **Global API**: `window.initInfoview()` - Call after injecting marked-up HTML into DOM
+- **No dependencies**: Standalone JavaScript (no module system) and CSS
+- **Auto-detection**: Finds `<code class="infoview-lean">` and initializes automatically
+
+#### InfoView Features
+- **Floating Panel**: Right-side panel created dynamically in JavaScript
+- **Toggle Button**: Attached to right edge, keyboard shortcut 'I' to toggle
+- **Resizable**: Drag left border to adjust width
+- **Default Visible**: Shows by default, auto-expands when clicking markers
+- **Smooth Animation**: Slide in/out transitions (0.3s ease)
+
+#### Syntax Highlighting
+- **Library**: highlight.js with [highlightjs-lean](https://github.com/leanprover-community/highlightjs-lean/)
+- **Method**: DOM tree walker (`highlightTextNodes`) preserves marker spans
+- **Integrated**: Part of `initInfoview()` initialization
+
+#### Event Handling
+- **Goal Markers**: Click to select and show info, auto-expands InfoView if hidden
+- **Term Markers**: Hover with nested opacity (`mouseover`/`mouseleave`, `stopPropagation()`)
+- **Keyboard Navigation**: Arrow keys (line-aware), PageUp/Down, Home/End
+- **Keyboard Shortcut**: 'I' key to toggle InfoView (with input field detection)
+
+### Main Frontend
+- **File Loading**: Local file picker or default `output.html` via fetch
+- **Simple Workflow**: Load HTML → Inject into DOM → Call `initInfoview()`
+- **Minimal State**: Only tracks current filename
+- **UI Elements**: Toolbar with file picker, GitHub link, keyboard hint ("Press I to toggle InfoView")
 
 ## Planned Enhancement: Command Message Markers
 

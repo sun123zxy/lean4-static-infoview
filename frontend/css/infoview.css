@@ -1,0 +1,246 @@
+/* ============================================================================
+ * Lean 4 Static InfoView - Standalone Stylesheet
+ * ============================================================================
+ * This file contains all InfoView and syntax highlighting styles.
+ * It is designed to be reusable and independent of other frontend code.
+ * ========================================================================== */
+
+/* ============================================================================
+ * InfoView Panel
+ * ============================================================================ */
+
+#infoview-panel {
+    position: fixed;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 400px;
+    background-color: #252526;
+    border-left: 1px solid #3c3c3c;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    font-size: 14px;
+    transition: transform 0.3s ease;
+    z-index: 1000;
+}
+
+#infoview-panel.hidden {
+    transform: translateX(100%);
+}
+
+/* ============================================================================
+ * InfoView Toggle Button
+ * ============================================================================ */
+
+#infoview-toggle {
+    position: fixed;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 60px;
+    background-color: #252526;
+    border: 1px solid #3c3c3c;
+    border-right: none;
+    border-radius: 4px 0 0 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #d4d4d4;
+    font-size: 16px;
+    transition: background-color 0.2s, color 0.2s;
+    z-index: 1001;
+}
+
+#infoview-toggle:hover {
+    background-color: #2d2d30;
+    color: #ffffff;
+}
+
+#infoview-toggle.transitioning {
+    transition: background-color 0.2s, color 0.2s, right 0.3s ease;
+}
+
+#infoview-panel.hidden ~ #infoview-toggle {
+    right: 0;
+}
+
+#infoview-panel:not(.hidden) ~ #infoview-toggle {
+    right: 400px;
+}
+
+/* ============================================================================
+ * Resize Handle
+ * ============================================================================ */
+
+#infoview-resize-handle {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 5px;
+    background-color: #3c3c3c;
+    cursor: col-resize;
+    transition: background-color 0.2s;
+    z-index: 1002;
+}
+
+#infoview-resize-handle:hover {
+    background-color: #007acc;
+}
+
+/* ============================================================================
+ * Info Content Area
+ * ============================================================================ */
+
+#infoview-header {
+    padding: 14px 20px;
+    background-color: #252526;
+    border-bottom: 1px solid #3c3c3c;
+    font-size: 16px;
+    font-weight: 600;
+    color: #d4d4d4;
+    flex-shrink: 0;
+}
+
+#infoview-content {
+    flex: 1;
+    padding: 20px;
+    overflow: auto;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    line-height: 1.6;
+}
+
+#infoview-content.info-empty {
+    color: #858585;
+    font-style: italic;
+}
+
+/* ============================================================================
+ * Goal Marker Styles
+ * ============================================================================
+ * Blue gradient bar indicator for tactic positions
+ * z-index: 1 - beneath term markers
+ * ========================================================================== */
+
+.goal-marker {
+    display: inline;
+    width: 0;
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+    z-index: 1;
+}
+
+.goal-marker::before {
+    content: '';
+    position: absolute;
+    left: -.35em;
+    width: 2em;
+    height: 1.5em;
+    background: linear-gradient(to right, rgba(0, 122, 204, .3), rgba(0, 0, 0, 0));
+    border-top-left-radius: 10%;
+    border-bottom-left-radius: 10%;
+    border-left: .25em solid rgba(0, 122, 204, 0.5);
+}
+
+.goal-marker:hover::before,
+.goal-marker.active::before {
+    background: linear-gradient(to right, rgba(255, 191, 0, .5), rgba(0, 0, 0, 0));
+    border-left-color: rgba(255, 191, 0, 0.8);
+    box-shadow: -.3em 0 .5em rgba(255, 191, 0, 0.3);
+}
+
+/* ============================================================================
+ * Term Marker Styles
+ * ============================================================================
+ * Dotted underline for hoverable terms with type information
+ * Uses --opacity-factor CSS variable for dynamic nested highlighting
+ * z-index: 2 - above goal markers
+ * ========================================================================== */
+
+.term-marker {
+    display: inline;
+    position: relative;
+    border-bottom: 1px dotted rgba(78, 201, 176, 0.3);
+    cursor: help;
+    transition: all 0.2s ease;
+    z-index: 2;
+}
+
+/* Hover state applies to both directly hovered and parent terms */
+/* Opacity controlled by --opacity-factor: 1.0, 0.5, 0.25, 0.125... */
+.term-marker:hover {
+    background-color: rgba(78, 201, 176, calc(0.5 * var(--opacity-factor, 1)));
+    border-bottom: 2px solid rgba(78, 201, 176, var(--opacity-factor, 1));
+    border-radius: 2px;
+}
+
+/* ============================================================================
+ * Info Panel Message Styles
+ * ============================================================================ */
+
+.info-message {
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #2d2d30;
+    border-radius: 4px;
+    border-left: 3px solid #007acc;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    line-height: 1.6;
+}
+
+.info-message.term-info {
+    border-left-color: #4ec9b0;
+}
+
+/* ============================================================================
+ * Term Display Styles
+ * ============================================================================ */
+
+.term-display {
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.term-label,
+.term-type-label {
+    color: #858585;
+}
+
+/* ============================================================================
+ * Goal Syntax Highlighting
+ * ============================================================================ */
+
+.goal-header {
+    color: #4ec9b0;
+    font-weight: bold;
+    font-size: 15px;
+    margin-bottom: 8px;
+}
+
+.goal-label {
+    color: #4fc1ff;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 6px;
+}
+
+.goal-hypotheses {
+    margin-left: 4px;
+    margin-bottom: 6px;
+}
+
+.goal-target {
+    margin-left: 4px;
+    padding-top: 6px;
+}
+
+.goal-vdash {
+    color: #c586c0;
+    font-weight: bold;
+    font-size: 16px;
+}

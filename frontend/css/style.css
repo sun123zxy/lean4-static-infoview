@@ -10,6 +10,7 @@ body {
     height: 100vh;
     background-color: #1e1e1e;
     color: #d4d4d4;
+    color-scheme: dark;
 }
 
 /* File Picker Modal Styles */
@@ -105,47 +106,26 @@ body {
     position: relative;
 }
 
-/* Display Toggles */
-#display-toggles {
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
-    background-color: #252526;
-    border: 1px solid #3c3c3c;
-    border-radius: 4px;
-    padding: 10px 15px;
+#main-content {
     display: flex;
-    flex-direction: column;
-    gap: 8px;
-    z-index: 100;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    flex: 1;
+    overflow: hidden;
 }
 
-#display-toggles label {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 13px;
-    color: #d4d4d4;
-    user-select: none;
+#code-panel {
+    flex: 1;
+    padding: 20px;
+    overflow: auto;
+    background-color: #1e1e1e;
+    position: relative;
 }
 
-#display-toggles label:has(input:not(:disabled)) {
-    cursor: pointer;
-}
-
-#display-toggles input[type="checkbox"] {
-    width: 16px;
-    height: 16px;
-}
-
-#display-toggles input[type="checkbox"]:not(:disabled) {
-    cursor: pointer;
-}
-
-#display-toggles input[type="checkbox"]:disabled {
-    cursor: not-allowed;
-    opacity: 0.5;
+#code-content {
+    white-space: pre;
+    line-height: 1.6;
+    font-size: 14px;
+    position: relative;
+    cursor: text;
 }
 
 #toolbar {
@@ -214,28 +194,6 @@ body {
     position: relative;
 }
 
-#info-panel {
-    width: 400px;
-    min-width: 100px;
-    max-width: 95%;
-    padding: 20px;
-    overflow: auto;
-    background-color: #252526;
-    border-left: 1px solid #3c3c3c;
-    font-size: 14px;
-}
-
-#resize-handle {
-    width: 5px;
-    background-color: #3c3c3c;
-    cursor: col-resize;
-    transition: background-color 0.2s;
-}
-
-#resize-handle:hover {
-    background-color: #007acc;
-}
-
 #code-content {
     white-space: pre;
     line-height: 1.6;
@@ -244,127 +202,12 @@ body {
     cursor: text;
 }
 
-/* Goal Marker Styles */
-/* Blue gradient bar indicator for tactic positions */
-/* z-index: 1 - beneath term markers */
-.goal-marker {
-    display: inline;
-    width: 0;
-    position: relative;
-    cursor: pointer;
-    user-select: none;
-    z-index: 1;
-}
-
-.goal-marker::before {
-    content: '';
-    position: absolute;
-    left: -.35em;
-    width: 2em;
-    height: 1.5em;
-    background: linear-gradient(to right, rgba(0, 122, 204, .3), rgba(0, 0, 0, 0));
-    border-top-left-radius: 10%;
-    border-bottom-left-radius: 10%;
-    border-left: .25em solid rgba(0, 122, 204, 0.5);
-}
-
-.goal-marker:hover::before,
-.goal-marker.active::before{
-    background: linear-gradient(to right, rgba(255, 191, 0, .5), rgba(0, 0, 0, 0));
-    border-left-color: rgba(255, 191, 0, 0.8);
-    box-shadow: -.3em 0 .5em rgba(255, 191, 0, 0.3);
-}
-
-/* Term Marker Styles */
-/* Dotted underline for hoverable terms with type information */
-/* Uses --opacity-factor CSS variable for dynamic nested highlighting */
-/* z-index: 2 - above goal markers */
-.term-marker {
-    display: inline;
-    position: relative;
-    border-bottom: 1px dotted rgba(78, 201, 176, 0.3);
-    cursor: help;
-    transition: all 0.2s ease;
-    z-index: 2;
-}
-
-/* Hover state applies to both directly hovered and parent terms */
-/* Opacity controlled by --opacity-factor: 1.0, 0.5, 0.25, 0.125... */
-.term-marker:hover {
-    background-color: rgba(78, 201, 176, calc(0.5 * var(--opacity-factor, 1)));
-    border-bottom: 2px solid rgba(78, 201, 176, var(--opacity-factor, 1));
-    border-radius: 2px;
-}
-
-/* Info Panel Message Styles */
-.info-message {
-    margin-bottom: 10px;
-    padding: 10px;
-    background-color: #2d2d30;
-    border-radius: 4px;
-    border-left: 3px solid #007acc;
-    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-    line-height: 1.6;
-}
-
-.info-message.term-info {
-    border-left-color: #4ec9b0;
-}
-
-/* Term Display Styles */
-.term-display {
-    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-    font-size: 14px;
-    line-height: 1.6;
-}
-
-.term-label,
-.term-type-label {
-    color: #858585;
-}
-
-
-
-/* Instructions Overlay */
-#instructions {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background-color: #252526;
-    padding: 10px;
-    border-radius: 4px;
+#keyboard-hint {
+    position: fixed;
+    bottom: 10px;
+    right: 30px;
     font-size: 12px;
     color: #858585;
-    max-width: 300px;
-}
-
-/* Goal Syntax Highlighting */
-.goal-header {
-    color: #4ec9b0;
-    font-weight: bold;
-    font-size: 15px;
-    margin-bottom: 8px;
-}
-
-.goal-label {
-    color: #4fc1ff;
-    font-weight: bold;
-    margin-top: 10px;
-    margin-bottom: 6px;
-}
-
-.goal-hypotheses {
-    margin-left: 4px;
-    margin-bottom: 6px;
-}
-
-.goal-target {
-    margin-left: 4px;
-    padding-top: 6px;
-}
-
-.goal-vdash {
-    color: #c586c0;
-    font-weight: bold;
-    font-size: 16px;
+    pointer-events: none;
+    user-select: none;
 }
