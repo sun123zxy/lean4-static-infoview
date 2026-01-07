@@ -5,6 +5,31 @@
  * It is designed to be reusable and independent of other frontend code.
  * 
  * Usage: Call initInfoview() after injecting code content into the DOM.
+ * 
+ * ## Technical Keypoints
+ * 
+ * ### Standalone InfoView Architecture
+ * - **Global API**: `window.initInfoview()` - Call after injecting marked-up HTML into DOM
+ * - **No dependencies**: Standalone JavaScript (no module system) and CSS
+ * - **Auto-detection**: Finds `<code class="infoview-lean">` and initializes automatically
+ * 
+ * ### InfoView Features
+ * - **Floating Panel**: Right-side panel created dynamically in JavaScript
+ * - **Toggle Button**: Attached to right edge, keyboard shortcut 'I' to toggle
+ * - **Resizable**: Drag left border to adjust width
+ * - **Default Visible**: Shows by default, auto-expands when clicking markers
+ * - **Smooth Animation**: Slide in/out transitions (0.3s ease)
+ * 
+ * ### Syntax Highlighting
+ * - **Library**: highlight.js with highlightjs-lean
+ * - **Method**: DOM tree walker (`highlightTextNodes`) preserves marker spans
+ * - **Integrated**: Part of `initInfoview()` initialization
+ * 
+ * ### Event Handling
+ * - **Goal Markers**: Click to select and show info, auto-expands InfoView if hidden
+ * - **Term Markers**: Hover with nested opacity (`mouseover`/`mouseleave`, `stopPropagation()`)
+ * - **Keyboard Navigation**: Arrow keys (line-aware), PageUp/Down, Home/End
+ * - **Keyboard Shortcut**: 'I' key to toggle InfoView (with input field detection)
  * ========================================================================== */
 
 // ============================================================================

@@ -1,3 +1,22 @@
+/-
+### HTML Generation
+- **Command-Line Options**: See `README.md`
+- **Export Options**: `ExportOptions` structure controls what information to include in output
+- **Output Structure**: `<span class="meta-info">...</span><pre><code class="infoview-lean">{marked-up content}</code></pre>`
+- **Meta Information**: Hidden span before `<pre>` tag with `data-export-goals` and `data-export-terms` attributes (currently not parsed by frontend)
+- **Event-Based Generation**: Uses start/end events to properly order nested term span tags
+  - Events at same position: ends processed before starts for correct nesting
+- **Deduplication**: Filters duplicate TermInfo nodes with identical position ranges
+- **Range Validation**: Ignores zero-length or invalid ranges
+- **HTML Escaping**: Escapes special characters in code to ensure valid markup
+- **UTF-8 Handling**: All string positions and lengths are in bytes
+- **Pretty Printing**: Uses `withLCtx` with proper local context to show actual variable names
+
+### Marker Format
+- Goal markers: `<span class="goal-marker" data-goal=""></span>`
+- Term markers: `<span class="term-marker" data-type=""></span>`
+-/
+
 import Lean
 
 open Lean Elab Command Meta Tactic

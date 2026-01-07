@@ -3,9 +3,7 @@
 // ============================================================================
 //
 // Global state for:
-// - Current file and marker selection
-// - Export metadata (what was included in the file)
-// - Display preferences (user-controlled visibility)
+// - Current file name
 // ============================================================================
 
 export const state = {
