@@ -22,34 +22,6 @@ Currently the following info types can be extracted and displayed:
 
 Please ensure that **the project to be analyzed uses the same Lean version as this repository.**
 
-### Building the Executable
-
-First, clone this repository and build the executable:
-
-```bash
-lake build
-```
-
-The built executable can be found at `.lake/build/staticInfoView`.
-
-> Note that it is not a standalone binary, as our project relies `supportInterpreter = true` feature and hence depends on Lean's runtime libraries. The executable is supposed to be run with correct library paths set up by Lake. You can run it via Lake commands such as via `lake env` or `lake exe`. Alternatively, you can manually add Lean's PATH into your PATH.
-
-### Parsing a Lean File
-
-Now switch the current directory to the project to be analyzed. Run the following command:
-
-```bash
-lake env /path/to/lean4-static-infoview/.lake/build/staticInfoView path/to/FileToBeAnalyzed.lean -o output.html -g -t
-```
-
-> This will run the executable in the context of your project, so that dependencies can be resolved correctly. That's why the Lean version of the parser and your project must match.
-
-The generated `output.html` is a an HTML file containing your code, marked-up with extracted information such as tactic state and term type information, ready to be viewed in the frontend.
-
-### Intrusive Integration
-
-Alternatively, you can integrate the parser into your own Lean project intrusively. Simply copy `StaticInfoView.lean` into your project, and refer to our `lakefile.toml` to modify your lakefile accordingly.
-
 ### Command Line Options
 
 ```bash
@@ -63,6 +35,53 @@ Examples:
   staticInfoView path/to/FileToBeAnalyzed.lean -o output.html -g -t
 ```
 
+### Intrusive Integration
+
+You can integrate the parser into your own Lean project intrusively. Add the following dependency to your `lakefile.toml`:
+
+```toml
+[[require]]
+name = "staticInfoView"
+git = "https://github.com/sun123zxy/lean4-static-infoview"
+```
+
+Execute the following command to build the parser executable in your project:
+
+```bash
+lake update staticInfoView
+lake build staticInfoView
+```
+
+to analyze a Lean file in your project, run:
+
+```bash
+lake exe staticInfoView path/to/FileToBeAnalyzed.lean -o output.html -g -t
+```
+
+The generated `output.html` is a an HTML file containing your code, marked-up with extracted information such as tactic state and term type information, ready to be viewed in the frontend.
+
+### Non-intrusive Installation
+
+If you prefer not to modify your existing Lean projects, you can build and use the parser executable non-intrusively as follows.
+
+First, clone this repository and build the executable:
+
+```bash
+lake build
+```
+
+The built executable can be found at `.lake/build/staticInfoView`.
+
+> Note that it is not a standalone executable, as our project relies `supportInterpreter = true` feature and hence depends on Lean's runtime libraries. The executable is supposed to be run with correct library paths set up by Lake. You can run it via Lake commands such as via `lake env` or `lake exe`. Alternatively, you can manually add Lean's PATH into your PATH.
+
+Now switch the current directory to the project to be analyzed. Run the following command:
+
+```bash
+lake env /path/to/lean4-static-infoview/.lake/build/staticInfoView path/to/FileToBeAnalyzed.lean -o output.html -g -t
+```
+
+> `lake env` will run the executable in the context of your project, so that dependencies can be resolved correctly. That's why the Lean version of the parser and your project must match.
+
 ## The Frontend
 
 ### Viewing in the Frontend
@@ -74,8 +93,8 @@ Just open the generated marked-up code file in our online frontend. The frontend
 To use our interactive InfoView and syntax highlighting in your website, embed the following in `<head>` and `<body>` of your HTML file respectively:
 
 ```html
-<link rel="stylesheet" href="https://sun123zxy.github.io/lean4-static-infoview/css/infoview.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/vs2015.min.css">
+<link rel="stylesheet" href="https://sun123zxy.github.io/lean4-static-infoview/css/infoview.css">
 ```
 
 ```html
