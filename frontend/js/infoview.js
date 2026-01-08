@@ -32,9 +32,7 @@
  * - **Keyboard Shortcut**: 'I' key to toggle InfoView (with input field detection)
  * ========================================================================== */
 
-// ============================================================================
-// Section 1: InfoView State
-// ============================================================================
+// State
 
 let infoviewState = {
     isVisible: true,
@@ -42,22 +40,11 @@ let infoviewState = {
     isResizing: false
 };
 
-// ============================================================================
-// Section 2: Syntax Highlighting
-// ============================================================================
-
-/**
- * Safely highlight Lean code with fallback if highlight.js is not loaded
- * @param {string} code - The code to highlight
- * @returns {string} - HTML string with highlighted code or escaped plain text
- */
+// Syntax highlighting with fallback
 function tryHighlight(code) {
     if (typeof hljs !== 'undefined') {
-        try {
-            return hljs.highlight(code, { language: 'lean', ignoreIllegals: true }).value;
-        } catch (e) {
-            console.warn('Highlighting failed, falling back to plain text:', e);
-        }
+        try { return hljs.highlight(code, { language: 'lean', ignoreIllegals: true }).value; }
+        catch (e) { console.warn('Highlighting failed:', e); }
     }
     // Fallback: escape HTML and return plain text
     return escapeHtml(code);
@@ -73,62 +60,27 @@ function highlightTextNodes(node) {
     if (node.nodeType === Node.TEXT_NODE) {
         const text = node.textContent;
         if (text.trim()) {
-            // Highlight this text fragment
-            const highlighted = tryHighlight(text);
-            
-            // Create a temporary container to parse the highlighted HTML
             const temp = document.createElement('span');
-            temp.innerHTML = highlighted;
-            
-            // Replace the text node with the highlighted content
+            temp.innerHTML = tryHighlight(text);
             const parent = node.parentNode;
-            while (temp.firstChild) {
-                parent.insertBefore(temp.firstChild, node);
-            }
+            while (temp.firstChild) parent.insertBefore(temp.firstChild, node);
             parent.removeChild(node);
         }
-    } 
-    // If it's an element node, recurse into its children
-    else if (node.nodeType === Node.ELEMENT_NODE) {
-        // Process children in reverse to handle node removal safely
-        const children = Array.from(node.childNodes);
-        for (const child of children) {
-            highlightTextNodes(child);
-        }
+    } else if (node.nodeType === Node.ELEMENT_NODE) {
+        Array.from(node.childNodes).forEach(highlightTextNodes);
     }
 }
 
-// ============================================================================
-// Section 3: InfoView DOM Creation
-// ============================================================================
-
-/**
- * Creates and injects the InfoView panel and toggle button into the DOM
- */
+// Create InfoView DOM elements
 function createInfoViewDOM() {
-    // Create InfoView panel
     const panel = document.createElement('div');
     panel.id = 'infoview-panel';
+    panel.innerHTML = `
+        <div id="infoview-resize-handle"></div>
+        <div id="infoview-header">Lean InfoView</div>
+        <div id="infoview-content" class="info-empty">Click on the code to see information</div>
+    `;
     
-    // Create resize handle
-    const resizeHandle = document.createElement('div');
-    resizeHandle.id = 'infoview-resize-handle';
-    panel.appendChild(resizeHandle);
-    
-    // Create header
-    const header = document.createElement('div');
-    header.id = 'infoview-header';
-    header.textContent = 'Lean InfoView';
-    panel.appendChild(header);
-    
-    // Create content area
-    const content = document.createElement('div');
-    content.id = 'infoview-content';
-    content.className = 'info-empty';
-    content.textContent = 'Click on the code to see information';
-    panel.appendChild(content);
-    
-    // Create toggle button
     const toggleBtn = document.createElement('div');
     toggleBtn.id = 'infoview-toggle';
     toggleBtn.innerHTML = '&gt;';
@@ -140,22 +92,13 @@ function createInfoViewDOM() {
     document.body.appendChild(toggleBtn);
 }
 
-// ============================================================================
-// Section 4: Info Panel Rendering
-// ============================================================================
-
-/**
- * Escapes HTML special characters
- */
+// Escape HTML
 function escapeHtml(text) {
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
 }
 
-/**
- * Processes a single goal by separating hypotheses and target with ⊢
- */
 function processGoal(goalText) {
     // Split by turnstile to separate hypotheses from target
     const vdashIndex = goalText.indexOf('⊢');
@@ -168,7 +111,6 @@ function processGoal(goalText) {
     
     const hypotheses = goalText.substring(0, vdashIndex).trim();
     const target = goalText.substring(vdashIndex + 1).trim();
-    
     let html = '';
     
     // Highlight hypotheses
@@ -196,46 +138,25 @@ function colorizeGoal(text) {
     let currentGoal = null;
     let headerLine = '';
     
-    for (let i = 0; i < lines.length; i++) {
-        const line = lines[i];
-        
-        // Match "Goals: N" header or "Goal N:" label
+    for (const line of lines) {
         if (line.match(/^Goals?: \d+$/)) {
             headerLine = line;
             html += `<div class="goal-header">${escapeHtml(line)}</div>`;
-            continue;
-        }
-        
-        if (line.match(/^Goal \d+:$/)) {
-            // Process previous goal if exists
-            if (currentGoal !== null) {
-                html += processGoal(currentGoal);
-            }
-            // Start new goal
+        } else if (line.match(/^Goal \d+:$/)) {
+            if (currentGoal !== null) html += processGoal(currentGoal);
             html += `<div class="goal-label">${escapeHtml(line)}</div>`;
             currentGoal = '';
-            continue;
-        }
-        
-        // Separator between goals
-        if (line.trim() === '---') {
+        } else if (line.trim() === '---') {
             if (currentGoal !== null) {
                 html += processGoal(currentGoal);
                 currentGoal = '';
             }
-            continue;
-        }
-        
-        // Accumulate goal content
-        if (currentGoal !== null) {
+        } else if (currentGoal !== null) {
             currentGoal += (currentGoal ? '\n' : '') + line;
         }
     }
     
-    // Process last goal
-    if (currentGoal !== null && currentGoal.trim()) {
-        html += processGoal(currentGoal);
-    }
+    if (currentGoal !== null && currentGoal.trim()) html += processGoal(currentGoal);
     
     return html;
 }
@@ -255,18 +176,12 @@ function updateInfoPanel(content, type = 'goal') {
     infoContent.className = '';
     infoContent.innerHTML = '';
     const msgDiv = document.createElement('div');
-    
     if (type === 'term') {
-        // Display term and its type information
         msgDiv.className = 'info-message term-info';
-        const termHighlighted = tryHighlight(content.text).replace(/\n/g, '<br>');
-        const typeHighlighted = tryHighlight(content.type).replace(/\n/g, '<br>');
-        msgDiv.innerHTML = `
-            <div class="term-display">
-                <div class="term-label">Term:</div> <div class="term-text">${termHighlighted}</div><br>
-                <div class="term-type-label">Type:</div> <div class="term-type-value">${typeHighlighted}</div>
-            </div>`;
-            
+        msgDiv.innerHTML = `<div class="term-display">
+            <div class="term-label">Term:</div> <div class="term-text">${tryHighlight(content.text).replace(/\n/g, '<br>')}</div><br>
+            <div class="term-type-label">Type:</div> <div class="term-type-value">${tryHighlight(content.type).replace(/\n/g, '<br>')}</div>
+        </div>`;
     } else {
         // Display goal information
         msgDiv.className = 'info-message';
@@ -276,161 +191,90 @@ function updateInfoPanel(content, type = 'goal') {
     infoContent.appendChild(msgDiv);
 }
 
-// ============================================================================
-// Section 5: Event Handlers
-// ============================================================================
-
-/**
- * Selects a goal marker and displays its tactic state
- */
+// Select a goal marker and update InfoView
 function selectMarker(marker) {
-    // Remove active styling from all markers
-    const allActiveMarkers = document.querySelectorAll('.goal-marker.active');
-    allActiveMarkers.forEach(m => m.classList.remove('active'));
-    
-    // Apply active styling to new marker
+    document.querySelectorAll('.goal-marker.active').forEach(m => m.classList.remove('active'));
     marker.classList.add('active');
-    
-    // Show InfoView if it's hidden
     showInfoView();
-    
-    // Scroll marker into view
     marker.scrollIntoView({ block: 'center', behavior: 'smooth' });
-    
-    // Display tactic state from data attribute
-    const goalText = marker.getAttribute('data-goal');
-    updateInfoPanel(goalText, 'goal');
+    updateInfoPanel(marker.getAttribute('data-goal'), 'goal');
 }
 
-/**
- * Gets the vertical position of an element for line-aware navigation
- */
-function getYPosition(element) {
-    return element.offsetTop;
+function onSameLine(marker1, marker2) {
+    const rect1 = marker1.getBoundingClientRect();
+    const rect2 = marker2.getBoundingClientRect();
+    // Two markers are on the same line if their vertical ranges overlap
+    return !(rect1.bottom < rect2.top || rect2.bottom < rect1.top);
 }
 
-/**
- * Finds the leftmost marker on a different line
- */
 function findMarkerOnDifferentLine(markers, currentIndex, direction) {
-    const currentY = getYPosition(markers[currentIndex]);
-    const tolerance = 5; // pixels tolerance for same line
-    
+    let targetIndex = currentIndex;
     if (direction === 'next') {
-        // Find first marker on next line (leftmost)
-        for (let i = currentIndex + 1; i < markers.length; i++) {
-            const markerY = getYPosition(markers[i]);
-            if (Math.abs(markerY - currentY) > tolerance) {
-                return i;
-            }
+        // Find first marker not on the same line
+        while (targetIndex + 1 < markers.length){
+            targetIndex++;
+            if (!onSameLine(markers[targetIndex], markers[targetIndex - 1])) break;
         }
-    } else { // previous
-        // Find first marker on previous line (leftmost)
-        // First, find any marker on a different line going backward
-        let targetY = null;
-        for (let i = currentIndex - 1; i >= 0; i--) {
-            const markerY = getYPosition(markers[i]);
-            if (Math.abs(markerY - currentY) > tolerance) {
-                targetY = markerY;
-                break;
-            }
+    } else {
+        // Find first marker on previous line (scan backwards, then find leftmost on that line)
+        while (targetIndex - 1 >= 0){
+            targetIndex--;
+            if (!onSameLine(markers[targetIndex], markers[targetIndex + 1])) break;
         }
-        
-        // If found a different line, find the leftmost marker on that line
-        if (targetY !== null) {
-            for (let i = 0; i < markers.length; i++) {
-                const markerY = getYPosition(markers[i]);
-                if (Math.abs(markerY - targetY) <= tolerance) {
-                    return i;
-                }
-            }
+        while (targetIndex - 1 >= 0){
+            if (!onSameLine(markers[targetIndex], markers[targetIndex - 1])) break;
+            targetIndex--;
         }
     }
-    return currentIndex; // Stay at current if no marker found on different line
+    return targetIndex;
 }
 
 /**
  * Sets up click and hover handlers for goal and term markers
  */
 function setupMarkerHandlers() {
-    // Goal marker click handlers
-    const goalMarkers = document.querySelectorAll('.goal-marker');
-    goalMarkers.forEach(marker => {
-        marker.addEventListener('click', (e) => {
-            e.stopPropagation();
-            selectMarker(marker);
-        });
-        
-        // Make markers tabbable
+    document.querySelectorAll('.goal-marker').forEach(marker => {
+        marker.addEventListener('click', (e) => { e.stopPropagation(); selectMarker(marker); });
         marker.setAttribute('tabindex', '0');
-        
-        // Handle Enter/Space on focused marker
         marker.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                selectMarker(marker);
-            }
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectMarker(marker); }
         });
     });
     
-    // Term marker hover handlers
-    const termMarkers = document.querySelectorAll('.term-marker');
-    termMarkers.forEach(termMarker => {
-        const handleTermHover = (e) => {
-            // Stop propagation ensures only the innermost term responds
+    document.querySelectorAll('.term-marker').forEach(termMarker => {
+        termMarker.addEventListener('mouseover', (e) => {
             e.stopPropagation();
-            
             const termType = termMarker.getAttribute('data-type');
-            const termText = termMarker.textContent;
-            
             if (termType) {
                 // Set opacity factors: 1.0 for hovered term, 0.5, 0.25, 0.125... for parents
                 let opacityFactor = 1.0;
                 let me = termMarker;
                 do {
-                    if (me.classList.contains('term-marker')) {
-                        const myType = me.getAttribute('data-type');
-                        if (myType) {
-                            me.style.setProperty('--opacity-factor', opacityFactor.toString());
-                            opacityFactor *= 0.5;
-                        }
+                    if (me.classList.contains('term-marker') && me.getAttribute('data-type')) {
+                        me.style.setProperty('--opacity-factor', opacityFactor.toString());
+                        opacityFactor *= 0.5;
                     }
                     me = me.parentElement;
                 } while (me && me !== document.body);
-                
-                // Show term text and type in info panel
-                updateInfoPanel({ text: termText, type: termType }, 'term');
+                updateInfoPanel({ text: termMarker.textContent, type: termType }, 'term');
             }
-        };
+        });
         
-        // mouseover fires when transitioning from child to parent, mouseenter doesn't
-        termMarker.addEventListener('mouseover', handleTermHover);
-        
+        // Clean up opacity factors from this term and all parents
         termMarker.addEventListener('mouseleave', () => {
-            // Clean up opacity factors from this term and all parents
             termMarker.style.removeProperty('--opacity-factor');
-            
             let parent = termMarker.parentElement;
             while (parent && parent !== document.body) {
-                if (parent.classList.contains('term-marker')) {
+                if (parent.classList.contains('term-marker'))
                     parent.style.removeProperty('--opacity-factor');
-                }
                 parent = parent.parentElement;
             }
-            
-            // Restore goal state display if a goal marker is active
             const activeMarker = document.querySelector('.goal-marker.active');
-            if (activeMarker) {
-                const goalText = activeMarker.getAttribute('data-goal');
-                updateInfoPanel(goalText, 'goal');
-            }
+            if (activeMarker) updateInfoPanel(activeMarker.getAttribute('data-goal'), 'goal');
         });
     });
 }
 
-/**
- * Sets up keyboard navigation for goal markers
- */
 function setupKeyboardNavigation() {
     document.addEventListener('keydown', (e) => {
         const currentMarker = document.querySelector('.goal-marker.active');
@@ -441,19 +285,13 @@ function setupKeyboardNavigation() {
         let newIndex = currentIndex;
         
         switch(e.key) {
-            case 'ArrowLeft':
-            case 'PageUp':
+            case 'ArrowLeft': case 'PageUp':
                 e.preventDefault();
-                if (currentIndex > 0) {
-                    newIndex = currentIndex - 1;
-                }
+                if (currentIndex > 0) newIndex = currentIndex - 1;
                 break;
-            case 'ArrowRight':
-            case 'PageDown':
+            case 'ArrowRight': case 'PageDown':
                 e.preventDefault();
-                if (currentIndex < markers.length - 1) {
-                    newIndex = currentIndex + 1;
-                }
+                if (currentIndex < markers.length - 1) newIndex = currentIndex + 1;
                 break;
             case 'ArrowUp':
                 e.preventDefault();
@@ -471,13 +309,10 @@ function setupKeyboardNavigation() {
                 e.preventDefault();
                 newIndex = markers.length - 1;
                 break;
-            default:
-                return;
+            default: return;
         }
         
-        if (newIndex !== currentIndex) {
-            selectMarker(markers[newIndex]);
-        }
+        if (newIndex !== currentIndex) selectMarker(markers[newIndex]);
     });
 }
 
@@ -489,7 +324,7 @@ function setupResizeHandler() {
     const panel = document.getElementById('infoview-panel');
     const toggleBtn = document.getElementById('infoview-toggle');
     
-    resizeHandle.addEventListener('mousedown', (e) => {
+    resizeHandle.addEventListener('mousedown', () => {
         infoviewState.isResizing = true;
         document.body.style.cursor = 'col-resize';
         document.body.style.userSelect = 'none';
@@ -497,7 +332,6 @@ function setupResizeHandler() {
     
     document.addEventListener('mousemove', (e) => {
         if (!infoviewState.isResizing) return;
-        
         const newWidth = window.innerWidth - e.clientX;
         
         // Apply new width
@@ -522,7 +356,6 @@ function setupResizeHandler() {
  */
 function showInfoView() {
     if (infoviewState.isVisible) return;
-    
     const toggleBtn = document.getElementById('infoview-toggle');
     const panel = document.getElementById('infoview-panel');
     
@@ -531,10 +364,7 @@ function showInfoView() {
     panel.classList.remove('hidden');
     toggleBtn.innerHTML = '&gt;';
     toggleBtn.style.right = infoviewState.width + 'px';
-    
-    setTimeout(() => {
-        toggleBtn.classList.remove('transitioning');
-    }, 300);
+    setTimeout(() => toggleBtn.classList.remove('transitioning'), 300);
 }
 
 /**
@@ -542,7 +372,6 @@ function showInfoView() {
  */
 function hideInfoView() {
     if (!infoviewState.isVisible) return;
-    
     const toggleBtn = document.getElementById('infoview-toggle');
     const panel = document.getElementById('infoview-panel');
     
@@ -551,62 +380,27 @@ function hideInfoView() {
     panel.classList.add('hidden');
     toggleBtn.innerHTML = '&lt;';
     toggleBtn.style.right = '0';
-    
-    setTimeout(() => {
-        toggleBtn.classList.remove('transitioning');
-    }, 300);
+    setTimeout(() => toggleBtn.classList.remove('transitioning'), 300);
 }
 
 /**
  * Sets up the toggle button for showing/hiding InfoView
  */
 function setupToggleButton() {
-    const toggleInfoView = () => {
-        if (infoviewState.isVisible) {
-            hideInfoView();
-        } else {
-            showInfoView();
-        }
-    };
-    
-    // Click handler for toggle button
-    const toggleBtn = document.getElementById('infoview-toggle');
-    toggleBtn.addEventListener('click', toggleInfoView);
-    
-    // Keyboard shortcut 'I' to toggle InfoView
+    const toggleInfoView = () => infoviewState.isVisible ? hideInfoView() : showInfoView();
+    document.getElementById('infoview-toggle').addEventListener('click', toggleInfoView);
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'i' || e.key === 'I') {
-            // Only trigger if not typing in an input field
-            if (!isTypingInInput()) {
-                e.preventDefault();
-                toggleInfoView();
-            }
+        if ((e.key === 'i' || e.key === 'I') && !['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+            e.preventDefault();
+            toggleInfoView();
         }
     });
 }
 
-/**
- * Check if the user is currently typing in an input or textarea
- */
-function isTypingInInput() {
-    const activeElement = document.activeElement;
-    return activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA';
-}
-
-// ============================================================================
-// Section 6: Global Initialization API
-// ============================================================================
-
-/**
- * Initializes the InfoView for the current code content
- * Should be called after injecting HTML content into the DOM
- */
 function initInfoview() {
     // 1. Apply syntax highlighting to the code
     const code = document.querySelector('code.infoview-lean');
-    if (code) {
-        highlightTextNodes(code);
-    }
+    if (code) highlightTextNodes(code);
     
     // 2. Create InfoView DOM elements
     createInfoViewDOM();
@@ -621,8 +415,7 @@ function initInfoview() {
     const firstMarker = document.querySelector('.goal-marker');
     if (firstMarker) {
         firstMarker.classList.add('active');
-        const goalText = firstMarker.getAttribute('data-goal');
-        updateInfoPanel(goalText, 'goal');
+        updateInfoPanel(firstMarker.getAttribute('data-goal'), 'goal');
     }
 }
 
