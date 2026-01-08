@@ -285,8 +285,8 @@ function updateInfoPanel(content, type = 'goal') {
  */
 function selectMarker(marker) {
     // Remove active styling from all markers
-    const allMarkers = document.querySelectorAll('.goal-marker');
-    allMarkers.forEach(m => m.classList.remove('active'));
+    const allActiveMarkers = document.querySelectorAll('.goal-marker.active');
+    allActiveMarkers.forEach(m => m.classList.remove('active'));
     
     // Apply active styling to new marker
     marker.classList.add('active');
